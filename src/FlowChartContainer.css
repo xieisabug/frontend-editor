@@ -4,4 +4,9 @@
 
 #flow-chart-canvas {
     height: 100%;
+    position: relative;
+}
+
+text {
+    user-select: none;
 }
