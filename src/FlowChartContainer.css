@@ -1,0 +1,7 @@
+.flow-chart-container {
+    flex: 1 1;
+}
+
+#flow-chart-canvas {
+    height: 100%;
+}
