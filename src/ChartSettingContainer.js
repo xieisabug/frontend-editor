@@ -14,7 +14,7 @@ export default class ChartSettingContainer extends React.Component {
 
                         <div className="chart-setting-row">
                             <div className="chart-setting-row-label">输入值1</div>
-                            <div>guessPrice</div>
+                            <div>猜价格</div>
                         </div>
                         <div className="chart-setting-row">
                             <div className="chart-setting-row-label">提交 按钮</div>

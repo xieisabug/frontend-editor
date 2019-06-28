@@ -87,6 +87,19 @@ class Content extends React.Component {
                 fromIndex: this.state.currentSelectEditIndex,
                 toIndex: componentList.length - 1
             });
+        } else if (this.state.tempButtonActionType === 6) {
+            componentList.push({
+                type: "get-coupon",
+                initText: "获得券",
+                width: 120,
+                height: 50,
+                x: this.state.currentSelectEditComponent.x - 70,
+                y: this.state.currentSelectEditComponent.y + 150
+            });
+            lineList.push({
+                fromIndex: this.state.currentSelectEditIndex,
+                toIndex: componentList.length - 1
+            });
         }
 
         this.setState({
@@ -125,7 +138,7 @@ class Content extends React.Component {
                     {this.state.tempButtonActionTypeRadio === 2 ?
                         <div style={{marginTop: "20px"}}>
                             <Select defaultValue={1}>
-                                <Option value={1}>guessPrice</Option>
+                                <Option value={1}>猜价格</Option>
                             </Select>
                         </div>: null
                     }
