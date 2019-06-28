@@ -11,7 +11,8 @@ export default class ComponentContainer extends React.Component {
             type: "mini-app-page",
             initText: "小程序页面",
             width: 120,
-            height: 50
+            height: 50,
+            pageId: null
         });
     };
 

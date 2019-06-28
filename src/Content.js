@@ -2,6 +2,7 @@ import React from 'react';
 
 import Modal from "antd/es/modal"
 import Select from "antd/es/select"
+import Radio from "antd/es/radio"
 
 import ComponentContainer from "./ComponentContainer"
 import FlowChartContainer from "./FlowChartContainer"
@@ -17,10 +18,14 @@ class Content extends React.Component {
 
         this.state = {
             componentList: [],
+            lineList: [],
             currentSelectAddComponent: null,
             currentSelectEditComponent: null,
             currentSelectEditIndex: -1,
-            isSettingDialogOpen: false
+            isSettingDialogOpen: false,
+
+            tempButtonActionType: 1,
+            tempButtonActionTypeRadio: 1
         }
     }
 
@@ -66,8 +71,28 @@ class Content extends React.Component {
     };
 
     handleOk = () => {
+        let componentList = this.state.componentList.slice();
+        let lineList = this.state.lineList.slice();
+
+        if (this.state.tempButtonActionType === 2) {
+            componentList.push({
+                type: "pay",
+                initText: "支付",
+                width: 120,
+                height: 50,
+                x: this.state.currentSelectEditComponent.x,
+                y: this.state.currentSelectEditComponent.y + 150
+            });
+            lineList.push({
+                fromIndex: this.state.currentSelectEditIndex,
+                toIndex: componentList.length - 1
+            });
+        }
+
         this.setState({
-            isSettingDialogOpen: false
+            isSettingDialogOpen: false,
+            componentList,
+            lineList
         })
     };
 
@@ -75,6 +100,39 @@ class Content extends React.Component {
         this.setState({
             isSettingDialogOpen: false
         })
+    };
+
+    changeComponentButtonActionType = (v) => {
+        this.setState({
+            tempButtonActionType: +v
+        })
+    };
+
+    changeTempButtonActionTypeRadio = (e) => {
+        this.setState({
+            tempButtonActionTypeRadio: +e.target.value
+        })
+    };
+
+    getButtonActionTypeComponent = () => {
+        switch (this.state.tempButtonActionType) {
+            case 2:
+                return <div>
+                    <Radio.Group value={this.state.tempButtonActionTypeRadio} onChange={this.changeTempButtonActionTypeRadio}>
+                        <Radio value={1}>固定数额</Radio>
+                        <Radio value={2}>值</Radio>
+                    </Radio.Group>
+                    {this.state.tempButtonActionTypeRadio === 2 ?
+                        <div style={{marginTop: "20px"}}>
+                            <Select defaultValue={1}>
+                                <Option value={1}>guessPrice</Option>
+                            </Select>
+                        </div>: null
+                    }
+                </div>;
+            default:
+                return null;
+        }
     };
 
     render() {
@@ -85,6 +143,7 @@ class Content extends React.Component {
                 />
                 <FlowChartContainer
                     componentList={this.state.componentList}
+                    lineList={this.state.lineList}
                     currentSelectAddComponent={this.state.currentSelectAddComponent}
                     onAddComponentToFlowChart={this.addComponentToFlowChart}
 
@@ -104,12 +163,18 @@ class Content extends React.Component {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <Select defaultValue="1">
-                        <Option value="1">跳转页面</Option>
-                        <Option value="2">进行支付</Option>
-                        <Option value="3">提交存储</Option>
-                        <Option value="4">业务逻辑</Option>
+                    <Select defaultValue={1} onChange={this.changeComponentButtonActionType} value={this.state.tempButtonActionType}>
+                        <Option value={1}>跳转页面</Option>
+                        <Option value={2}>进行支付</Option>
+                        <Option value={3}>提交存储</Option>
+                        <Option value={4}>业务逻辑</Option>
+                        <Option value={5}>获得菜品</Option>
+                        <Option value={6}>获得劵</Option>
                     </Select>
+
+                    <div style={{marginTop: "20px"}}>
+                        {this.getButtonActionTypeComponent()}
+                    </div>
                 </Modal>
             </div>
         );

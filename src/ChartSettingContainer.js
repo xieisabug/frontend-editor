@@ -7,17 +7,32 @@ export default class ChartSettingContainer extends React.Component {
     getComponentSetting() {
         const {currentSelectEditComponent, onOpenSettingDialog} = this.props;
         if (currentSelectEditComponent) {
-            if (currentSelectEditComponent.type === "mini-app-page") {
-                return <div>
-                    <div className="chart-setting-row">
-                        <div className="chart-setting-row-label">输入值1</div>
-                        <div>guessPrice</div>
+            switch (currentSelectEditComponent.type) {
+                case "mini-app-page":
+                    return <div>
+                        <Button>编辑页面</Button>
+
+                        <div className="chart-setting-row">
+                            <div className="chart-setting-row-label">输入值1</div>
+                            <div>guessPrice</div>
+                        </div>
+                        <div className="chart-setting-row">
+                            <div className="chart-setting-row-label">提交 按钮</div>
+                            <Button onClick={onOpenSettingDialog}>设置</Button>
+                        </div>
+                    </div>;
+                case "pay":
+                    return <div>
+                        <div className="chart-setting-row">
+                            <div className="chart-setting-row-label">成功</div>
+                            <Button onClick={onOpenSettingDialog}>设置</Button>
+                        </div>
+
+                        <div className="chart-setting-row">
+                            <div className="chart-setting-row-label">失败</div>
+                            <Button onClick={onOpenSettingDialog}>设置</Button>
+                        </div>
                     </div>
-                    <div className="chart-setting-row">
-                        <div className="chart-setting-row-label">按钮1</div>
-                        <Button onClick={onOpenSettingDialog}>设置</Button>
-                    </div>
-                </div>
             }
         } else {
             return <div>未选择任何组件</div>;

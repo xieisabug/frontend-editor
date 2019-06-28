@@ -111,8 +111,17 @@ export default class FlowChartContainer extends React.Component {
         </g>
     };
 
+    getLineSVG = (line, index) => {
+        const {componentList} = this.props;
+        let fromComponent = componentList[line.fromIndex];
+        let toComponent = componentList[line.toIndex];
+        return <g>
+            <g><path d={`M ${fromComponent.x} ${fromComponent.y + fromComponent.height/2} L ${toComponent.x} ${toComponent.y - toComponent.height / 2}`} stroke={"#000"} strokeOpacity={1} strokeWidth={1}/></g>
+        </g>
+    };
+
     render() {
-        const { componentList, currentSelectAddComponent, currentSelectEditComponent } = this.props;
+        const { componentList, lineList, currentSelectAddComponent, currentSelectEditComponent } = this.props;
         let previewComponent = currentSelectAddComponent ? currentSelectAddComponent: (currentSelectEditComponent ? currentSelectEditComponent : {width: 0, height: 0});
         let previewRectPosition = {
             left: {
@@ -137,6 +146,7 @@ export default class FlowChartContainer extends React.Component {
                         <path d={`M10 10 H ${this.state.canvasWidth - 10} V ${this.state.canvasHeight - 10} H 10 L 10 10`} fill="#fff" fillOpacity="1"/>
                     </g>
                     { componentList.map(this.getComponentSVG) }
+                    { lineList.map(this.getLineSVG) }
                 </svg>
 
                 <svg width={this.state.canvasWidth} height={this.state.canvasHeight} fill="none" stroke="none"
