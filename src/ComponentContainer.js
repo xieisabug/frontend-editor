@@ -1,5 +1,6 @@
 import React from 'react';
 import "./ComponentContainer.css"
+import Button from "antd/es/button";
 
 export default class ComponentContainer extends React.Component {
 
@@ -16,7 +17,7 @@ export default class ComponentContainer extends React.Component {
 
     render() {
         return <div className="component-container">
-            <button onClick={this.firstComponent}>小程序页面</button>
+            <Button onClick={this.firstComponent}>小程序页面</Button>
         </div>
     }
 }

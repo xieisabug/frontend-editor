@@ -1,8 +1,14 @@
 import React from 'react';
+
+import Modal from "antd/es/modal"
+import Select from "antd/es/select"
+
 import ComponentContainer from "./ComponentContainer"
 import FlowChartContainer from "./FlowChartContainer"
 import ChartSettingContainer from "./ChartSettingContainer"
 import './Content.css';
+
+const { Option } = Select;
 
 class Content extends React.Component {
 
@@ -13,7 +19,8 @@ class Content extends React.Component {
             componentList: [],
             currentSelectAddComponent: null,
             currentSelectEditComponent: null,
-            currentSelectEditIndex: -1
+            currentSelectEditIndex: -1,
+            isSettingDialogOpen: false
         }
     }
 
@@ -52,6 +59,24 @@ class Content extends React.Component {
         })
     };
 
+    openSettingDialog = () => {
+        this.setState({
+            isSettingDialogOpen: true
+        })
+    };
+
+    handleOk = () => {
+        this.setState({
+            isSettingDialogOpen: false
+        })
+    };
+
+    handleCancel = () => {
+        this.setState({
+            isSettingDialogOpen: false
+        })
+    };
+
     render() {
         return (
             <div className="content">
@@ -68,7 +93,24 @@ class Content extends React.Component {
                     currentSelectEditComponent={this.state.currentSelectEditComponent}
                     currentSelectEditIndex={this.state.currentSelectEditIndex}
                 />
-                <ChartSettingContainer />
+                <ChartSettingContainer
+                    currentSelectEditComponent={this.state.currentSelectEditComponent}
+                    onOpenSettingDialog={this.openSettingDialog}
+                />
+
+                <Modal
+                    title="组件设置"
+                    visible={this.state.isSettingDialogOpen}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                >
+                    <Select defaultValue="1">
+                        <Option value="1">跳转页面</Option>
+                        <Option value="2">进行支付</Option>
+                        <Option value="3">提交存储</Option>
+                        <Option value="4">业务逻辑</Option>
+                    </Select>
+                </Modal>
             </div>
         );
     }

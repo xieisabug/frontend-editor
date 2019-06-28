@@ -3,3 +3,13 @@
     padding: 20px;
     box-sizing: border-box;
 }
+
+.chart-setting-row {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+.chart-setting-row-label {
+    flex: 0 0 100px;
+}
