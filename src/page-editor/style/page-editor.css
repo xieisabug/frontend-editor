@@ -49,11 +49,21 @@
 }
 
 .page-editor-editor-container {
+    display: flex;
     flex: 1;
-    background: cadetblue;
+    background: #f8f8f8;
+    justify-content: center;
+    padding-top: 50px;
+    overflow: auto;
 }
 .page-editor-editor-container.selected-tool {
     cursor: crosshair;
+}
+
+.page-editor-editor-page {
+    width: 380px;
+    height: 675px;
+    background: white;
 }
 
 .page-editor-attributes-panel {
