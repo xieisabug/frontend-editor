@@ -37,7 +37,9 @@ class PageEditorIndex extends React.Component {
                 />
                 <div className="page-editor-center-container">
                     <PageThumb />
-                    <PageEditor />
+                    <PageEditor
+                        chooseType={this.state.chooseType}
+                    />
                     <PageAttributesPanel />
                 </div>
             </div>

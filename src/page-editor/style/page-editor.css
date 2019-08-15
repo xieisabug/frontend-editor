@@ -52,6 +52,9 @@
     flex: 1;
     background: cadetblue;
 }
+.page-editor-editor-container.selected-tool {
+    cursor: crosshair;
+}
 
 .page-editor-attributes-panel {
     flex: 0 0 400px;
