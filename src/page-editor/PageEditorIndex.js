@@ -8,10 +8,33 @@ import "./style/page-editor.css"
 
 class PageEditorIndex extends React.Component {
 
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = {
+            chooseType: ""
+        }
+    }
+
+    handleChooseWidgetType = (type) => {
+        if (this.state.chooseType === type) {
+            this.setState({
+                chooseType: ""
+            })
+        } else {
+            this.setState({
+                chooseType: type
+            });
+        }
+    };
+
     render() {
         return (
             <div className="page-editor">
-                <Toolbar />
+                <Toolbar
+                    chooseType={this.state.chooseType}
+                    handleChooseWidgetType={this.handleChooseWidgetType}
+                />
                 <div className="page-editor-center-container">
                     <PageThumb />
                     <PageEditor />
