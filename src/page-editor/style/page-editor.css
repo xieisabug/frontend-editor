@@ -56,17 +56,37 @@
     padding-top: 50px;
     overflow: auto;
 }
-.page-editor-editor-container.selected-tool {
-    cursor: crosshair;
-}
 
 .page-editor-editor-page {
     width: 380px;
     height: 675px;
     background: white;
+    box-shadow: #f0f0f0 0 0 12px;
+    position: relative;
+}
+.page-editor-editor-page.selected-tool {
+    cursor: move;
 }
 
 .page-editor-attributes-panel {
     flex: 0 0 400px;
     background: cornflowerblue;
+}
+
+/*button*/
+.page-editor-editor-1-preview-box {
+    display: none;
+    position: absolute;
+    border: 1px solid cornflowerblue;
+    border-radius: 3px;
+    top: 0;
+    left: 0;
+}
+/*image*/
+.page-editor-editor-4-preview-box {
+    display: none;
+    position: absolute;
+    border: 1px solid cornflowerblue;
+    top: 0;
+    left: 0;
 }
