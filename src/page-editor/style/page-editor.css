@@ -90,3 +90,20 @@
     top: 0;
     left: 0;
 }
+
+.widget-item {
+    position: absolute;
+    cursor: pointer;
+}
+
+.widget-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 3px;
+}
+.widget-image {
+    border: 1px solid #ccc;
+}

@@ -12,7 +12,8 @@ class PageEditorIndex extends React.Component {
         super(props, context);
 
         this.state = {
-            chooseType: ""
+            chooseType: "",
+            widgetList: []
         }
     }
 
@@ -28,6 +29,16 @@ class PageEditorIndex extends React.Component {
         }
     };
 
+    addWidget = (data) => {
+        let widgetList = this.state.widgetList.slice();
+        widgetList.push(data);
+
+        this.setState({
+            chooseType: "",
+            widgetList
+        })
+    };
+
     render() {
         return (
             <div className="page-editor">
@@ -39,6 +50,9 @@ class PageEditorIndex extends React.Component {
                     <PageThumb />
                     <PageEditor
                         chooseType={this.state.chooseType}
+                        addWidget={this.addWidget}
+
+                        widgetList={this.state.widgetList}
                     />
                     <PageAttributesPanel />
                 </div>
