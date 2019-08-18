@@ -15,7 +15,8 @@ class PageEditorIndex extends React.Component {
 
         this.state = {
             chooseType: "",
-            widgetList: []
+            widgetList: [],
+            chooseComponentData: null
         }
     }
 
@@ -47,6 +48,9 @@ class PageEditorIndex extends React.Component {
         })
     };
 
+    /**
+     * 编辑组件
+     */
     editWidget = (index, data) => {
         let widgetList = this.state.widgetList.slice();
 
@@ -54,6 +58,12 @@ class PageEditorIndex extends React.Component {
 
         this.setState({
             widgetList
+        })
+    };
+
+    handleChooseComponentData = (data) => {
+        this.setState({
+            chooseComponentData: data
         })
     };
 
@@ -74,6 +84,9 @@ class PageEditorIndex extends React.Component {
                         editWidget={this.editWidget}
 
                         widgetList={this.state.widgetList}
+
+                        handleChooseComponentData={this.handleChooseComponentData}
+                        chooseComponentData={this.state.chooseComponentData}
                     />
                     <PageAttributesPanel />
                 </div>

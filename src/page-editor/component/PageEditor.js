@@ -2,8 +2,8 @@ import * as React from 'react';
 import classNames from "classnames";
 
 import {WIDGET_PROPERTY, WIDGET_TYPE} from "../../Constants";
-import WidgetButton from "./WidgetButton";
-import WidgetImage from "./WidgetImage";
+import WidgetButton from "./widget/WidgetButton";
+import WidgetImage from "./widget/WidgetImage";
 import ChangeSizeAreaComponent from "./ChangeSizeArea";
 import MovePreviewAreaComponent from "./MovePreviewArea";
 
@@ -27,7 +27,6 @@ export default class PageEditor extends React.Component {
         super(props, context);
 
         this.state = {
-            chooseComponentData: null
         }
     }
 
@@ -76,9 +75,7 @@ export default class PageEditor extends React.Component {
                 this.chooseComponentDom = document.querySelector(".widget-item-" + this.chooseComponentData.id);
             }
 
-            this.setState({
-                chooseComponentData: this.chooseComponentData
-            });
+            this.props.handleChooseComponentData(this.chooseComponentData);
         }
     };
 
@@ -198,9 +195,7 @@ export default class PageEditor extends React.Component {
                 this.movePreviewDom.style.transform = null;
 
                 this.props.editWidget(this.chooseComponentIndex, changeData);
-                this.setState({
-                    chooseComponentData
-                });
+                this.props.handleChooseComponentData(chooseComponentData);
             }
         }
     };
@@ -266,8 +261,8 @@ export default class PageEditor extends React.Component {
                 <div className={editorPageClassName}>
                     {this.renderWidget()}
 
-                    <ChangeSizeAreaComponent chooseComponentData={this.state.chooseComponentData}/>
-                    <MovePreviewAreaComponent chooseComponentData={this.state.chooseComponentData}/>
+                    <ChangeSizeAreaComponent chooseComponentData={this.props.chooseComponentData}/>
+                    <MovePreviewAreaComponent chooseComponentData={this.props.chooseComponentData}/>
 
                     <div className={"page-editor-editor-" + WIDGET_TYPE.BUTTON + "-preview-box"}
                          style={{
