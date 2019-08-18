@@ -130,8 +130,6 @@ export default class PageEditor extends React.Component {
     };
 
     onMouseUp = (e) => {
-        this.isMouseDown = false;
-
         if (this.props.chooseType !== "") { // 确定添加组件的位置
             if (this.isInMiniAppPagePreview(e)) {
                 this.choosePreviewDom.style.display = `block`;
@@ -173,31 +171,35 @@ export default class PageEditor extends React.Component {
                 this.choosePreviewDom = null;
             }
         } else {
-            if (this.chooseComponentData !== null) { // 移动已经添加的组件
-                let top = this.endY - this.startY;
-                let left = this.endX - this.startX;
-                if ((top + this.chooseComponentData.y) < 0) {
-                    top = -this.chooseComponentData.y
-                } else if ((top + this.chooseComponentData.y + this.chooseComponentData.height) > this.miniAppPagePosition.height) {
-                    top = this.miniAppPagePosition.height - this.chooseComponentData.y - this.chooseComponentData.height
-                }
-                if ((left + this.chooseComponentData.x) < 0) {
-                    left = -this.chooseComponentData.x
-                } else if ((left + this.chooseComponentData.x + this.chooseComponentData.width) > (this.miniAppPagePosition.width)) {
-                    left = this.miniAppPagePosition.width - this.chooseComponentData.x - this.chooseComponentData.width
-                }
-                let changeData = {
-                    x: this.chooseComponentData.x + left,
-                    y: this.chooseComponentData.y + top
-                };
-                let chooseComponentData = Object.assign({}, this.chooseComponentData, changeData);
-                this.movePreviewDom.style.display = "none";
-                this.movePreviewDom.style.transform = null;
+            if (this.isMouseDown) {
+                if (this.chooseComponentData !== null) { // 移动已经添加的组件
+                    let top = this.endY - this.startY;
+                    let left = this.endX - this.startX;
+                    if ((top + this.chooseComponentData.y) < 0) {
+                        top = -this.chooseComponentData.y
+                    } else if ((top + this.chooseComponentData.y + this.chooseComponentData.height) > this.miniAppPagePosition.height) {
+                        top = this.miniAppPagePosition.height - this.chooseComponentData.y - this.chooseComponentData.height
+                    }
+                    if ((left + this.chooseComponentData.x) < 0) {
+                        left = -this.chooseComponentData.x
+                    } else if ((left + this.chooseComponentData.x + this.chooseComponentData.width) > (this.miniAppPagePosition.width)) {
+                        left = this.miniAppPagePosition.width - this.chooseComponentData.x - this.chooseComponentData.width
+                    }
+                    let changeData = {
+                        x: this.chooseComponentData.x + left,
+                        y: this.chooseComponentData.y + top
+                    };
+                    let chooseComponentData = Object.assign({}, this.chooseComponentData, changeData);
+                    this.movePreviewDom.style.display = "none";
+                    this.movePreviewDom.style.transform = null;
 
-                this.props.editWidget(this.chooseComponentIndex, changeData);
-                this.props.handleChooseComponentData(chooseComponentData);
+                    this.props.editWidget(this.chooseComponentIndex, changeData);
+                    this.props.handleChooseComponentData(chooseComponentData);
+                }
             }
         }
+
+        this.isMouseDown = false;
     };
 
     /**

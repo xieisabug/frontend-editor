@@ -12,6 +12,7 @@
     align-items: center;
     padding: 0 20px;
     border-bottom: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
 .page-editor-toolbar-widget-item {
@@ -71,7 +72,15 @@
 
 .page-editor-attributes-panel {
     flex: 0 0 400px;
-    background: cornflowerblue;
+    background: white;
+    border-left: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.page-editor-attributes-panel.no-choose-component {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /*button*/
@@ -153,4 +162,19 @@
     position: absolute;
     cursor: move;
     border: 1px solid cornflowerblue;
+}
+
+.page-editor-attributes-panel-form-item {
+    display: flex;
+    height: 50px;
+    align-items: center;
+}
+
+.page-editor-attributes-panel-form-label {
+    flex: 0 0 100px;
+    padding: 0 10px;
+    text-align: right;
+}
+.page-editor-attributes-panel-form-content {
+    flex: 1;
 }

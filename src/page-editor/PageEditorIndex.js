@@ -88,7 +88,9 @@ class PageEditorIndex extends React.Component {
                         handleChooseComponentData={this.handleChooseComponentData}
                         chooseComponentData={this.state.chooseComponentData}
                     />
-                    <PageAttributesPanel />
+                    <PageAttributesPanel
+                        chooseComponentData={this.state.chooseComponentData}
+                    />
                 </div>
             </div>
         );
