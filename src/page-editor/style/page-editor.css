@@ -55,6 +55,7 @@
     justify-content: center;
     padding-top: 50px;
     overflow: auto;
+    user-select: none;
 }
 
 .page-editor-editor-page {
@@ -106,4 +107,50 @@
 }
 .widget-image {
     border: 1px solid #ccc;
+}
+
+/*组件改变大小的样式*/
+.page-editor-change-size-area {
+    display: none;
+    position: absolute;
+    cursor: move;
+}
+.page-editor-change-size-area.show {
+    display: block;
+}
+.page-editor-change-size-area-top, .page-editor-change-size-area-right, .page-editor-change-size-area-bottom, .page-editor-change-size-area-left {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border: 1px solid #666;
+    background: white;
+    box-sizing: border-box;
+}
+.page-editor-change-size-area-top {
+    top: -5px;
+    left: calc(50% - 5px);
+    cursor: n-resize;
+}
+.page-editor-change-size-area-bottom {
+    bottom: -5px;
+    left: calc(50% - 5px);
+    cursor: s-resize;
+}
+.page-editor-change-size-area-right {
+    top: calc(50% - 5px);
+    right: -5px;
+    cursor: e-resize;
+}
+.page-editor-change-size-area-left {
+    top: calc(50% - 5px);
+    left: -5px;
+    cursor: w-resize;
+}
+
+/*组件移动预览样式*/
+.page-editor-move-preview-area {
+    display: none;
+    position: absolute;
+    cursor: move;
+    border: 1px solid cornflowerblue;
 }

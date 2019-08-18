@@ -1,24 +1,34 @@
 import * as React from 'react';
 import classNames from "classnames";
 
-import {WIDGET_TYPE, WIDGET_PROPERTY} from "../../Constants";
+import {WIDGET_PROPERTY, WIDGET_TYPE} from "../../Constants";
 import WidgetButton from "./WidgetButton";
 import WidgetImage from "./WidgetImage";
+import ChangeSizeAreaComponent from "./ChangeSizeArea";
+import MovePreviewAreaComponent from "./MovePreviewArea";
 
 export default class PageEditor extends React.Component {
 
+    idGen = 1; // id计数
     isMouseDown = false;
-    startX = 0;
-    startY = 0;
-    endX = 0;
-    endY = 0;
-    choosePreviewDom = null;
-    miniAppPagePosition = null;
+    startX = 0; // 鼠标点击开始x
+    startY = 0; // 鼠标点击开始y
+    endX = 0; // 鼠标结束x
+    endY = 0; // 鼠标结束y
+    choosePreviewDom = null; // 选择添加组件类型对应的预览组件dom
+    miniAppPagePosition = null; // 小程序预览页面的位置
+    chooseComponentData = null; // 选择页面上的组件的数据
+    chooseComponentDom = null; // 选择的页面上的组件的dom
+    chooseComponentIndex = -1; // 选择的页面上的组件的index
+
+    movePreviewDom = null;
 
     constructor(props, context) {
         super(props, context);
 
-        this.state = {}
+        this.state = {
+            chooseComponentData: null
+        }
     }
 
     componentDidMount() {
@@ -28,6 +38,9 @@ export default class PageEditor extends React.Component {
         pageDom.addEventListener("mousedown", this.onMouseDown);
         document.addEventListener("mousemove", this.onMouseMove);
         pageDom.addEventListener("mouseup", this.onMouseUp);
+
+        window.onresize = this.calMiniAppPagePosition;
+        this.movePreviewDom = pageDom.querySelector(".page-editor-move-preview-area");
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -42,20 +55,38 @@ export default class PageEditor extends React.Component {
         this.startY = e.pageY;
         this.endX = e.pageX;
         this.endY = e.pageY;
+        this.chooseComponentData = null;
 
         if (this.props.chooseType === "") { // 处理选择已经添加的组件，进行选定的操作
+            const { widgetList } = this.props;
+            let x = this.endX - this.miniAppPagePosition.left;
+            let y = this.endY - this.miniAppPagePosition.top;
+            let positionInPageView = {x, y}, componentInClick = [], componentInClickIndex = [];
+            widgetList.forEach((w, index) => {
+                if (this.isInComponent(positionInPageView, w)) {
+                    componentInClick.push(w);
+                    componentInClickIndex.push(index);
+                }
+            });
 
+            if (componentInClick.length !== 0) {
+                // TODO 需要取最上面的组件
+                this.chooseComponentData = componentInClick[0];
+                this.chooseComponentIndex = componentInClickIndex[0];
+                this.chooseComponentDom = document.querySelector(".widget-item-" + this.chooseComponentData.id);
+            }
+
+            this.setState({
+                chooseComponentData: this.chooseComponentData
+            });
         }
     };
 
     onMouseMove = (e) => {
-        if (this.isMouseDown) {
+        this.endX = e.pageX;
+        this.endY = e.pageY;
 
-        }
         if (this.props.chooseType !== "") { // 处理选择了要添加的组件
-            this.endX = e.pageX;
-            this.endY = e.pageY;
-
             if (this.isInMiniAppPagePreview(e)) { // 在页面中，随着鼠标显示预览组件
                 this.choosePreviewDom.style.display = `block`;
                 let top = this.endY - this.miniAppPagePosition.top - WIDGET_PROPERTY[this.props.chooseType].height / 2;
@@ -76,6 +107,28 @@ export default class PageEditor extends React.Component {
                 this.choosePreviewDom.style.display = `none`;
             }
 
+        } else {
+            if (this.isMouseDown) {
+                if (this.chooseComponentData !== null) {
+                    let top = this.endY - this.startY;
+                    let left = this.endX - this.startX;
+
+                    // if (top < 0) {
+                    //     top = 0
+                    // } else if (top > (this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height)) {
+                    //     top = this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height
+                    // }
+                    // if (left < 0) {
+                    //     left = 0
+                    // } else if (left > (this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width)) {
+                    //     left = this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width
+                    // }
+                    if (this.movePreviewDom) {
+                        this.movePreviewDom.style.display = "block";
+                        this.movePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
+                    }
+                }
+            }
         }
     };
 
@@ -100,11 +153,13 @@ export default class PageEditor extends React.Component {
                 }
                 this.choosePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
                 const data = {
+                    id: this.idGen++,
                     type: this.props.chooseType,
                     x: left,
                     y: top,
                     width: WIDGET_PROPERTY[this.props.chooseType].width,
-                    height: WIDGET_PROPERTY[this.props.chooseType].height
+                    height: WIDGET_PROPERTY[this.props.chooseType].height,
+                    z: 0
                 };
                 switch (data.type) {
                     case WIDGET_TYPE.BUTTON:
@@ -119,6 +174,24 @@ export default class PageEditor extends React.Component {
                 this.props.addWidget(data);
                 this.choosePreviewDom.style.display = `none`;
                 this.choosePreviewDom = null;
+            }
+        } else {
+            if (this.chooseComponentData !== null) {
+                let top = this.endY - this.startY;
+                let left = this.endX - this.startX;
+
+                let changeData = {
+                    x: this.chooseComponentData.x + left,
+                    y: this.chooseComponentData.y + top
+                };
+                let chooseComponentData = Object.assign({}, this.chooseComponentData, changeData);
+                this.movePreviewDom.style.display = "none";
+                this.movePreviewDom.style.transform = null;
+
+                this.props.editWidget(this.chooseComponentIndex, changeData);
+                this.setState({
+                    chooseComponentData
+                });
             }
         }
     };
@@ -147,15 +220,29 @@ export default class PageEditor extends React.Component {
     };
 
     /**
+     * 计算鼠标是否在某个组件上
+     * @param x
+     * @param y
+     * @param component
+     * @returns {boolean}
+     */
+    isInComponent = ({x, y}, component) => {
+        return x >= component.x &&
+            x <= (component.x + component.width) &&
+            y >= component.y &&
+            y <= (component.y + component.height);
+    };
+
+    /**
      * 渲染组件
      */
     renderWidget() {
         return this.props.widgetList.map(function(w) {
             switch (w.type) {
                 case WIDGET_TYPE.BUTTON:
-                    return <WidgetButton data={w} />;
+                    return <WidgetButton data={w} key={w.id} />;
                 case WIDGET_TYPE.IMAGE:
-                    return <WidgetImage data={w} />;
+                    return <WidgetImage data={w} key={w.id} />;
                 default:
                     return null;
             }
@@ -169,6 +256,9 @@ export default class PageEditor extends React.Component {
             <div className="page-editor-editor-container">
                 <div className={editorPageClassName}>
                     {this.renderWidget()}
+
+                    <ChangeSizeAreaComponent chooseComponentData={this.state.chooseComponentData}/>
+                    <MovePreviewAreaComponent chooseComponentData={this.state.chooseComponentData}/>
 
                     <div className={"page-editor-editor-" + WIDGET_TYPE.BUTTON + "-preview-box"}
                          style={{

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export default function WidgetImage(props) {
-    return <img className="widget-item widget-image" style={{
+    return <img className={`widget-item widget-image widget-item-${props.data.id}`} style={{
         left: props.data.x,
         top: props.data.y,
         width: props.data.width,

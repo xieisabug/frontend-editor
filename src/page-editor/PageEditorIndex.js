@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import Toolbar from "./component/Toolbar"
 import PageThumb from "./component/PageThumb";
@@ -47,6 +47,16 @@ class PageEditorIndex extends React.Component {
         })
     };
 
+    editWidget = (index, data) => {
+        let widgetList = this.state.widgetList.slice();
+
+        widgetList[index] = Object.assign({}, widgetList[index], data);
+
+        this.setState({
+            widgetList
+        })
+    };
+
     render() {
         return (
             <div className="page-editor">
@@ -61,6 +71,7 @@ class PageEditorIndex extends React.Component {
                     <PageEditor
                         chooseType={this.state.chooseType}
                         addWidget={this.addWidget}
+                        editWidget={this.editWidget}
 
                         widgetList={this.state.widgetList}
                     />
