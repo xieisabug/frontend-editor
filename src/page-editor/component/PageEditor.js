@@ -37,7 +37,7 @@ export default class PageEditor extends React.Component {
         let pageDom = document.querySelector(".page-editor-editor-page");
         pageDom.addEventListener("mousedown", this.onMouseDown);
         document.addEventListener("mousemove", this.onMouseMove);
-        pageDom.addEventListener("mouseup", this.onMouseUp);
+        document.addEventListener("mouseup", this.onMouseUp);
 
         window.onresize = this.calMiniAppPagePosition;
         this.movePreviewDom = pageDom.querySelector(".page-editor-move-preview-area");
