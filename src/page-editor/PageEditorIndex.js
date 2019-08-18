@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import Toolbar from "./component/Toolbar"
 import PageThumb from "./component/PageThumb";
 import PageEditor from "./component/PageEditor";
@@ -47,7 +49,9 @@ class PageEditorIndex extends React.Component {
                     handleChooseWidgetType={this.handleChooseWidgetType}
                 />
                 <div className="page-editor-center-container">
-                    <PageThumb />
+                    <PageThumb
+                        pages={this.props.pages}
+                    />
                     <PageEditor
                         chooseType={this.state.chooseType}
                         addWidget={this.addWidget}
@@ -62,4 +66,11 @@ class PageEditorIndex extends React.Component {
 
 }
 
-export default PageEditorIndex;
+const mapDispatchToProps = dispatch => ({
+    simpleAction: () => dispatch({})
+});
+const mapStateToProps = state => ({
+    ...state.pageReducer
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageEditorIndex);
