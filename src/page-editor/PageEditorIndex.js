@@ -19,6 +19,9 @@ class PageEditorIndex extends React.Component {
         }
     }
 
+    /**
+     * 选择添加的组件类型
+     */
     handleChooseWidgetType = (type) => {
         if (this.state.chooseType === type) {
             this.setState({
@@ -31,6 +34,9 @@ class PageEditorIndex extends React.Component {
         }
     };
 
+    /**
+     * 添加组件
+     */
     addWidget = (data) => {
         let widgetList = this.state.widgetList.slice();
         widgetList.push(data);

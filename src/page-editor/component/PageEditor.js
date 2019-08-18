@@ -42,17 +42,21 @@ export default class PageEditor extends React.Component {
         this.startY = e.pageY;
         this.endX = e.pageX;
         this.endY = e.pageY;
+
+        if (this.props.chooseType === "") { // 处理选择已经添加的组件，进行选定的操作
+
+        }
     };
 
     onMouseMove = (e) => {
         if (this.isMouseDown) {
 
         }
-        if (this.props.chooseType !== "") {
+        if (this.props.chooseType !== "") { // 处理选择了要添加的组件
             this.endX = e.pageX;
             this.endY = e.pageY;
 
-            if (this.isInMiniAppPagePreview(e)) {
+            if (this.isInMiniAppPagePreview(e)) { // 在页面中，随着鼠标显示预览组件
                 this.choosePreviewDom.style.display = `block`;
                 let top = this.endY - this.miniAppPagePosition.top - WIDGET_PROPERTY[this.props.chooseType].height / 2;
                 let left = this.endX - this.miniAppPagePosition.left - WIDGET_PROPERTY[this.props.chooseType].width / 2;
@@ -68,7 +72,7 @@ export default class PageEditor extends React.Component {
                     left = this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width
                 }
                 this.choosePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
-            } else {
+            } else { // 鼠标移出区域自动隐藏预览组件
                 this.choosePreviewDom.style.display = `none`;
             }
 
@@ -78,7 +82,7 @@ export default class PageEditor extends React.Component {
     onMouseUp = (e) => {
         this.isMouseDown = false;
 
-        if (this.props.chooseType !== "") {
+        if (this.props.chooseType !== "") { // 确定添加组件的位置
             if (this.isInMiniAppPagePreview(e)) {
                 this.choosePreviewDom.style.display = `block`;
                 let top = this.endY - this.miniAppPagePosition.top - WIDGET_PROPERTY[this.props.chooseType].height / 2;
@@ -132,6 +136,9 @@ export default class PageEditor extends React.Component {
         };
     };
 
+    /**
+     * 计算鼠标是否在预览页面的内部
+     */
     isInMiniAppPagePreview = (event) => {
         return (event.pageX) >= this.miniAppPagePosition.left &&
             (event.pageX) <= (this.miniAppPagePosition.left + this.miniAppPagePosition.width) &&
@@ -139,6 +146,9 @@ export default class PageEditor extends React.Component {
             (event.pageY) <= (this.miniAppPagePosition.top + this.miniAppPagePosition.height);
     };
 
+    /**
+     * 渲染组件
+     */
     renderWidget() {
         return this.props.widgetList.map(function(w) {
             switch (w.type) {
