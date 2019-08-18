@@ -93,7 +93,7 @@
     left: 0;
 }
 /*image*/
-.page-editor-editor-4-preview-box {
+.page-editor-editor-4-preview-box, .page-editor-editor-2-preview-box, .page-editor-editor-3-preview-box {
     display: none;
     position: absolute;
     border: 1px solid cornflowerblue;
@@ -116,6 +116,17 @@
 }
 .widget-image {
     border: 1px solid #ccc;
+}
+.widget-text {
+
+}
+.widget-input {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid #ccc;
+    background: white;
+    font-size: 14px;
 }
 
 /*组件改变大小的样式*/

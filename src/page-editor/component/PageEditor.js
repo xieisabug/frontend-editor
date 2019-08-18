@@ -6,6 +6,8 @@ import WidgetButton from "./widget/WidgetButton";
 import WidgetImage from "./widget/WidgetImage";
 import ChangeSizeAreaComponent from "./ChangeSizeArea";
 import MovePreviewAreaComponent from "./MovePreviewArea";
+import WidgetInput from "./widget/WidgetInput";
+import WidgetText from "./widget/WidgetText";
 
 export default class PageEditor extends React.Component {
 
@@ -163,6 +165,12 @@ export default class PageEditor extends React.Component {
                     case WIDGET_TYPE.IMAGE:
                         data.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658";
                         break;
+                    case WIDGET_TYPE.TEXT:
+                        data.text = "Text";
+                        break;
+                    case WIDGET_TYPE.INPUT:
+                        data.placeholder = "请输入";
+                        break;
                     default:
                         break;
                 }
@@ -249,6 +257,10 @@ export default class PageEditor extends React.Component {
                     return <WidgetButton data={w} key={w.id} />;
                 case WIDGET_TYPE.IMAGE:
                     return <WidgetImage data={w} key={w.id} />;
+                case WIDGET_TYPE.INPUT:
+                    return <WidgetInput data={w} key={w.id} />;
+                case WIDGET_TYPE.TEXT:
+                    return <WidgetText data={w} key={w.id} />;
                 default:
                     return null;
             }
@@ -275,6 +287,16 @@ export default class PageEditor extends React.Component {
                          style={{
                              width: WIDGET_PROPERTY[WIDGET_TYPE.IMAGE].width + "px",
                              height: WIDGET_PROPERTY[WIDGET_TYPE.IMAGE].height + "px"
+                         }}/>
+                    <div className={"page-editor-editor-" + WIDGET_TYPE.TEXT + "-preview-box"}
+                         style={{
+                             width: WIDGET_PROPERTY[WIDGET_TYPE.TEXT].width + "px",
+                             height: WIDGET_PROPERTY[WIDGET_TYPE.TEXT].height + "px"
+                         }}/>
+                    <div className={"page-editor-editor-" + WIDGET_TYPE.INPUT + "-preview-box"}
+                         style={{
+                             width: WIDGET_PROPERTY[WIDGET_TYPE.INPUT].width + "px",
+                             height: WIDGET_PROPERTY[WIDGET_TYPE.INPUT].height + "px"
                          }}/>
                 </div>
             </div>

@@ -23,10 +23,20 @@ class Toolbar extends React.PureComponent {
         this.props.handleChooseWidgetType(WIDGET_TYPE.IMAGE);
     };
 
+    handleChooseInput = () => {
+        this.props.handleChooseWidgetType(WIDGET_TYPE.INPUT);
+    };
+
+    handleChooseText = () => {
+        this.props.handleChooseWidgetType(WIDGET_TYPE.TEXT);
+    };
+
     render() {
         return <div className="page-editor-toolbar">
             <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.BUTTON} onClick={this.handleChooseButton} icon="icon-button"/>
             <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.IMAGE} onClick={this.handleChooseImage} icon="icon-image"/>
+            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.INPUT} onClick={this.handleChooseInput} icon="icon-input"/>
+            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.TEXT} onClick={this.handleChooseText} icon="icon-text"/>
         </div>
     }
 }
