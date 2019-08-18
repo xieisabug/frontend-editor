@@ -5,6 +5,7 @@ export default function WidgetImage(props) {
         left: props.data.x,
         top: props.data.y,
         width: props.data.width,
-        height: props.data.height
+        height: props.data.height,
+        zIndex: props.data.z
     }} src={props.data.src} alt=""/>
 }

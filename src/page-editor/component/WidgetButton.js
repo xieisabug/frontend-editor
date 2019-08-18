@@ -5,6 +5,7 @@ export default function WidgetButton(props) {
         left: props.data.x,
         top: props.data.y,
         width: props.data.width,
-        height: props.data.height
+        height: props.data.height,
+        zIndex: props.data.z,
     }}>{props.data.text}</div>
 }
