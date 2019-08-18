@@ -113,16 +113,16 @@ export default class PageEditor extends React.Component {
                     let top = this.endY - this.startY;
                     let left = this.endX - this.startX;
 
-                    // if (top < 0) {
-                    //     top = 0
-                    // } else if (top > (this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height)) {
-                    //     top = this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height
-                    // }
-                    // if (left < 0) {
-                    //     left = 0
-                    // } else if (left > (this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width)) {
-                    //     left = this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width
-                    // }
+                    if ((top + this.chooseComponentData.y) < 0) {
+                        top = -this.chooseComponentData.y
+                    } else if ((top + this.chooseComponentData.y + this.chooseComponentData.height) > this.miniAppPagePosition.height) {
+                        top = this.miniAppPagePosition.height - this.chooseComponentData.y - this.chooseComponentData.height
+                    }
+                    if ((left + this.chooseComponentData.x) < 0) {
+                        left = -this.chooseComponentData.x
+                    } else if ((left + this.chooseComponentData.x + this.chooseComponentData.width) > (this.miniAppPagePosition.width)) {
+                        left = this.miniAppPagePosition.width - this.chooseComponentData.x - this.chooseComponentData.width
+                    }
                     if (this.movePreviewDom) {
                         this.movePreviewDom.style.display = "block";
                         this.movePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
@@ -176,10 +176,19 @@ export default class PageEditor extends React.Component {
                 this.choosePreviewDom = null;
             }
         } else {
-            if (this.chooseComponentData !== null) {
+            if (this.chooseComponentData !== null) { // 移动已经添加的组件
                 let top = this.endY - this.startY;
                 let left = this.endX - this.startX;
-
+                if ((top + this.chooseComponentData.y) < 0) {
+                    top = -this.chooseComponentData.y
+                } else if ((top + this.chooseComponentData.y + this.chooseComponentData.height) > this.miniAppPagePosition.height) {
+                    top = this.miniAppPagePosition.height - this.chooseComponentData.y - this.chooseComponentData.height
+                }
+                if ((left + this.chooseComponentData.x) < 0) {
+                    left = -this.chooseComponentData.x
+                } else if ((left + this.chooseComponentData.x + this.chooseComponentData.width) > (this.miniAppPagePosition.width)) {
+                    left = this.miniAppPagePosition.width - this.chooseComponentData.x - this.chooseComponentData.width
+                }
                 let changeData = {
                     x: this.chooseComponentData.x + left,
                     y: this.chooseComponentData.y + top
