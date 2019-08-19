@@ -4,11 +4,12 @@ import classNames from "classnames";
 
 
 function IconButtonComponent(props) {
-    let buttonClassName = classNames("page-editor-toolbar-widget-item", {"active": props.active });
+    let buttonClassName = classNames("page-editor-toolbar-widget-item", {"active": props.active});
     let iconClassName = classNames("iconfont", props.icon);
     return <div
         className={buttonClassName}
-        onClick={props.onClick}>
+        onClick={props.onClick}
+        title={props.tips}>
         <i className={iconClassName}/>
     </div>;
 }
@@ -33,10 +34,14 @@ class Toolbar extends React.PureComponent {
 
     render() {
         return <div className="page-editor-toolbar">
-            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.BUTTON} onClick={this.handleChooseButton} icon="icon-button"/>
-            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.IMAGE} onClick={this.handleChooseImage} icon="icon-image"/>
-            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.INPUT} onClick={this.handleChooseInput} icon="icon-input"/>
-            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.TEXT} onClick={this.handleChooseText} icon="icon-text"/>
+            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.BUTTON} onClick={this.handleChooseButton}
+                                 icon="icon-button" tips="按钮"/>
+            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.IMAGE} onClick={this.handleChooseImage}
+                                 icon="icon-image" tips="图片"/>
+            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.INPUT} onClick={this.handleChooseInput}
+                                 icon="icon-input" tips="输入框"/>
+            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.TEXT} onClick={this.handleChooseText}
+                                 icon="icon-text" tips="文字"/>
         </div>
     }
 }
