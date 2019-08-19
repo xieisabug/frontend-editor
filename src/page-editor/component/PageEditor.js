@@ -169,6 +169,9 @@ export default class PageEditor extends React.Component {
                     } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
                         left = (w.x + w.width) - WIDGET_PROPERTY[this.props.chooseType].width;
                         return false;
+                    } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
+                        left = (w.x + w.width / 2) - WIDGET_PROPERTY[this.props.chooseType].width / 2;
+                        return false;
                     }
                     return true;
                 });
