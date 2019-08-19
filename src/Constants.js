@@ -23,3 +23,5 @@ export const WIDGET_PROPERTY = {
         height: 30
     }
 };
+
+export const ADSORPTION_POWER = 5;

@@ -189,3 +189,18 @@
 .page-editor-attributes-panel-form-content {
     flex: 1;
 }
+
+.h-assistant-line {
+    height: 0;
+    border-top: 1px solid hotpink;
+    position: absolute;
+    display: none;
+    z-index: 0;
+}
+.v-assistant-line {
+    width: 0;
+    border-right: 1px solid hotpink;
+    position: absolute;
+    display: none;
+    z-index: 0;
+}

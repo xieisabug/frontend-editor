@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from "classnames";
 
-import {WIDGET_PROPERTY, WIDGET_TYPE} from "../../Constants";
+import {ADSORPTION_POWER, WIDGET_PROPERTY, WIDGET_TYPE} from "../../Constants";
 import WidgetButton from "./widget/WidgetButton";
 import WidgetImage from "./widget/WidgetImage";
 import ChangeSizeAreaComponent from "./ChangeSizeArea";
@@ -25,6 +25,9 @@ export default class PageEditor extends React.Component {
 
     movePreviewDom = null;
 
+    hAssistLine = null;
+    vAssistLine = null;
+
     constructor(props, context) {
         super(props, context);
 
@@ -42,6 +45,8 @@ export default class PageEditor extends React.Component {
 
         window.onresize = this.calMiniAppPagePosition;
         this.movePreviewDom = pageDom.querySelector(".page-editor-move-preview-area");
+        this.hAssistLine = pageDom.querySelector(".h-assistant-line");
+        this.vAssistLine = pageDom.querySelector(".v-assistant-line");
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -87,20 +92,52 @@ export default class PageEditor extends React.Component {
 
         if (this.props.chooseType !== "") { // 处理选择了要添加的组件
             if (this.isInMiniAppPagePreview(e)) { // 在页面中，随着鼠标显示预览组件
-                this.choosePreviewDom.style.display = `block`;
-                let top = this.endY - this.miniAppPagePosition.top - WIDGET_PROPERTY[this.props.chooseType].height / 2;
-                let left = this.endX - this.miniAppPagePosition.left - WIDGET_PROPERTY[this.props.chooseType].width / 2;
+                let {top, left} = this.calPreviewPosition();
+                let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
+                    center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2));
 
-                if (top < 0) {
-                    top = 0
-                } else if (top > (this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height)) {
-                    top = this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height
+                let vFind = false;
+                if (center === (380 / 2)) {
+                    this.vAssistLine.style.display = "block";
+                    this.vAssistLine.style.height = "100%";
+                    this.vAssistLine.style.top = "0";
+                    this.vAssistLine.style.left = "190px";
+                    vFind = true;
                 }
-                if (left < 0) {
-                    left = 0
-                } else if (left > (this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width)) {
-                    left = this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width
+
+                this.props.widgetList.every(w => {
+                    if (Math.abs(w.x - left) <= ADSORPTION_POWER) {
+                        left = w.x;
+                        this.vAssistLine.style.display = "block";
+                        this.vAssistLine.style.height = w.y < top ? (top - w.y - w.height + "px") : (w.y - top - WIDGET_PROPERTY[this.props.chooseType].height + "px");
+                        this.vAssistLine.style.top =  w.y < top ? (w.y + w.height + "px") : (top + WIDGET_PROPERTY[this.props.chooseType].height + "px");
+                        this.vAssistLine.style.left = left + "px";
+                        vFind = true;
+                        return false;
+                    } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
+                        left = (w.x + w.width) - WIDGET_PROPERTY[this.props.chooseType].width;
+                        this.vAssistLine.style.display = "block";
+                        this.vAssistLine.style.height = w.y < top ? (top - w.y - w.height + "px") : (w.y - top - WIDGET_PROPERTY[this.props.chooseType].height + "px");
+                        this.vAssistLine.style.top =  w.y < top ? (w.y + w.height + "px") : (top + WIDGET_PROPERTY[this.props.chooseType].height + "px");
+                        this.vAssistLine.style.left = left + WIDGET_PROPERTY[this.props.chooseType].width + "px";
+                        vFind = true;
+                        return false;
+                    } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
+                        left = (w.x + w.width / 2) - WIDGET_PROPERTY[this.props.chooseType].width / 2;
+                        this.vAssistLine.style.display = "block";
+                        this.vAssistLine.style.height = w.y < top ? (top - w.y - w.height + "px") : (w.y - top - WIDGET_PROPERTY[this.props.chooseType].height + "px");
+                        this.vAssistLine.style.top =  w.y < top ? (w.y + w.height + "px") : (top + WIDGET_PROPERTY[this.props.chooseType].height + "px");
+                        this.vAssistLine.style.left = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)) + "px";
+                        vFind = true;
+                        return false;
+                    }
+                    return true;
+                });
+
+                if (!vFind) {
+                    this.vAssistLine.style.display = "none";
                 }
+
                 this.choosePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
             } else { // 鼠标移出区域自动隐藏预览组件
                 this.choosePreviewDom.style.display = `none`;
@@ -109,19 +146,7 @@ export default class PageEditor extends React.Component {
         } else {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) {
-                    let top = this.endY - this.startY;
-                    let left = this.endX - this.startX;
-
-                    if ((top + this.chooseComponentData.y) < 0) {
-                        top = -this.chooseComponentData.y
-                    } else if ((top + this.chooseComponentData.y + this.chooseComponentData.height) > this.miniAppPagePosition.height) {
-                        top = this.miniAppPagePosition.height - this.chooseComponentData.y - this.chooseComponentData.height
-                    }
-                    if ((left + this.chooseComponentData.x) < 0) {
-                        left = -this.chooseComponentData.x
-                    } else if ((left + this.chooseComponentData.x + this.chooseComponentData.width) > (this.miniAppPagePosition.width)) {
-                        left = this.miniAppPagePosition.width - this.chooseComponentData.x - this.chooseComponentData.width
-                    }
+                    let {top, left} = this.calMovePosition();
                     if (this.movePreviewDom) {
                         this.movePreviewDom.style.display = "block";
                         this.movePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
@@ -134,21 +159,21 @@ export default class PageEditor extends React.Component {
     onMouseUp = (e) => {
         if (this.props.chooseType !== "") { // 确定添加组件的位置
             if (this.isInMiniAppPagePreview(e)) {
-                this.choosePreviewDom.style.display = `block`;
-                let top = this.endY - this.miniAppPagePosition.top - WIDGET_PROPERTY[this.props.chooseType].height / 2;
-                let left = this.endX - this.miniAppPagePosition.left - WIDGET_PROPERTY[this.props.chooseType].width / 2;
+                let {top, left} = this.calPreviewPosition();
+                let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
+                    center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2));
+                this.props.widgetList.every(w => {
+                    if (Math.abs(w.x - left) <= ADSORPTION_POWER) {
+                        left = w.x;
+                        return false;
+                    } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
+                        left = (w.x + w.width) - WIDGET_PROPERTY[this.props.chooseType].width;
+                        return false;
+                    }
+                    return true;
+                });
+                this.vAssistLine.style.display = "none";
 
-                if (top < 0) {
-                    top = 0
-                } else if (top > (this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height)) {
-                    top = this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height
-                }
-                if (left < 0) {
-                    left = 0
-                } else if (left > (this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width)) {
-                    left = this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width
-                }
-                this.choosePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
                 const data = {
                     id: this.idGen++,
                     type: this.props.chooseType,
@@ -181,18 +206,7 @@ export default class PageEditor extends React.Component {
         } else {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) { // 移动已经添加的组件
-                    let top = this.endY - this.startY;
-                    let left = this.endX - this.startX;
-                    if ((top + this.chooseComponentData.y) < 0) {
-                        top = -this.chooseComponentData.y
-                    } else if ((top + this.chooseComponentData.y + this.chooseComponentData.height) > this.miniAppPagePosition.height) {
-                        top = this.miniAppPagePosition.height - this.chooseComponentData.y - this.chooseComponentData.height
-                    }
-                    if ((left + this.chooseComponentData.x) < 0) {
-                        left = -this.chooseComponentData.x
-                    } else if ((left + this.chooseComponentData.x + this.chooseComponentData.width) > (this.miniAppPagePosition.width)) {
-                        left = this.miniAppPagePosition.width - this.chooseComponentData.x - this.chooseComponentData.width
-                    }
+                    let {top, left} = this.calMovePosition();
                     let changeData = {
                         x: this.chooseComponentData.x + left,
                         y: this.chooseComponentData.y + top
@@ -209,6 +223,43 @@ export default class PageEditor extends React.Component {
 
         this.isMouseDown = false;
     };
+
+    calMovePosition() {
+        let top = this.endY - this.startY;
+        let left = this.endX - this.startX;
+        if ((top + this.chooseComponentData.y) < 0) {
+            top = -this.chooseComponentData.y
+        } else if ((top + this.chooseComponentData.y + this.chooseComponentData.height) > this.miniAppPagePosition.height) {
+            top = this.miniAppPagePosition.height - this.chooseComponentData.y - this.chooseComponentData.height
+        }
+        if ((left + this.chooseComponentData.x) < 0) {
+            left = -this.chooseComponentData.x
+        } else if ((left + this.chooseComponentData.x + this.chooseComponentData.width) > (this.miniAppPagePosition.width)) {
+            left = this.miniAppPagePosition.width - this.chooseComponentData.x - this.chooseComponentData.width
+        }
+        return {top, left};
+    }
+
+    calPreviewPosition() {
+        this.choosePreviewDom.style.display = `block`;
+        let top = this.endY - this.miniAppPagePosition.top - WIDGET_PROPERTY[this.props.chooseType].height / 2;
+        let left = this.endX - this.miniAppPagePosition.left - WIDGET_PROPERTY[this.props.chooseType].width / 2;
+
+        if (top < 0) {
+            top = 0
+        } else if (top > (this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height)) {
+            top = this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height
+        }
+        if (left < 0) {
+            left = 0
+        } else if (left > (this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width)) {
+            left = this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width
+        } else if (Math.abs((left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)) - (380 / 2)) <= ADSORPTION_POWER) {
+            left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2)
+        }
+
+        return {top, left};
+    }
 
     /**
      * 计算当前小程序预览页面的位置
@@ -298,6 +349,9 @@ export default class PageEditor extends React.Component {
                              width: WIDGET_PROPERTY[WIDGET_TYPE.INPUT].width + "px",
                              height: WIDGET_PROPERTY[WIDGET_TYPE.INPUT].height + "px"
                          }}/>
+
+                    <div className="h-assistant-line" />
+                    <div className="v-assistant-line" />
                 </div>
             </div>
         );
