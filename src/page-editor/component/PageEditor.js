@@ -107,7 +107,8 @@ export default class PageEditor extends React.Component {
                     center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2));
 
                 let vFind = false;
-                if (center === (380 / 2)) {
+                if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
+                    left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2);
                     this.vAssistLine.style.display = "block";
                     this.vAssistLine.style.height = "100%";
                     this.vAssistLine.style.top = "0";
@@ -157,6 +158,54 @@ export default class PageEditor extends React.Component {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) {
                     let {top, left} = this.calMovePosition();
+                    let absTop = top + this.chooseComponentData.y, absLeft = left + this.chooseComponentData.x,
+                        right = absLeft + this.chooseComponentData.width,
+                        center = (absLeft + (this.chooseComponentData.width / 2));
+
+                    let vFind = false;
+                    if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
+                        left = (380 / 2) - (this.chooseComponentData.width / 2) - this.chooseComponentData.x;
+                        this.vAssistLine.style.display = "block";
+                        this.vAssistLine.style.height = "100%";
+                        this.vAssistLine.style.top = "0";
+                        this.vAssistLine.style.left = "190px";
+                        vFind = true;
+                    }
+
+                    this.props.widgetList.every(w => {
+                        if (w.id === this.chooseComponentData.id) return true;
+                        if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
+                            left = w.x - this.chooseComponentData.x;
+                            this.vAssistLine.style.display = "block";
+                            this.vAssistLine.style.height = w.y < absTop ? (absTop - w.y - w.height + "px") : (w.y - absTop - this.chooseComponentData.height + "px");
+                            this.vAssistLine.style.top =  w.y < absTop ? (w.y + w.height + "px") : (absTop + this.chooseComponentData.height + "px");
+                            this.vAssistLine.style.left = w.x + "px";
+                            vFind = true;
+                            return false;
+                        } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
+                            left = (w.x + w.width) - this.chooseComponentData.width - this.chooseComponentData.x;
+                            this.vAssistLine.style.display = "block";
+                            this.vAssistLine.style.height = w.y < absTop ? (absTop - w.y - w.height + "px") : (w.y - absTop - this.chooseComponentData.height + "px");
+                            this.vAssistLine.style.top =  w.y < absTop ? (w.y + w.height + "px") : (absTop + this.chooseComponentData.height + "px");
+                            this.vAssistLine.style.left = w.x + w.width + "px";
+                            vFind = true;
+                            return false;
+                        } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
+                            left = (w.x + w.width / 2)  - this.chooseComponentData.width / 2 - this.chooseComponentData.x;
+                            this.vAssistLine.style.display = "block";
+                            this.vAssistLine.style.height = w.y < absTop ? (absTop - w.y - w.height + "px") : (w.y - absTop - this.chooseComponentData.height + "px");
+                            this.vAssistLine.style.top =  w.y < absTop ? (w.y + w.height + "px") : (absTop + this.chooseComponentData.height + "px");
+                            this.vAssistLine.style.left = (left + this.chooseComponentData.x + (this.chooseComponentData.width / 2)) + "px";
+                            vFind = true;
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    if (!vFind) {
+                        this.vAssistLine.style.display = "none";
+                    }
+
                     if (this.movePreviewDom) {
                         this.movePreviewDom.style.display = "block";
                         this.movePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
@@ -172,6 +221,10 @@ export default class PageEditor extends React.Component {
                 let {top, left} = this.calPreviewPosition();
                 let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
                     center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2));
+
+                if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
+                    left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2);
+                }
                 this.props.widgetList.every(w => {
                     if (Math.abs(w.x - left) <= ADSORPTION_POWER) {
                         left = w.x;
@@ -221,6 +274,32 @@ export default class PageEditor extends React.Component {
                 if (this.chooseComponentData !== null) { // 移动已经添加的组件
                     console.log(this.chooseComponentData);
                     let {top, left} = this.calMovePosition();
+
+                    let absTop = top + this.chooseComponentData.y, absLeft = left + this.chooseComponentData.x,
+                        right = absLeft + this.chooseComponentData.width,
+                        center = (absLeft + (this.chooseComponentData.width / 2));
+
+                    if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
+                        left = (380 / 2) - (this.chooseComponentData.width / 2) - this.chooseComponentData.x;
+                    }
+
+                    this.props.widgetList.every(w => {
+                        if (w.id === this.chooseComponentData.id) return true;
+                        if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
+                            left = w.x - this.chooseComponentData.x;
+                            return false;
+                        } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
+                            left = (w.x + w.width) - this.chooseComponentData.width - this.chooseComponentData.x;
+                            return false;
+                        } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
+                            left = (w.x + w.width / 2)  - this.chooseComponentData.width / 2 - this.chooseComponentData.x;
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    this.vAssistLine.style.display = "none";
+
                     let changeData = {
                         x: this.chooseComponentData.x + left,
                         y: this.chooseComponentData.y + top
@@ -269,8 +348,6 @@ export default class PageEditor extends React.Component {
             left = 0
         } else if (left > (this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width)) {
             left = this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width
-        } else if (Math.abs((left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)) - (380 / 2)) <= ADSORPTION_POWER) {
-            left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2)
         }
 
         return {top, left};
