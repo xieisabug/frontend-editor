@@ -62,6 +62,7 @@ export default class PageEditor extends React.Component {
         this.endX = e.pageX;
         this.endY = e.pageY;
         this.chooseComponentData = null;
+        this.chooseComponentIndex = -1;
 
         if (this.props.chooseType === "") { // 处理选择已经添加的组件，进行选定的操作
             const { widgetList } = this.props;
@@ -82,7 +83,7 @@ export default class PageEditor extends React.Component {
                 this.chooseComponentDom = document.querySelector(".widget-item-" + this.chooseComponentData.id);
             }
 
-            this.props.handleChooseComponentData(this.chooseComponentData);
+            this.props.handleChooseComponentData(this.chooseComponentIndex, this.chooseComponentData);
         }
     };
 
@@ -219,7 +220,7 @@ export default class PageEditor extends React.Component {
                     this.movePreviewDom.style.transform = null;
 
                     this.props.editWidget(this.chooseComponentIndex, changeData);
-                    this.props.handleChooseComponentData(chooseComponentData);
+                    this.props.handleChooseComponentData(this.chooseComponentIndex, chooseComponentData);
                 }
             }
         }

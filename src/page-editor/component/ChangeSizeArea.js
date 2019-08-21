@@ -7,10 +7,10 @@ export default function ChangeSizeAreaComponent(props) {
     let style = {};
     if (props.chooseComponentData) {
         style = {
-            width: props.chooseComponentData.width,
-            height: props.chooseComponentData.height,
-            left: props.chooseComponentData.x,
-            top: props.chooseComponentData.y,
+            width: props.chooseComponentData.width + "px",
+            height: props.chooseComponentData.height + "px",
+            left: props.chooseComponentData.x + "px",
+            top: props.chooseComponentData.y + "px",
         }
     }
     return <div className={changeSizeAreaClassName} style={style}>

@@ -18,6 +18,7 @@ class PageEditorIndex extends React.Component {
             widgetList: [
                 {"id":0,"type":4,"x":123,"y":68,"width":150,"height":100,"z":0,"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658"}
             ],
+            chooseComponentIndex: -1,
             chooseComponentData: null
         }
     }
@@ -53,18 +54,24 @@ class PageEditorIndex extends React.Component {
     /**
      * 编辑组件
      */
-    editWidget = (index, data) => {
+    editWidget = (index, data, isChoose) => {
         let widgetList = this.state.widgetList.slice();
 
         widgetList[index] = Object.assign({}, widgetList[index], data);
 
+        let chooseComponentData = this.state.chooseComponentData;
+        if (isChoose) {
+            chooseComponentData = widgetList[index];
+        }
         this.setState({
-            widgetList
+            widgetList,
+            chooseComponentData
         })
     };
 
-    handleChooseComponentData = (data) => {
+    handleChooseComponentData = (index, data) => {
         this.setState({
+            chooseComponentIndex: index,
             chooseComponentData: data
         })
     };
@@ -92,6 +99,10 @@ class PageEditorIndex extends React.Component {
                     />
                     <PageAttributesPanel
                         chooseComponentData={this.state.chooseComponentData}
+                        chooseComponentIndex={this.state.chooseComponentIndex}
+
+                        editWidget={this.editWidget}
+
                     />
                 </div>
             </div>
