@@ -12,6 +12,7 @@ import WidgetText from "./widget/WidgetText";
 export default class PageEditor extends React.Component {
 
     idGen = 1; // id计数
+    zGen = 1; // zIndex计数
     isMouseDown = false;
     startX = 0; // 鼠标点击开始x
     startY = 0; // 鼠标点击开始y
@@ -77,9 +78,17 @@ export default class PageEditor extends React.Component {
             });
 
             if (componentInClick.length !== 0) {
-                // TODO 需要取最上面的组件
-                this.chooseComponentData = componentInClick[0];
-                this.chooseComponentIndex = componentInClickIndex[0];
+                componentInClick.forEach((c, index) => {
+                    if (!this.chooseComponentData) {
+                        this.chooseComponentData = c;
+                        this.chooseComponentIndex = componentInClickIndex[index];
+                    } else {
+                        if (this.chooseComponentData.z < c.z) {
+                            this.chooseComponentData = c;
+                            this.chooseComponentIndex = componentInClickIndex[index];
+                        }
+                    }
+                });
                 this.chooseComponentDom = document.querySelector(".widget-item-" + this.chooseComponentData.id);
             }
 
@@ -185,7 +194,7 @@ export default class PageEditor extends React.Component {
                     y: top,
                     width: WIDGET_PROPERTY[this.props.chooseType].width,
                     height: WIDGET_PROPERTY[this.props.chooseType].height,
-                    z: 0
+                    z: this.zGen++
                 };
                 switch (data.type) {
                     case WIDGET_TYPE.BUTTON:
@@ -210,6 +219,7 @@ export default class PageEditor extends React.Component {
         } else {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) { // 移动已经添加的组件
+                    console.log(this.chooseComponentData);
                     let {top, left} = this.calMovePosition();
                     let changeData = {
                         x: this.chooseComponentData.x + left,
@@ -221,6 +231,7 @@ export default class PageEditor extends React.Component {
 
                     this.props.editWidget(this.chooseComponentIndex, changeData);
                     this.props.handleChooseComponentData(this.chooseComponentIndex, chooseComponentData);
+                    console.log(this.chooseComponentIndex, chooseComponentData);
                 }
             }
         }
