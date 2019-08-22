@@ -104,9 +104,10 @@ export default class PageEditor extends React.Component {
             if (this.isInMiniAppPagePreview(e)) { // 在页面中，随着鼠标显示预览组件
                 let {top, left} = this.calPreviewPosition();
                 let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
-                    center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2));
+                    center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)),
+                    hCenter = (top + (WIDGET_PROPERTY[this.props.chooseType].height / 2));
 
-                let vFind = false;
+                let vFind = false, hFind = false;
                 if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
                     left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2);
                     this.vAssistLine.style.display = "block";
@@ -116,22 +117,23 @@ export default class PageEditor extends React.Component {
                     vFind = true;
                 }
 
-                if (!vFind) {
-                    this.props.widgetList.every(w => {
-                        if (Math.abs(w.x - left) <= ADSORPTION_POWER) {
+
+                this.props.widgetList.every(w => {
+                    if (!vFind) { // 没有页面级辅助线的情况下
+                        if (Math.abs(w.x - left) <= ADSORPTION_POWER) { // 检查组件左侧
                             left = w.x;
                             this.vAssistLine.style.left = left + "px";
                             vFind = true;
-                        } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
+                        } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) { // 检查组件右侧
                             left = (w.x + w.width) - WIDGET_PROPERTY[this.props.chooseType].width;
                             this.vAssistLine.style.left = left + WIDGET_PROPERTY[this.props.chooseType].width + "px";
                             vFind = true;
-                        } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
+                        } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) { // 检查组件中间
                             left = (w.x + w.width / 2) - WIDGET_PROPERTY[this.props.chooseType].width / 2;
                             this.vAssistLine.style.left = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)) + "px";
                             vFind = true;
                         }
-                        if (vFind) {
+                        if (vFind) { // 找到的情况下，算出辅助线的位置和长短
                             if (w.y < top) {
                                 if ((w.y + w.height) > top) {
                                     this.vAssistLine.style.height = top - w.y + "px";
@@ -150,15 +152,40 @@ export default class PageEditor extends React.Component {
                                 }
                             }
                         }
-                        return !vFind;
-                    });
-                }
+                    }
 
-                if (!vFind) {
-                    this.vAssistLine.style.display = "none";
-                } else {
-                    this.vAssistLine.style.display = "block";
-                }
+                    if (!hFind) { // 没有页面级竖直辅助线的情况下
+                        if (Math.abs(hCenter - (w.y + w.height / 2)) <= ADSORPTION_POWER) { // 检查组件中间
+                            top = w.y + w.height / 2 - WIDGET_PROPERTY[this.props.chooseType].height / 2;
+                            this.hAssistLine.style.top = w.y + w.height / 2 + "px";
+                            hFind = true;
+                        }
+                        if (hFind) { // 找到的情况下，算出辅助线的位置和长短
+                            if (w.x < left) {
+                                if ((w.x + w.width) > left) {
+                                    this.hAssistLine.style.width = left - w.x + "px";
+                                    this.hAssistLine.style.left = w.x + "px";
+                                } else {
+                                    this.hAssistLine.style.width = left - w.x - w.width + "px";
+                                    this.hAssistLine.style.left = w.x + w.width + "px";
+                                }
+                            } else {
+                                if ((left + WIDGET_PROPERTY[this.props.chooseType].width) > w.x) {
+                                    this.hAssistLine.style.width = (w.x + w.width) - (left + WIDGET_PROPERTY[this.props.chooseType].width) + "px";
+                                    this.hAssistLine.style.left = left + WIDGET_PROPERTY[this.props.chooseType].width + "px";
+                                } else {
+                                    this.hAssistLine.style.width = w.x - left - WIDGET_PROPERTY[this.props.chooseType].width + "px";
+                                    this.hAssistLine.style.left = left + WIDGET_PROPERTY[this.props.chooseType].width + "px";
+                                }
+                            }
+                        }
+                    }
+
+                    return !vFind && !hFind;
+                });
+
+                this.vAssistLine.style.display = vFind ? "block" : "none";
+                this.hAssistLine.style.display = hFind ? "block" : "none";
 
                 this.choosePreviewDom.style.transform = `translate(${left}px, ${top}px)`;
             } else { // 鼠标移出区域自动隐藏预览组件
@@ -171,9 +198,10 @@ export default class PageEditor extends React.Component {
                     let {top, left} = this.calMovePosition();
                     let absTop = top + this.chooseComponentData.y, absLeft = left + this.chooseComponentData.x,
                         right = absLeft + this.chooseComponentData.width,
-                        center = (absLeft + (this.chooseComponentData.width / 2));
+                        center = (absLeft + (this.chooseComponentData.width / 2)),
+                        hCenter = (absTop + (this.chooseComponentData.height / 2));
 
-                    let vFind = false;
+                    let vFind = false, hFind = false;
                     if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
                         left = (380 / 2) - (this.chooseComponentData.width / 2) - this.chooseComponentData.x;
                         this.vAssistLine.style.display = "block";
@@ -183,8 +211,8 @@ export default class PageEditor extends React.Component {
                         vFind = true;
                     }
 
-                    if (!vFind) {
-                        this.props.widgetList.every(w => {
+                    this.props.widgetList.every(w => {
+                        if (!vFind) {
                             if (w.id === this.chooseComponentData.id) return true;
                             if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
                                 left = w.x - this.chooseComponentData.x;
@@ -219,16 +247,40 @@ export default class PageEditor extends React.Component {
                                     }
                                 }
                             }
-                            return !vFind;
-                        });
-                    }
+                        }
 
+                        if (!hFind) {
+                            if (Math.abs(hCenter - (w.y + w.height / 2)) <= ADSORPTION_POWER) {
+                                top = w.y + w.height / 2 - this.chooseComponentData.height / 2 - this.chooseComponentData.y;
+                                this.hAssistLine.style.top = w.y + w.height / 2 + "px";
+                                hFind = true;
+                            }
+                            if (hFind) {
+                                if (w.x < absLeft) {
+                                    if ((w.x + w.width) > absLeft) {
+                                        this.hAssistLine.style.width = absLeft - w.x + "px";
+                                        this.hAssistLine.style.left = w.x + "px";
+                                    } else {
+                                        this.hAssistLine.style.width = absLeft - w.x - w.width + "px";
+                                        this.hAssistLine.style.left = w.x + w.width + "px";
+                                    }
+                                } else {
+                                    if ((absLeft + this.chooseComponentData.width) > w.x) {
+                                        this.hAssistLine.style.width = (w.x + w.width) - (absLeft + this.chooseComponentData.width) + "px";
+                                        this.hAssistLine.style.left = absLeft + this.chooseComponentData.width + "px";
+                                    } else {
+                                        this.hAssistLine.style.width = w.x - absLeft - this.chooseComponentData.width + "px";
+                                        this.hAssistLine.style.left = absLeft + this.chooseComponentData.width + "px";
+                                    }
+                                }
+                            }
+                        }
 
-                    if (!vFind) {
-                        this.vAssistLine.style.display = "none";
-                    } else {
-                        this.vAssistLine.style.display = "block";
-                    }
+                        return !vFind && !hFind;
+                    });
+
+                    this.vAssistLine.style.display = vFind ? "block" : "none";
+                    this.hAssistLine.style.display = hFind ? "block" : "none";
 
                     if (this.movePreviewDom) {
                         this.movePreviewDom.style.display = "block";
@@ -244,25 +296,39 @@ export default class PageEditor extends React.Component {
             if (this.isInMiniAppPagePreview(e)) {
                 let {top, left} = this.calPreviewPosition();
                 let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
-                    center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2));
+                    center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)),
+                    hCenter = (top + (WIDGET_PROPERTY[this.props.chooseType].height / 2));
 
+                let vFind = false, hFind = false;
                 if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
                     left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2);
+                    vFind = true;
                 }
                 this.props.widgetList.every(w => {
-                    if (Math.abs(w.x - left) <= ADSORPTION_POWER) {
-                        left = w.x;
-                        return false;
-                    } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
-                        left = (w.x + w.width) - WIDGET_PROPERTY[this.props.chooseType].width;
-                        return false;
-                    } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
-                        left = (w.x + w.width / 2) - WIDGET_PROPERTY[this.props.chooseType].width / 2;
-                        return false;
+                    if (!vFind) {
+                        if (Math.abs(w.x - left) <= ADSORPTION_POWER) {
+                            left = w.x;
+                            vFind = true;
+                        } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
+                            left = (w.x + w.width) - WIDGET_PROPERTY[this.props.chooseType].width;
+                            vFind = true;
+                        } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
+                            left = (w.x + w.width / 2) - WIDGET_PROPERTY[this.props.chooseType].width / 2;
+                            vFind = true;
+                        }
                     }
-                    return true;
+
+                    if (!hFind) {
+                        if (Math.abs(hCenter - (w.y + w.height / 2)) <= ADSORPTION_POWER) { // 检查组件中间
+                            top = w.y + w.height / 2 - WIDGET_PROPERTY[this.props.chooseType].height / 2;
+                            hFind = true;
+                        }
+                    }
+
+                    return !vFind && !hFind;
                 });
                 this.vAssistLine.style.display = "none";
+                this.hAssistLine.style.display = "none";
 
                 const data = {
                     id: this.idGen++,
@@ -301,28 +367,42 @@ export default class PageEditor extends React.Component {
 
                     let absTop = top + this.chooseComponentData.y, absLeft = left + this.chooseComponentData.x,
                         right = absLeft + this.chooseComponentData.width,
-                        center = (absLeft + (this.chooseComponentData.width / 2));
+                        center = (absLeft + (this.chooseComponentData.width / 2)),
+                        hCenter = (absTop + (this.chooseComponentData.height / 2));
 
+                    let vFind = false, hFind = false;
                     if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
                         left = (380 / 2) - (this.chooseComponentData.width / 2) - this.chooseComponentData.x;
+                        vFind = true;
                     }
 
                     this.props.widgetList.every(w => {
-                        if (w.id === this.chooseComponentData.id) return true;
-                        if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
-                            left = w.x - this.chooseComponentData.x;
-                            return false;
-                        } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
-                            left = (w.x + w.width) - this.chooseComponentData.width - this.chooseComponentData.x;
-                            return false;
-                        } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
-                            left = (w.x + w.width / 2)  - this.chooseComponentData.width / 2 - this.chooseComponentData.x;
-                            return false;
+                        if (!vFind) {
+                            if (w.id === this.chooseComponentData.id) return true;
+                            if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
+                                left = w.x - this.chooseComponentData.x;
+                                vFind = true;
+                            } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
+                                left = (w.x + w.width) - this.chooseComponentData.width - this.chooseComponentData.x;
+                                vFind = true;
+                            } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
+                                left = (w.x + w.width / 2)  - this.chooseComponentData.width / 2 - this.chooseComponentData.x;
+                                vFind = true;
+                            }
                         }
-                        return true;
+
+                        if (!hFind) {
+                            if (Math.abs(hCenter - (w.y + w.height / 2)) <= ADSORPTION_POWER) {
+                                top = w.y + w.height / 2 - this.chooseComponentData.height / 2 - this.chooseComponentData.y;
+                                hFind = true;
+                            }
+                        }
+
+                        return !vFind && !hFind;
                     });
 
                     this.vAssistLine.style.display = "none";
+                    this.hAssistLine.style.display = "none";
 
                     let changeData = {
                         x: this.chooseComponentData.x + left,

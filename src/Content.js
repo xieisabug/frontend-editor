@@ -1,8 +1,6 @@
 import React from 'react';
 
-import Modal from "antd/es/modal"
-import Select from "antd/es/select"
-import Radio from "antd/es/radio"
+import {Modal, Select, Radio} from "antd"
 
 import ComponentContainer from "./ComponentContainer"
 import FlowChartContainer from "./FlowChartContainer"

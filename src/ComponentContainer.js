@@ -1,6 +1,6 @@
 import React from 'react';
 import "./ComponentContainer.css"
-import Button from "antd/es/button";
+import {Button} from "antd";
 
 export default class ComponentContainer extends React.Component {
 

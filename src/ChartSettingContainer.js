@@ -1,6 +1,6 @@
 import React from 'react';
 import "./ChartSettingContainer.css"
-import Button from "antd/es/button";
+import {Button} from "antd";
 
 export default class ChartSettingContainer extends React.Component {
 
