@@ -342,6 +342,9 @@ export default class PageEditor extends React.Component {
         this.isMouseDown = false;
     };
 
+    /**
+     * 计算拖拽已有组件时的位置
+     */
     calMovePosition() {
         let top = this.endY - this.startY;
         let left = this.endX - this.startX;
@@ -358,6 +361,9 @@ export default class PageEditor extends React.Component {
         return {top, left};
     }
 
+    /**
+     * 计算选择了组件时预览位置
+     */
     calPreviewPosition() {
         this.choosePreviewDom.style.display = `block`;
         let top = this.endY - this.miniAppPagePosition.top - WIDGET_PROPERTY[this.props.chooseType].height / 2;

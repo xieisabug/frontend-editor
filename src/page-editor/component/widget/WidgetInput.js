@@ -1,11 +1,8 @@
 import * as React from 'react';
+import {getCommonStyle} from "../../../Utils";
 
 export default function WidgetInput(props) {
-    return <div className={`widget-item widget-input widget-item-${props.data.id}`} style={{
-        left: props.data.x + "px",
-        top: props.data.y + "px",
-        width: props.data.width + "px",
-        height: props.data.height + "px",
-        zIndex: props.data.z,
-    }}>{props.data.placeholder}</div>
+    const style = Object.assign({}, getCommonStyle(props));
+
+    return <div className={`widget-item widget-input widget-item-${props.data.id}`} style={style}>{props.data.placeholder}</div>
 }

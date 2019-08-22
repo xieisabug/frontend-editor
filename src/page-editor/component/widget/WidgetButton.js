@@ -1,11 +1,7 @@
 import * as React from 'react';
+import {getCommonStyle} from "../../../Utils";
 
 export default function WidgetButton(props) {
-    return <div className={`widget-item widget-button widget-item-${props.data.id}`} style={{
-        left: props.data.x + "px",
-        top: props.data.y + "px",
-        width: props.data.width + "px",
-        height: props.data.height + "px",
-        zIndex: props.data.z,
-    }}>{props.data.text}</div>
+    const style = Object.assign({}, getCommonStyle(props));
+    return <div className={`widget-item widget-button widget-item-${props.data.id}`} style={style}>{props.data.text}</div>
 }
