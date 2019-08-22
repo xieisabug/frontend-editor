@@ -337,7 +337,11 @@ export default class PageEditor extends React.Component {
                     y: top,
                     width: WIDGET_PROPERTY[this.props.chooseType].width,
                     height: WIDGET_PROPERTY[this.props.chooseType].height,
-                    z: this.zGen++
+                    z: this.zGen++,
+                    background: "",
+                    borderWidth: 0,
+                    borderLineType: "solid",
+                    borderColor: "#ffffff"
                 };
                 switch (data.type) {
                     case WIDGET_TYPE.BUTTON:
@@ -348,6 +352,9 @@ export default class PageEditor extends React.Component {
                         break;
                     case WIDGET_TYPE.TEXT:
                         data.text = "Text";
+                        data.textSize = 14;
+                        data.textAlign = "left";
+                        data.textColor = "#000";
                         break;
                     case WIDGET_TYPE.INPUT:
                         data.placeholder = "请输入";
@@ -362,7 +369,6 @@ export default class PageEditor extends React.Component {
         } else {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) { // 移动已经添加的组件
-                    console.log(this.chooseComponentData);
                     let {top, left} = this.calMovePosition();
 
                     let absTop = top + this.chooseComponentData.y, absLeft = left + this.chooseComponentData.x,
@@ -414,7 +420,6 @@ export default class PageEditor extends React.Component {
 
                     this.props.editWidget(this.chooseComponentIndex, changeData);
                     this.props.handleChooseComponentData(this.chooseComponentIndex, chooseComponentData);
-                    console.log(this.chooseComponentIndex, chooseComponentData);
                 }
             }
         }

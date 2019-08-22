@@ -1,6 +1,9 @@
 import * as React from 'react';
-import {Form, Input} from "antd";
+import {Form, Input, Row, Col, Select, Slider, Button, Radio} from "antd";
 import {WIDGET_TYPE} from "../../Constants";
+
+const { Option } = Select;
+const ButtonGroup = Button.Group;
 
 export default class PageAttributesPanel extends React.Component {
     constructor(props, context) {
@@ -9,10 +12,18 @@ export default class PageAttributesPanel extends React.Component {
         this.handleChangeX = this.handleNumberInputChange.bind(this, "x");
         this.handleChangeY = this.handleNumberInputChange.bind(this, "y");
         this.handleChangeWidth = this.handleNumberInputChange.bind(this, "width");
+        this.handleSlideChangeWidth = this.handleSlideChange.bind(this, "width");
         this.handleChangeHeight = this.handleNumberInputChange.bind(this, "height");
         this.handleChangeText = this.handleTextInputChange.bind(this, "text");
         this.handleChangePlaceholder = this.handleTextInputChange.bind(this, "placeholder");
         this.handleChangeSrc = this.handleTextInputChange.bind(this, "src");
+        this.handleChangeBackground = this.handleTextInputChange.bind(this, "background");
+        this.handleChangeBorderColor = this.handleTextInputChange.bind(this, "borderColor");
+        this.handleChangeBorderWidth = this.handleNumberInputChange.bind(this, "borderWidth");
+        this.handleChangeBorderLineType = this.handleSelectChange.bind(this, "borderLineType");
+        this.handleChangeTextSize = this.handleNumberInputChange.bind(this, "textSize");
+        this.handleChangeTextColor = this.handleTextInputChange.bind(this, "textColor");
+        this.handleChangeTextAlign = this.handleTextInputChange.bind(this, "textAlign");
 
         this.formItemLayout = {
             labelCol: {
@@ -40,13 +51,46 @@ export default class PageAttributesPanel extends React.Component {
         this.handleInputChange(field, event.target.value)
     }
 
+    handleSelectChange(field, value) {
+        this.handleInputChange(field, value)
+    }
+
+    handleSlideChange(field, value) {
+        this.handleInputChange(field, value)
+    }
+
+    setXLeft = () => {
+        this.handleInputChange("x", 0);
+    };
+
+    setXCenter = () => {
+        this.handleInputChange("x", 190 - this.props.chooseComponentData.width / 2);
+    };
+
+    setXRight = () => {
+        this.handleInputChange("x", 380 - this.props.chooseComponentData.width);
+    };
+
     renderWidgetTypeEditor() {
         switch (this.props.chooseComponentData.type) {
             case WIDGET_TYPE.TEXT:
                 return [
                     <Form.Item label="文字">
                         <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText} />
-                    </Form.Item>
+                    </Form.Item>,
+                    <Form.Item label="文字大小">
+                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize} />
+                    </Form.Item>,
+                    <Form.Item label="文字对齐">
+                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign} onChange={this.handleChangeTextAlign}>
+                            <Radio.Button value="left">居左</Radio.Button>
+                            <Radio.Button value="center">居中</Radio.Button>
+                            <Radio.Button value="right">居右</Radio.Button>
+                        </Radio.Group>
+                    </Form.Item>,
+                    <Form.Item label="文字颜色">
+                        <Input type="color" value={this.props.chooseComponentData.textColor} onChange={this.handleChangeTextColor} />
+                    </Form.Item>,
                 ];
             case WIDGET_TYPE.BUTTON:
                 return [
@@ -81,15 +125,51 @@ export default class PageAttributesPanel extends React.Component {
             <Form {...this.formItemLayout}>
                 <Form.Item label="x">
                     <Input value={chooseComponentData.x} onChange={this.handleChangeX} />
+                    <ButtonGroup size="small">
+                        <Button onClick={this.setXLeft}>居左</Button>
+                        <Button onClick={this.setXCenter}>居中</Button>
+                        <Button onClick={this.setXRight}>居右</Button>
+                    </ButtonGroup>
                 </Form.Item>
                 <Form.Item label="y">
                     <Input value={chooseComponentData.y} onChange={this.handleChangeY} />
                 </Form.Item>
                 <Form.Item label="宽度">
-                    <Input value={chooseComponentData.width} onChange={this.handleChangeWidth} />
+                    <Row>
+                        <Col span={16}>
+                            <Slider
+                                min={0}
+                                max={380}
+                                onChange={this.handleSlideChangeWidth}
+                                value={chooseComponentData.width}
+                            />
+                        </Col>
+                        <Col span={7} offset={1}>
+                            <Input value={chooseComponentData.width} onChange={this.handleChangeWidth} />
+                        </Col>
+                    </Row>
                 </Form.Item>
                 <Form.Item label="高度">
                     <Input value={chooseComponentData.height} onChange={this.handleChangeHeight} />
+                </Form.Item>
+                <Form.Item label="背景色">
+                    <Input type="color" value={chooseComponentData.background} onChange={this.handleChangeBackground} />
+                </Form.Item>
+                <Form.Item label="边框">
+                    <Row>
+                        <Col span={7}>
+                            <Input value={chooseComponentData.borderWidth} onChange={this.handleChangeBorderWidth} />
+                        </Col>
+                        <Col span={7} offset={1}>
+                            <Select value={chooseComponentData.borderLineType} onChange={this.handleChangeBorderLineType}>
+                                <Option value="solid">直线</Option>
+                                <Option value="dashed">点线</Option>
+                            </Select>
+                        </Col>
+                        <Col span={7} offset={1}>
+                            <Input type="color" value={chooseComponentData.borderColor} onChange={this.handleChangeBorderColor} />
+                        </Col>
+                    </Row>
                 </Form.Item>
             </Form>
 
