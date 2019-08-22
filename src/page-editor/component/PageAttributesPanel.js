@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Form, Input} from "antd";
 import {WIDGET_TYPE} from "../../Constants";
 
 export default class PageAttributesPanel extends React.Component {
@@ -12,6 +13,15 @@ export default class PageAttributesPanel extends React.Component {
         this.handleChangeText = this.handleTextInputChange.bind(this, "text");
         this.handleChangePlaceholder = this.handleTextInputChange.bind(this, "placeholder");
         this.handleChangeSrc = this.handleTextInputChange.bind(this, "src");
+
+        this.formItemLayout = {
+            labelCol: {
+                span: 6
+            },
+            wrapperCol: {
+                span: 16
+            },
+        };
     }
 
     handleInputChange(field, value) {
@@ -34,35 +44,27 @@ export default class PageAttributesPanel extends React.Component {
         switch (this.props.chooseComponentData.type) {
             case WIDGET_TYPE.TEXT:
                 return [
-                    <div className="page-editor-attributes-panel-form-item">
-                        <div className="page-editor-attributes-panel-form-label">文字:</div>
-                        <div className="page-editor-attributes-panel-form-content"><input
-                            className="page-editor-attributes-panel-form-input" value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/></div>
-                    </div>,
+                    <Form.Item label="文字">
+                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText} />
+                    </Form.Item>
                 ];
             case WIDGET_TYPE.BUTTON:
                 return [
-                    <div className="page-editor-attributes-panel-form-item">
-                        <div className="page-editor-attributes-panel-form-label">文字:</div>
-                        <div className="page-editor-attributes-panel-form-content"><input
-                            className="page-editor-attributes-panel-form-input" value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/></div>
-                    </div>,
+                    <Form.Item label="文字">
+                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText} />
+                    </Form.Item>
                 ];
             case WIDGET_TYPE.INPUT:
                 return [
-                    <div className="page-editor-attributes-panel-form-item">
-                        <div className="page-editor-attributes-panel-form-label">提示文字:</div>
-                        <div className="page-editor-attributes-panel-form-content"><input
-                            className="page-editor-attributes-panel-form-input" value={this.props.chooseComponentData.placeholder} onChange={this.handleChangePlaceholder}/></div>
-                    </div>,
+                    <Form.Item label="提示文字">
+                        <Input value={this.props.chooseComponentData.placeholder} onChange={this.handleChangePlaceholder} />
+                    </Form.Item>,
                 ];
             case WIDGET_TYPE.IMAGE:
                 return [
-                    <div className="page-editor-attributes-panel-form-item">
-                        <div className="page-editor-attributes-panel-form-label">地址:</div>
-                        <div className="page-editor-attributes-panel-form-content"><input
-                            className="page-editor-attributes-panel-form-input" value={this.props.chooseComponentData.src} onChange={this.handleChangeSrc}/></div>
-                    </div>,
+                    <Form.Item label="地址">
+                        <Input value={this.props.chooseComponentData.src} onChange={this.handleChangeSrc} />
+                    </Form.Item>,
                 ];
             default:
                 return null;
@@ -76,30 +78,25 @@ export default class PageAttributesPanel extends React.Component {
         return <div className="page-editor-attributes-panel">
 
             <div className="page-editor-attributes-panel-from-group-title">公共属性</div>
-
-            <div className="page-editor-attributes-panel-form-item">
-                <div className="page-editor-attributes-panel-form-label">x:</div>
-                <div className="page-editor-attributes-panel-form-content"><input
-                    className="page-editor-attributes-panel-form-input" value={chooseComponentData.x} onChange={this.handleChangeX}/></div>
-            </div>
-            <div className="page-editor-attributes-panel-form-item">
-                <div className="page-editor-attributes-panel-form-label">y:</div>
-                <div className="page-editor-attributes-panel-form-content"><input
-                    className="page-editor-attributes-panel-form-input" value={chooseComponentData.y} onChange={this.handleChangeY}/></div>
-            </div>
-            <div className="page-editor-attributes-panel-form-item">
-                <div className="page-editor-attributes-panel-form-label">宽度:</div>
-                <div className="page-editor-attributes-panel-form-content"><input
-                    className="page-editor-attributes-panel-form-input" value={chooseComponentData.width} onChange={this.handleChangeWidth}/></div>
-            </div>
-            <div className="page-editor-attributes-panel-form-item">
-                <div className="page-editor-attributes-panel-form-label">高度:</div>
-                <div className="page-editor-attributes-panel-form-content"><input
-                    className="page-editor-attributes-panel-form-input" value={chooseComponentData.height} onChange={this.handleChangeHeight}/></div>
-            </div>
+            <Form {...this.formItemLayout}>
+                <Form.Item label="x">
+                    <Input value={chooseComponentData.x} onChange={this.handleChangeX} />
+                </Form.Item>
+                <Form.Item label="y">
+                    <Input value={chooseComponentData.y} onChange={this.handleChangeY} />
+                </Form.Item>
+                <Form.Item label="宽度">
+                    <Input value={chooseComponentData.width} onChange={this.handleChangeWidth} />
+                </Form.Item>
+                <Form.Item label="高度">
+                    <Input value={chooseComponentData.height} onChange={this.handleChangeHeight} />
+                </Form.Item>
+            </Form>
 
             <div className="page-editor-attributes-panel-from-group-title">组件属性</div>
-            {this.renderWidgetTypeEditor()}
+            <Form {...this.formItemLayout}>
+                {this.renderWidgetTypeEditor()}
+            </Form>
         </div>;
     };
 }
