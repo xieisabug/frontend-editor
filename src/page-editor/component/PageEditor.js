@@ -341,11 +341,16 @@ export default class PageEditor extends React.Component {
                     background: "",
                     borderWidth: 0,
                     borderLineType: "solid",
-                    borderColor: "#ffffff"
+                    borderColor: "#ccc"
                 };
                 switch (data.type) {
                     case WIDGET_TYPE.BUTTON:
                         data.text = "button";
+                        data.borderWidth = 1;
+                        data.textSize = 14;
+                        data.textAlign = "center";
+                        data.alignItems = "center";
+                        data.textColor = "#000";
                         break;
                     case WIDGET_TYPE.IMAGE:
                         data.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658";
@@ -358,6 +363,11 @@ export default class PageEditor extends React.Component {
                         break;
                     case WIDGET_TYPE.INPUT:
                         data.placeholder = "请输入";
+                        data.borderWidth = 1;
+                        data.textSize = 14;
+                        data.textAlign = "flex-start";
+                        data.alignItems = "center";
+                        data.textColor = "#000";
                         break;
                     default:
                         break;

@@ -24,6 +24,7 @@ export default class PageAttributesPanel extends React.Component {
         this.handleChangeTextSize = this.handleNumberInputChange.bind(this, "textSize");
         this.handleChangeTextColor = this.handleTextInputChange.bind(this, "textColor");
         this.handleChangeTextAlign = this.handleTextInputChange.bind(this, "textAlign");
+        this.handleChangeAlignItems = this.handleTextInputChange.bind(this, "alignItems");
 
         this.formItemLayout = {
             labelCol: {
@@ -96,12 +97,52 @@ export default class PageAttributesPanel extends React.Component {
                 return [
                     <Form.Item label="文字">
                         <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText} />
-                    </Form.Item>
+                    </Form.Item>,
+                    <Form.Item label="文字大小">
+                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize} />
+                    </Form.Item>,
+                    <Form.Item label="文字横向对齐">
+                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign} onChange={this.handleChangeTextAlign}>
+                            <Radio.Button value="flex-start">居左</Radio.Button>
+                            <Radio.Button value="center">居中</Radio.Button>
+                            <Radio.Button value="flex-end">居右</Radio.Button>
+                        </Radio.Group>
+                    </Form.Item>,
+                    <Form.Item label="文字垂直对齐">
+                        <Radio.Group size="small" value={this.props.chooseComponentData.alignItems} onChange={this.handleChangeAlignItems}>
+                            <Radio.Button value="flex-start">居左</Radio.Button>
+                            <Radio.Button value="center">居中</Radio.Button>
+                            <Radio.Button value="flex-end">居右</Radio.Button>
+                        </Radio.Group>
+                    </Form.Item>,
+                    <Form.Item label="文字颜色">
+                        <Input type="color" value={this.props.chooseComponentData.textColor} onChange={this.handleChangeTextColor} />
+                    </Form.Item>,
                 ];
             case WIDGET_TYPE.INPUT:
                 return [
                     <Form.Item label="提示文字">
                         <Input value={this.props.chooseComponentData.placeholder} onChange={this.handleChangePlaceholder} />
+                    </Form.Item>,
+                    <Form.Item label="文字大小">
+                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize} />
+                    </Form.Item>,
+                    <Form.Item label="文字横向对齐">
+                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign} onChange={this.handleChangeTextAlign}>
+                            <Radio.Button value="flex-start">居左</Radio.Button>
+                            <Radio.Button value="center">居中</Radio.Button>
+                            <Radio.Button value="flex-end">居右</Radio.Button>
+                        </Radio.Group>
+                    </Form.Item>,
+                    <Form.Item label="文字垂直对齐">
+                        <Radio.Group size="small" value={this.props.chooseComponentData.alignItems} onChange={this.handleChangeAlignItems}>
+                            <Radio.Button value="flex-start">居左</Radio.Button>
+                            <Radio.Button value="center">居中</Radio.Button>
+                            <Radio.Button value="flex-end">居右</Radio.Button>
+                        </Radio.Group>
+                    </Form.Item>,
+                    <Form.Item label="文字颜色">
+                        <Input type="color" value={this.props.chooseComponentData.textColor} onChange={this.handleChangeTextColor} />
                     </Form.Item>,
                 ];
             case WIDGET_TYPE.IMAGE:
