@@ -110,9 +110,9 @@ export default class PageAttributesPanel extends React.Component {
                     </Form.Item>,
                     <Form.Item label="文字垂直对齐">
                         <Radio.Group size="small" value={this.props.chooseComponentData.alignItems} onChange={this.handleChangeAlignItems}>
-                            <Radio.Button value="flex-start">居左</Radio.Button>
+                            <Radio.Button value="flex-start">居上</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
-                            <Radio.Button value="flex-end">居右</Radio.Button>
+                            <Radio.Button value="flex-end">居下</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
                     <Form.Item label="文字颜色">
@@ -136,9 +136,9 @@ export default class PageAttributesPanel extends React.Component {
                     </Form.Item>,
                     <Form.Item label="文字垂直对齐">
                         <Radio.Group size="small" value={this.props.chooseComponentData.alignItems} onChange={this.handleChangeAlignItems}>
-                            <Radio.Button value="flex-start">居左</Radio.Button>
+                            <Radio.Button value="flex-start">居上</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
-                            <Radio.Button value="flex-end">居右</Radio.Button>
+                            <Radio.Button value="flex-end">居下</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
                     <Form.Item label="文字颜色">
@@ -218,6 +218,17 @@ export default class PageAttributesPanel extends React.Component {
             <Form {...this.formItemLayout}>
                 {this.renderWidgetTypeEditor()}
             </Form>
+
+            <div className="page-editor-attributes-panel-from-group-title">组件操作</div>
+            <Row>
+                <Col span={7} offset={1}>
+                    <Button className="page-editor-attributes-panel-delete-button" block onClick={this.props.deleteComponent}>删除</Button>
+                </Col>
+                <Col span={7} offset={1}>
+                </Col>
+                <Col span={7} offset={1}>
+                </Col>
+            </Row>
         </div>;
     };
 }

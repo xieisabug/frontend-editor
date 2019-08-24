@@ -23,6 +23,51 @@ class PageEditorIndex extends React.Component {
         }
     }
 
+    componentDidMount() {
+        document.addEventListener("keydown", this.handleKeyDown)
+    }
+
+    handleKeyDown = (e) => {
+        switch (e.code) {
+            case "Delete":
+                if (e.target.tagName !== "INPUT") {
+                    this.handleDeleteComponent()
+                }
+                break;
+            case "ArrowUp":
+                if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
+                    this.editWidget(this.state.chooseComponentIndex, {
+                        y: this.state.chooseComponentData.y - 1 < 0 ? 0: this.state.chooseComponentData.y - 1
+                    }, true)
+                }
+                break;
+            case "ArrowDown":
+                if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
+                    this.editWidget(this.state.chooseComponentIndex, {
+                        y: this.state.chooseComponentData.y + 1
+                    }, true)
+                }
+                break;
+            case "ArrowLeft":
+                if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
+                    this.editWidget(this.state.chooseComponentIndex, {
+                        x: this.state.chooseComponentData.x - 1 < 0 ? 0: this.state.chooseComponentData.x - 1
+                    }, true)
+                }
+                break;
+            case "ArrowRight":
+                if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
+                    this.editWidget(this.state.chooseComponentIndex, {
+                        x: this.state.chooseComponentData.x + 1 > 380 ? 380: this.state.chooseComponentData.x + 1
+                    }, true)
+                }
+                break;
+            default:
+                break;
+        }
+        console.log(e)
+    };
+
     /**
      * 选择添加的组件类型
      */
@@ -76,6 +121,18 @@ class PageEditorIndex extends React.Component {
         })
     };
 
+    handleDeleteComponent = () => {
+        if (this.state.chooseComponentIndex !== -1) {
+            let widgetList = this.state.widgetList.slice();
+            widgetList.splice(this.state.chooseComponentIndex, 1);
+            this.setState({
+                chooseComponentIndex: -1,
+                chooseComponentData: null,
+                widgetList
+            })
+        }
+    };
+
     render() {
         return (
             <div className="page-editor">
@@ -102,7 +159,7 @@ class PageEditorIndex extends React.Component {
                         chooseComponentIndex={this.state.chooseComponentIndex}
 
                         editWidget={this.editWidget}
-
+                        deleteComponent={this.handleDeleteComponent}
                     />
                 </div>
             </div>
