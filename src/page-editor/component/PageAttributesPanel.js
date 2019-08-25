@@ -25,6 +25,7 @@ export default class PageAttributesPanel extends React.Component {
         this.handleChangeTextColor = this.handleTextInputChange.bind(this, "textColor");
         this.handleChangeTextAlign = this.handleTextInputChange.bind(this, "textAlign");
         this.handleChangeAlignItems = this.handleTextInputChange.bind(this, "alignItems");
+        this.handleChangeInputType = this.handleSelectChange.bind(this, "inputType");
 
         this.formItemLayout = {
             labelCol: {
@@ -121,20 +122,30 @@ export default class PageAttributesPanel extends React.Component {
                 ];
             case WIDGET_TYPE.INPUT:
                 return [
+                    <Form.Item label="输入类型">
+                        <Select value={this.props.chooseComponentData.inputType} onChange={this.handleChangeInputType}>
+                            <Option value="text">文字</Option>
+                            <Option value="number">数字</Option>
+                            <Option value="date">日期</Option>
+                            <Option value="datetime">日期时间</Option>
+                            <Option value="idcard">身份证</Option>
+                            <Option value="digit">带小数点数字</Option>
+                        </Select>
+                    </Form.Item>,
                     <Form.Item label="提示文字">
                         <Input value={this.props.chooseComponentData.placeholder} onChange={this.handleChangePlaceholder} />
                     </Form.Item>,
                     <Form.Item label="文字大小">
                         <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize} />
                     </Form.Item>,
-                    <Form.Item label="文字横向对齐">
+                    <Form.Item label="文字横对齐">
                         <Radio.Group size="small" value={this.props.chooseComponentData.textAlign} onChange={this.handleChangeTextAlign}>
                             <Radio.Button value="flex-start">居左</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
                             <Radio.Button value="flex-end">居右</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
-                    <Form.Item label="文字垂直对齐">
+                    <Form.Item label="文字竖对齐">
                         <Radio.Group size="small" value={this.props.chooseComponentData.alignItems} onChange={this.handleChangeAlignItems}>
                             <Radio.Button value="flex-start">居上</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>

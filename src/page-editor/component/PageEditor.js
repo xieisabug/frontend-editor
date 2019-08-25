@@ -411,6 +411,7 @@ export default class PageEditor extends React.Component {
                         data.textColor = "#000";
                         break;
                     case WIDGET_TYPE.INPUT:
+                        data.inputType = "text";
                         data.placeholder = "请输入";
                         data.borderWidth = 1;
                         data.textSize = 14;
