@@ -24,6 +24,9 @@ export default class PageEditor extends React.Component {
     chooseComponentDom = null; // 选择的页面上的组件的dom
     chooseComponentIndex = -1; // 选择的页面上的组件的index
 
+    isResizeComponent = false;
+    resizeType = "";
+
     movePreviewDom = null;
 
     hAssistLine = null;
@@ -48,11 +51,19 @@ export default class PageEditor extends React.Component {
         this.movePreviewDom = pageDom.querySelector(".page-editor-move-preview-area");
         this.hAssistLine = pageDom.querySelector(".h-assistant-line");
         this.vAssistLine = pageDom.querySelector(".v-assistant-line");
+        this.changeSizeAreaDom = pageDom.querySelector(".page-editor-change-size-area");
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.chooseType !== prevProps.chooseType && this.props.chooseType !== "") {
             this.choosePreviewDom = document.querySelector(".page-editor-editor-" + this.props.chooseType + "-preview-box");
+        }
+
+        if (this.props.chooseComponentData !== prevProps.chooseComponentData && this.props.chooseComponentData) {
+            this.changeSizeAreaDom.style.left = this.props.chooseComponentData.x + "px";
+            this.changeSizeAreaDom.style.top = this.props.chooseComponentData.y + "px";
+            this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width + "px";
+            this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height + "px";
         }
     }
 
@@ -62,6 +73,16 @@ export default class PageEditor extends React.Component {
         this.startY = e.pageY;
         this.endX = e.pageX;
         this.endY = e.pageY;
+
+        if (e.target.className.indexOf("page-editor-change-size-area-") !== -1) { // 如果点击的是改大小的按钮
+            this.isResizeComponent = true;
+            let temp = e.target.className.split("-");
+            this.resizeType = temp[temp.length - 1];
+            return;
+        } else {
+            this.isResizeComponent = false;
+        }
+
         this.chooseComponentData = null;
         this.chooseComponentIndex = -1;
 
@@ -195,6 +216,34 @@ export default class PageEditor extends React.Component {
         } else {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) {
+
+                    if (this.isResizeComponent) {
+                        let top = this.endY - this.startY;
+                        let left = this.endX - this.startX;
+
+                        switch (this.resizeType) {
+                            case "top":
+                                this.changeSizeAreaDom.style.top = this.props.chooseComponentData.y + top + "px";
+                                this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height - top + "px";
+                                break;
+                            case "right":
+                                this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width + left + "px";
+                                break;
+                            case "bottom":
+                                this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height + top + "px";
+                                break;
+                            case "left":
+                                this.changeSizeAreaDom.style.left = this.props.chooseComponentData.x + left + "px";
+                                this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width - left + "px";
+                                break;
+                            default:
+                                break;
+                        }
+                        this.changeSizeAreaDom.style.border = "1px solid cornflowerblue";
+
+                        return;
+                    }
+
                     let {top, left} = this.calMovePosition();
                     let absTop = top + this.chooseComponentData.y, absLeft = left + this.chooseComponentData.x,
                         right = absLeft + this.chooseComponentData.width,
@@ -379,6 +428,43 @@ export default class PageEditor extends React.Component {
         } else {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) { // 移动已经添加的组件
+                    if (this.isResizeComponent) {
+                        let top = this.endY - this.startY;
+                        let left = this.endX - this.startX;
+
+                        let changeData = {};
+                        switch (this.resizeType) {
+                            case "top":
+                                changeData.y = this.props.chooseComponentData.y + top;
+                                changeData.height = this.props.chooseComponentData.height - top;
+                                break;
+                            case "right":
+                                changeData.width = this.props.chooseComponentData.width + left;
+                                break;
+                            case "bottom":
+                                changeData.height = this.props.chooseComponentData.height + top;
+                                break;
+                            case "left":
+                                changeData.x = this.props.chooseComponentData.x + left;
+                                changeData.width = this.props.chooseComponentData.width - left;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        Object.assign(this.chooseComponentData, changeData);
+                        this.movePreviewDom.style.display = "none";
+                        this.movePreviewDom.style.transform = null;
+
+                        this.props.editWidget(this.chooseComponentIndex, changeData, true);
+
+                        this.isResizeComponent = false;
+                        this.resizeType = "";
+                        this.changeSizeAreaDom.style.border = "0";
+                        this.isMouseDown = false;
+                        return;
+                    }
+
                     let {top, left} = this.calMovePosition();
 
                     let absTop = top + this.chooseComponentData.y, absLeft = left + this.chooseComponentData.x,
@@ -424,12 +510,11 @@ export default class PageEditor extends React.Component {
                         x: this.chooseComponentData.x + left,
                         y: this.chooseComponentData.y + top
                     };
-                    let chooseComponentData = Object.assign({}, this.chooseComponentData, changeData);
+                    Object.assign(this.chooseComponentData, changeData);
                     this.movePreviewDom.style.display = "none";
                     this.movePreviewDom.style.transform = null;
 
-                    this.props.editWidget(this.chooseComponentIndex, changeData);
-                    this.props.handleChooseComponentData(this.chooseComponentIndex, chooseComponentData);
+                    this.props.editWidget(this.chooseComponentIndex, changeData, true);
                 }
             }
         }

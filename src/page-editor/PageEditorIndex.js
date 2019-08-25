@@ -27,6 +27,9 @@ class PageEditorIndex extends React.Component {
         document.addEventListener("keydown", this.handleKeyDown)
     }
 
+    /**
+     * 按键事件
+     */
     handleKeyDown = (e) => {
         switch (e.code) {
             case "Delete":
@@ -65,7 +68,6 @@ class PageEditorIndex extends React.Component {
             default:
                 break;
         }
-        console.log(e)
     };
 
     /**
@@ -114,6 +116,9 @@ class PageEditorIndex extends React.Component {
         })
     };
 
+    /**
+     * 选择组件
+     */
     handleChooseComponentData = (index, data) => {
         this.setState({
             chooseComponentIndex: index,
@@ -121,6 +126,9 @@ class PageEditorIndex extends React.Component {
         })
     };
 
+    /**
+     * 删除组件
+     */
     handleDeleteComponent = () => {
         if (this.state.chooseComponentIndex !== -1) {
             let widgetList = this.state.widgetList.slice();
