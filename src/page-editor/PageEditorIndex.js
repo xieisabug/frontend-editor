@@ -104,7 +104,15 @@ class PageEditorIndex extends React.Component {
     editWidget = (index, data, isChoose) => {
         let widgetList = this.state.widgetList.slice();
 
-        widgetList[index] = Object.assign({}, widgetList[index], data);
+        let newComponent = Object.assign({}, widgetList[index], data);
+
+        if (newComponent.width > 380) newComponent.width = 380;
+        if (newComponent.x < 0) newComponent.x = 0;
+        if (newComponent.x > 380) newComponent.x = 380;
+        if (newComponent.width + newComponent.x > 380) newComponent.x = 380 - newComponent.width;
+        if (newComponent.y < 0) newComponent.y = 0;
+
+        widgetList[index] = newComponent;
 
         let chooseComponentData = this.state.chooseComponentData;
         if (isChoose) {
