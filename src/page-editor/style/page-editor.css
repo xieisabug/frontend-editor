@@ -133,7 +133,7 @@
     display: none;
     position: absolute;
     cursor: move;
-    z-index: 99999999999;
+    z-index: 99999;
 }
 .page-editor-change-size-area.show {
     display: block;

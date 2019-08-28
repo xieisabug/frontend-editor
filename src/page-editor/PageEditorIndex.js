@@ -7,6 +7,7 @@ import PageEditor from "./component/PageEditor";
 import PageAttributesPanel from "./component/PageAttributesPanel";
 
 import "./style/page-editor.css"
+import {GeneratePageDialog} from "./component/GeneratePageDialog";
 
 class PageEditorIndex extends React.Component {
 
@@ -19,7 +20,9 @@ class PageEditorIndex extends React.Component {
                 {"id":0,"type":4,"x":123,"y":68,"width":150,"height":100,"z":0,"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658"}
             ],
             chooseComponentIndex: -1,
-            chooseComponentData: null
+            chooseComponentData: null,
+            mainDialogIsOpen: false,
+            metaDataDialogIsOpen: false
         }
     }
 
@@ -149,12 +152,38 @@ class PageEditorIndex extends React.Component {
         }
     };
 
+    handleOpenExportDialog = () => {
+        this.setState({
+            mainDialogIsOpen: true
+        })
+    };
+
+    handleCloseExportDialog = () => {
+        this.setState({
+            mainDialogIsOpen: false
+        })
+    };
+
+    handleOpenMetaDataDialog = () => {
+        this.setState({
+            metaDataDialogIsOpen: true
+        })
+    };
+
+    handleCloseMetaDataDialog = () => {
+        this.setState({
+            metaDataDialogIsOpen: false
+        })
+    };
+
+
     render() {
         return (
             <div className="page-editor">
                 <Toolbar
                     chooseType={this.state.chooseType}
                     handleChooseWidgetType={this.handleChooseWidgetType}
+                    onExportButtonClick={this.handleOpenExportDialog}
                 />
                 <div className="page-editor-center-container">
                     <PageThumb
@@ -178,6 +207,14 @@ class PageEditorIndex extends React.Component {
                         deleteComponent={this.handleDeleteComponent}
                     />
                 </div>
+                <GeneratePageDialog
+                    metaData={this.state.widgetList}
+                    mainDialogIsOpen={this.state.mainDialogIsOpen}
+                    metaDataDialogIsOpen={this.state.metaDataDialogIsOpen}
+                    openMetaDataDialog={this.handleOpenMetaDataDialog}
+                    closeMetaDataDialog={this.handleCloseMetaDataDialog}
+                    closeExportDialog={this.handleCloseExportDialog}
+                />
             </div>
         );
     }

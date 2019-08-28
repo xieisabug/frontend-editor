@@ -1,6 +1,8 @@
 import React from "react";
-import {WIDGET_TYPE} from "../../Constants";
+import {Button} from "antd";
 import classNames from "classnames";
+
+import {WIDGET_TYPE} from "../../Constants";
 
 
 function IconButtonComponent(props) {
@@ -14,36 +16,36 @@ function IconButtonComponent(props) {
     </div>;
 }
 
-class Toolbar extends React.PureComponent {
+function Toolbar(props) {
 
-    handleChooseButton = () => {
-        this.props.handleChooseWidgetType(WIDGET_TYPE.BUTTON);
+    const handleChooseButton = () => {
+        props.handleChooseWidgetType(WIDGET_TYPE.BUTTON);
     };
 
-    handleChooseImage = () => {
-        this.props.handleChooseWidgetType(WIDGET_TYPE.IMAGE);
+    const handleChooseImage = () => {
+        props.handleChooseWidgetType(WIDGET_TYPE.IMAGE);
     };
 
-    handleChooseInput = () => {
-        this.props.handleChooseWidgetType(WIDGET_TYPE.INPUT);
+    const handleChooseInput = () => {
+        props.handleChooseWidgetType(WIDGET_TYPE.INPUT);
     };
 
-    handleChooseText = () => {
-        this.props.handleChooseWidgetType(WIDGET_TYPE.TEXT);
+    const handleChooseText = () => {
+        props.handleChooseWidgetType(WIDGET_TYPE.TEXT);
     };
 
-    render() {
-        return <div className="page-editor-toolbar">
-            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.BUTTON} onClick={this.handleChooseButton}
-                                 icon="icon-button" tips="按钮"/>
-            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.IMAGE} onClick={this.handleChooseImage}
-                                 icon="icon-image" tips="图片"/>
-            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.INPUT} onClick={this.handleChooseInput}
-                                 icon="icon-input" tips="输入框"/>
-            <IconButtonComponent active={this.props.chooseType === WIDGET_TYPE.TEXT} onClick={this.handleChooseText}
-                                 icon="icon-text" tips="文字"/>
-        </div>
-    }
+    return <div className="page-editor-toolbar">
+        <IconButtonComponent active={props.chooseType === WIDGET_TYPE.BUTTON} onClick={handleChooseButton}
+                             icon="icon-button" tips="按钮"/>
+        <IconButtonComponent active={props.chooseType === WIDGET_TYPE.IMAGE} onClick={handleChooseImage}
+                             icon="icon-image" tips="图片"/>
+        <IconButtonComponent active={props.chooseType === WIDGET_TYPE.INPUT} onClick={handleChooseInput}
+                             icon="icon-input" tips="输入框"/>
+        <IconButtonComponent active={props.chooseType === WIDGET_TYPE.TEXT} onClick={handleChooseText}
+                             icon="icon-text" tips="文字"/>
+        <div style={{flex: 1}}/>
+        <Button onClick={props.onExportButtonClick}>导出</Button>
+    </div>
 }
 
 export default Toolbar;
