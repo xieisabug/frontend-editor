@@ -3,6 +3,7 @@ import {Button} from "antd";
 import classNames from "classnames";
 
 import {WIDGET_TYPE} from "../../Constants";
+import * as PropTypes from "prop-types";
 
 
 function IconButtonComponent(props) {
@@ -44,8 +45,16 @@ function Toolbar(props) {
         <IconButtonComponent active={props.chooseType === WIDGET_TYPE.TEXT} onClick={handleChooseText}
                              icon="icon-text" tips="文字"/>
         <div style={{flex: 1}}/>
-        <Button onClick={props.onExportButtonClick}>导出</Button>
+        <Button onClick={props.onExportButtonClick} size="small" className="right-space">导出</Button>
+        <Button onClick={props.onAboutButtonClick} size="small">关于</Button>
     </div>
 }
+
+Toolbar.propTypes = {
+    chooseType: PropTypes.number,
+    handleChooseWidgetType: PropTypes.func,
+    onExportButtonClick: PropTypes.func,
+    onAboutButtonClick: PropTypes.func,
+};
 
 export default Toolbar;

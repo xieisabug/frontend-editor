@@ -8,6 +8,7 @@ import PageAttributesPanel from "./component/PageAttributesPanel";
 
 import "./style/page-editor.css"
 import {GeneratePageDialog} from "./component/GeneratePageDialog";
+import {Button, Modal} from "antd";
 
 class PageEditorIndex extends React.Component {
 
@@ -22,7 +23,8 @@ class PageEditorIndex extends React.Component {
             chooseComponentIndex: -1,
             chooseComponentData: null,
             mainDialogIsOpen: false,
-            metaDataDialogIsOpen: false
+            metaDataDialogIsOpen: false,
+            aboutDialogIsOpen: false
         }
     }
 
@@ -176,6 +178,18 @@ class PageEditorIndex extends React.Component {
         })
     };
 
+    handleOpenAboutDialog = () => {
+        this.setState({
+            aboutDialogIsOpen: true
+        })
+    };
+
+    handleCloseAboutDialog = () => {
+        this.setState({
+            aboutDialogIsOpen: false
+        })
+    };
+
 
     render() {
         return (
@@ -184,6 +198,7 @@ class PageEditorIndex extends React.Component {
                     chooseType={this.state.chooseType}
                     handleChooseWidgetType={this.handleChooseWidgetType}
                     onExportButtonClick={this.handleOpenExportDialog}
+                    onAboutButtonClick={this.handleOpenAboutDialog}
                 />
                 <div className="page-editor-center-container">
                     <PageThumb
@@ -215,6 +230,21 @@ class PageEditorIndex extends React.Component {
                     closeMetaDataDialog={this.handleCloseMetaDataDialog}
                     closeExportDialog={this.handleCloseExportDialog}
                 />
+                <Modal
+                    title="关于"
+                    visible={this.state.aboutDialogIsOpen}
+                    okText="关闭"
+                    onOk={this.handleCloseAboutDialog}
+                    onCancel={this.handleCloseAboutDialog}
+                    cancelButtonProps={{hidden: true}}
+                    zIndex={100000}
+                >
+                    <p>使用react开发的小程序编辑器。</p>
+                    <p>目的是为了解决原型转代码这多余的一步，由客户或者产品发起的界面设计转到程序员的代码本可以自动完成。</p>
+                    <p>同样解决了各个普通的界面，却需要不停的去写新的小程序界面，使用元数据生成界面之后，可以远程获取元数据生成不同的界面，从而不需要重新上线。</p>
+                    <p>提供有偿企业拓展开发服务，同样承接各种开发项目。</p>
+                    <p><a href="http://www.xiejingyang.com" target="_blank">我的博客</a></p>
+                </Modal>
             </div>
         );
     }
