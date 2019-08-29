@@ -1,4 +1,4 @@
-import {Button, Modal, message} from "antd";
+import {Button, Modal} from "antd";
 import * as PropTypes from "prop-types";
 import React from "react";
 import {copyToClipboard} from "../../Utils";
