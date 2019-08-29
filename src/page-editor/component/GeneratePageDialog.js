@@ -4,8 +4,18 @@ import React from "react";
 import {copyToClipboard} from "../../Utils";
 
 export function GeneratePageDialog(props) {
-    function copy() {
-        copyToClipboard(JSON.stringify(props.metaData, undefined, 4));
+    let metaData = props.metaData.map(i => { // 因为我是以380为页面宽度的，所以映射到小程序760rpx需要乘以2
+        return Object.assign({}, i, {
+            x: i.x * 2,
+            y: i.y * 2,
+            width: i.width * 2,
+            height: i.height * 2,
+            borderWidth: i.borderWidth * 2
+        })
+    });
+
+    function copy() { // 复制
+        copyToClipboard(JSON.stringify(metaData, undefined, 4));
     }
 
     return [
@@ -53,7 +63,7 @@ export function GeneratePageDialog(props) {
                 <Button onClick={copy}>复制</Button>
             </div>
             <pre>
-                {JSON.stringify(props.metaData, undefined, 4)}
+                {JSON.stringify(metaData, undefined, 4)}
             </pre>
         </Modal>
     ];

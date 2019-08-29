@@ -17,9 +17,7 @@ class PageEditorIndex extends React.Component {
 
         this.state = {
             chooseType: "",
-            widgetList: [
-                {"id":0,"type":4,"x":123,"y":68,"width":150,"height":100,"z":0,"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658"}
-            ],
+            widgetList: [],
             chooseComponentIndex: -1,
             chooseComponentData: null,
             mainDialogIsOpen: false,
