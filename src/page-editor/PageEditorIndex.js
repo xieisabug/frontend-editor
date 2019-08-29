@@ -5,10 +5,12 @@ import Toolbar from "./component/Toolbar"
 import PageThumb from "./component/PageThumb";
 import PageEditor from "./component/PageEditor";
 import PageAttributesPanel from "./component/PageAttributesPanel";
+import GeneratePageDialog from "./component/GeneratePageDialog";
+import AboutDialog from "./component/AboutDialog";
 
 import "./style/page-editor.css"
-import {GeneratePageDialog} from "./component/GeneratePageDialog";
-import {AboutDialog} from "./component/AboutDialog";
+import {ButtonEventBindDialog} from "./component/ButtonEventBindDialog";
+
 
 class PageEditorIndex extends React.Component {
 
@@ -22,8 +24,18 @@ class PageEditorIndex extends React.Component {
             chooseComponentData: null,
             mainDialogIsOpen: false,
             metaDataDialogIsOpen: false,
-            aboutDialogIsOpen: false
-        }
+            aboutDialogIsOpen: false,
+            buttonEventBindDialogIsOpen: false
+        };
+
+        this.handleOpenExportDialog = this.handleChangeDialogStatus.bind(this, "mainDialog", true);
+        this.handleCloseExportDialog = this.handleChangeDialogStatus.bind(this, "mainDialog", false);
+        this.handleOpenMetaDataDialog = this.handleChangeDialogStatus.bind(this, "metaDataDialog", true);
+        this.handleCloseMetaDataDialog = this.handleChangeDialogStatus.bind(this, "metaDataDialog", false);
+        this.handleOpenAboutDialog = this.handleChangeDialogStatus.bind(this, "aboutDialog", true);
+        this.handleCloseAboutDialog = this.handleChangeDialogStatus.bind(this, "aboutDialog", false);
+        this.handleOpenButtonEventBindDialog = this.handleChangeDialogStatus.bind(this, "buttonEventBindDialog", true);
+        this.handleCloseButtonEventBindDialog = this.handleChangeDialogStatus.bind(this, "buttonEventBindDialog", false);
     }
 
     componentDidMount() {
@@ -43,7 +55,7 @@ class PageEditorIndex extends React.Component {
             case "ArrowUp":
                 if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
                     this.editWidget(this.state.chooseComponentIndex, {
-                        y: this.state.chooseComponentData.y - 1 < 0 ? 0: this.state.chooseComponentData.y - 1
+                        y: this.state.chooseComponentData.y - 1 < 0 ? 0 : this.state.chooseComponentData.y - 1
                     }, true)
                 }
                 break;
@@ -57,14 +69,14 @@ class PageEditorIndex extends React.Component {
             case "ArrowLeft":
                 if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
                     this.editWidget(this.state.chooseComponentIndex, {
-                        x: this.state.chooseComponentData.x - 1 < 0 ? 0: this.state.chooseComponentData.x - 1
+                        x: this.state.chooseComponentData.x - 1 < 0 ? 0 : this.state.chooseComponentData.x - 1
                     }, true)
                 }
                 break;
             case "ArrowRight":
                 if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
                     this.editWidget(this.state.chooseComponentIndex, {
-                        x: this.state.chooseComponentData.x + 1 > 380 ? 380: this.state.chooseComponentData.x + 1
+                        x: this.state.chooseComponentData.x + 1 > 380 ? 380 : this.state.chooseComponentData.x + 1
                     }, true)
                 }
                 break;
@@ -152,42 +164,16 @@ class PageEditorIndex extends React.Component {
         }
     };
 
-    handleOpenExportDialog = () => {
+    handleChangeDialogStatus(dialogName, status) {
         this.setState({
-            mainDialogIsOpen: true
+            [dialogName + "IsOpen"]: status
         })
     };
 
-    handleCloseExportDialog = () => {
-        this.setState({
-            mainDialogIsOpen: false
-        })
+    handleConfirmButtonEventBindDialog = (data) => {
+        this.editWidget(this.state.chooseComponentIndex, data, true);
+        this.handleCloseButtonEventBindDialog();
     };
-
-    handleOpenMetaDataDialog = () => {
-        this.setState({
-            metaDataDialogIsOpen: true
-        })
-    };
-
-    handleCloseMetaDataDialog = () => {
-        this.setState({
-            metaDataDialogIsOpen: false
-        })
-    };
-
-    handleOpenAboutDialog = () => {
-        this.setState({
-            aboutDialogIsOpen: true
-        })
-    };
-
-    handleCloseAboutDialog = () => {
-        this.setState({
-            aboutDialogIsOpen: false
-        })
-    };
-
 
     render() {
         return (
@@ -218,6 +204,8 @@ class PageEditorIndex extends React.Component {
 
                         editWidget={this.editWidget}
                         deleteComponent={this.handleDeleteComponent}
+
+                        onButtonEventBind={this.handleOpenButtonEventBindDialog}
                     />
                 </div>
                 <GeneratePageDialog
@@ -229,6 +217,13 @@ class PageEditorIndex extends React.Component {
                     closeExportDialog={this.handleCloseExportDialog}
                 />
                 <AboutDialog visible={this.state.aboutDialogIsOpen} onOk={this.handleCloseAboutDialog}/>
+                <ButtonEventBindDialog
+                    widgetList={this.state.widgetList}
+                    data={this.state.chooseComponentData}
+                    visible={this.state.buttonEventBindDialogIsOpen}
+                    onOk={this.handleConfirmButtonEventBindDialog}
+                    onCancel={this.handleCloseButtonEventBindDialog}
+                />
             </div>
         );
     }

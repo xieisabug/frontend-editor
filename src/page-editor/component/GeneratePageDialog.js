@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import React from "react";
 import {copyToClipboard} from "../../Utils";
 
-export function GeneratePageDialog(props) {
+export default function GeneratePageDialog(props) {
     let metaData = props.metaData.map(i => { // 因为我是以380为页面宽度的，所以映射到小程序760rpx需要乘以2
         return Object.assign({}, i, {
             x: i.x * 2,
@@ -17,6 +17,8 @@ export function GeneratePageDialog(props) {
     function copy() { // 复制
         copyToClipboard(JSON.stringify(metaData, undefined, 4));
     }
+
+    console.log(metaData)
 
     return [
         <Modal

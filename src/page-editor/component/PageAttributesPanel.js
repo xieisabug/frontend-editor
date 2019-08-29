@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Form, Input, Row, Col, Select, Slider, Button, Radio, Checkbox} from "antd";
+import {Form, Input, Row, Col, Select, Slider, Button, Radio, Checkbox, Card} from "antd";
 import {WIDGET_TYPE} from "../../Constants";
 
 const { Option } = Select;
@@ -15,6 +15,7 @@ export default class PageAttributesPanel extends React.Component {
         this.handleSlideChangeWidth = this.handleSlideChange.bind(this, "width");
         this.handleChangeHeight = this.handleNumberInputChange.bind(this, "height");
         this.handleChangeText = this.handleTextInputChange.bind(this, "text");
+        this.handleChangeName = this.handleTextInputChange.bind(this, "name");
         this.handleChangePlaceholder = this.handleTextInputChange.bind(this, "placeholder");
         this.handleChangeSrc = this.handleTextInputChange.bind(this, "src");
         this.handleChangeBackground = this.handleTextInputChange.bind(this, "background");
@@ -124,9 +125,27 @@ export default class PageAttributesPanel extends React.Component {
                     <Form.Item label="文字颜色">
                         <Input type="color" value={this.props.chooseComponentData.textColor} onChange={this.handleChangeTextColor} />
                     </Form.Item>,
+                    <Form.Item label="事件绑定">
+                        {
+                            this.props.chooseComponentData.eventType !== -1 ?
+                                <Card title={this.props.chooseComponentData.eventType === 1 ? "提交数据": "自定义"}
+                                      extra={<Button size="small" onClick={this.props.onButtonEventBind}>编辑</Button>} style={{width: 300}}>
+                                    {
+                                        this.props.chooseComponentData.eventType === 1 ?
+                                        [
+                                            <p>地址：{this.props.chooseComponentData.postUrl}</p>,
+                                            <p>数据：{this.props.chooseComponentData.postFieldList.join(",")}</p>
+                                        ] : []
+                                    }
+                                </Card> : <Button onClick={this.props.onButtonEventBind}>绑定</Button>
+                        }
+                    </Form.Item>,
                 ];
             case WIDGET_TYPE.INPUT:
                 return [
+                    <Form.Item label="唯一标识">
+                        <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName} />
+                    </Form.Item>,
                     <Form.Item label="输入类型">
                         <Select value={this.props.chooseComponentData.inputType} onChange={this.handleChangeInputType}>
                             <Option value="text">文字</Option>

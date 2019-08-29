@@ -13,6 +13,7 @@ export default class PageEditor extends React.Component {
 
     idGen = 1; // id计数
     zGen = 1; // zIndex计数
+    dataGen = 1; // data组件计数
     isMouseDown = false;
     startX = 0; // 鼠标点击开始x
     startY = 0; // 鼠标点击开始y
@@ -401,6 +402,9 @@ export default class PageEditor extends React.Component {
                         data.textAlign = "center";
                         data.alignItems = "center";
                         data.textColor = "#000";
+                        data.eventType = -1;
+                        data.postFieldList = [];
+                        data.postUrl = "";
                         break;
                     case WIDGET_TYPE.IMAGE:
                         data.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658";
@@ -419,6 +423,7 @@ export default class PageEditor extends React.Component {
                         data.textAlign = "flex-start";
                         data.alignItems = "center";
                         data.textColor = "#000";
+                        data.name = "data" + this.dataGen++; // 数据组件唯一标识
                         break;
                     default:
                         break;
