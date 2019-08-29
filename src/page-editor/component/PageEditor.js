@@ -387,10 +387,11 @@ export default class PageEditor extends React.Component {
                     width: WIDGET_PROPERTY[this.props.chooseType].width,
                     height: WIDGET_PROPERTY[this.props.chooseType].height,
                     z: this.zGen++,
-                    background: "",
+                    background: "#ffffff",
+                    backgroundTransparent: true,
                     borderWidth: 0,
                     borderLineType: "solid",
-                    borderColor: "#ccc"
+                    borderColor: "#cccccc"
                 };
                 switch (data.type) {
                     case WIDGET_TYPE.BUTTON:

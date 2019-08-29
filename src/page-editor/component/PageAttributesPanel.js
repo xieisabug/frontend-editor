@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Form, Input, Row, Col, Select, Slider, Button, Radio} from "antd";
+import {Form, Input, Row, Col, Select, Slider, Button, Radio, Checkbox} from "antd";
 import {WIDGET_TYPE} from "../../Constants";
 
 const { Option } = Select;
@@ -18,6 +18,7 @@ export default class PageAttributesPanel extends React.Component {
         this.handleChangePlaceholder = this.handleTextInputChange.bind(this, "placeholder");
         this.handleChangeSrc = this.handleTextInputChange.bind(this, "src");
         this.handleChangeBackground = this.handleTextInputChange.bind(this, "background");
+        this.handleChangeBackgroundTransparent = this.handleCheckBoxChange.bind(this, "backgroundTransparent");
         this.handleChangeBorderColor = this.handleTextInputChange.bind(this, "borderColor");
         this.handleChangeBorderWidth = this.handleNumberInputChange.bind(this, "borderWidth");
         this.handleChangeBorderLineType = this.handleSelectChange.bind(this, "borderLineType");
@@ -55,6 +56,10 @@ export default class PageAttributesPanel extends React.Component {
 
     handleSelectChange(field, value) {
         this.handleInputChange(field, value)
+    }
+
+    handleCheckBoxChange(field, event) {
+        this.handleInputChange(field, event.target.checked)
     }
 
     handleSlideChange(field, value) {
@@ -102,14 +107,14 @@ export default class PageAttributesPanel extends React.Component {
                     <Form.Item label="文字大小">
                         <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize} />
                     </Form.Item>,
-                    <Form.Item label="文字横向对齐">
+                    <Form.Item label="文字横对齐">
                         <Radio.Group size="small" value={this.props.chooseComponentData.textAlign} onChange={this.handleChangeTextAlign}>
                             <Radio.Button value="flex-start">居左</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
                             <Radio.Button value="flex-end">居右</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
-                    <Form.Item label="文字垂直对齐">
+                    <Form.Item label="文字竖对齐">
                         <Radio.Group size="small" value={this.props.chooseComponentData.alignItems} onChange={this.handleChangeAlignItems}>
                             <Radio.Button value="flex-start">居上</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
@@ -205,7 +210,8 @@ export default class PageAttributesPanel extends React.Component {
                     <Input value={chooseComponentData.height} onChange={this.handleChangeHeight} />
                 </Form.Item>
                 <Form.Item label="背景色">
-                    <Input type="color" value={chooseComponentData.background} onChange={this.handleChangeBackground} />
+                    <Input type="color" value={chooseComponentData.background} onChange={this.handleChangeBackground} disabled={chooseComponentData.backgroundTransparent} />
+                    <Checkbox checked={chooseComponentData.backgroundTransparent} onChange={this.handleChangeBackgroundTransparent}>背景透明</Checkbox>
                 </Form.Item>
                 <Form.Item label="边框">
                     <Row>

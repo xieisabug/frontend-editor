@@ -6,7 +6,7 @@ export function getCommonStyle(props) {
         height: props.data.height + "px",
         zIndex: props.data.z,
         border: `${props.data.borderWidth}px ${props.data.borderLineType} ${props.data.borderColor}`,
-        background: props.data.background
+        background: props.data.backgroundTransparent ? "transparent" : props.data.background
     }
 }
 
