@@ -79,6 +79,13 @@ export default class PageAttributesPanel extends React.Component {
         this.handleInputChange("x", 380 - this.props.chooseComponentData.width);
     };
 
+    addZ = () => {
+        this.handleInputChange("z", this.props.chooseComponentData.z + 1)
+    };
+    subZ = () => {
+        this.handleInputChange("z", this.props.chooseComponentData.z - 1 < 0 ? 0 : this.props.chooseComponentData.z - 1)
+    };
+
     renderWidgetTypeEditor() {
         switch (this.props.chooseComponentData.type) {
             case WIDGET_TYPE.TEXT:
@@ -266,6 +273,10 @@ export default class PageAttributesPanel extends React.Component {
                                    onChange={this.handleChangeBorderColor}/>
                         </Col>
                     </Row>
+                </Form.Item>
+                <Form.Item label="层级">
+                    <Button className="right-space" onClick={this.addZ}>向上一层</Button>
+                    <Button onClick={this.subZ}>向下一层</Button>
                 </Form.Item>
             </Form>
 
