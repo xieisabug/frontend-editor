@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Form, Input, Row, Col, Select, Slider, Button, Radio, Checkbox, Card} from "antd";
 import {WIDGET_TYPE} from "../../Constants";
 
-const { Option } = Select;
+const {Option} = Select;
 const ButtonGroup = Button.Group;
 
 export default class PageAttributesPanel extends React.Component {
@@ -84,58 +84,69 @@ export default class PageAttributesPanel extends React.Component {
             case WIDGET_TYPE.TEXT:
                 return [
                     <Form.Item label="文字">
-                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText} />
+                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/>
                     </Form.Item>,
                     <Form.Item label="文字大小">
-                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize} />
+                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize}/>
                     </Form.Item>,
                     <Form.Item label="文字对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign} onChange={this.handleChangeTextAlign}>
+                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign}
+                                     onChange={this.handleChangeTextAlign}>
                             <Radio.Button value="left">居左</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
                             <Radio.Button value="right">居右</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
                     <Form.Item label="文字颜色">
-                        <Input type="color" value={this.props.chooseComponentData.textColor} onChange={this.handleChangeTextColor} />
+                        <Input type="color" value={this.props.chooseComponentData.textColor}
+                               onChange={this.handleChangeTextColor}/>
                     </Form.Item>,
                 ];
             case WIDGET_TYPE.BUTTON:
                 return [
                     <Form.Item label="文字">
-                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText} />
+                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/>
                     </Form.Item>,
                     <Form.Item label="文字大小">
-                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize} />
+                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize}/>
                     </Form.Item>,
                     <Form.Item label="文字横对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign} onChange={this.handleChangeTextAlign}>
+                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign}
+                                     onChange={this.handleChangeTextAlign}>
                             <Radio.Button value="flex-start">居左</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
                             <Radio.Button value="flex-end">居右</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
                     <Form.Item label="文字竖对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.alignItems} onChange={this.handleChangeAlignItems}>
+                        <Radio.Group size="small" value={this.props.chooseComponentData.alignItems}
+                                     onChange={this.handleChangeAlignItems}>
                             <Radio.Button value="flex-start">居上</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
                             <Radio.Button value="flex-end">居下</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
                     <Form.Item label="文字颜色">
-                        <Input type="color" value={this.props.chooseComponentData.textColor} onChange={this.handleChangeTextColor} />
+                        <Input type="color" value={this.props.chooseComponentData.textColor}
+                               onChange={this.handleChangeTextColor}/>
                     </Form.Item>,
                     <Form.Item label="事件绑定">
                         {
                             this.props.chooseComponentData.eventType !== -1 ?
-                                <Card title={this.props.chooseComponentData.eventType === 1 ? "提交数据": "自定义"}
-                                      extra={<Button size="small" onClick={this.props.onButtonEventBind}>编辑</Button>} style={{width: 300}}>
+                                <Card title={this.props.chooseComponentData.eventType === 1 ? "提交数据" : "自定义"}
+                                      extra={<Button size="small" onClick={this.props.onButtonEventBind}>编辑</Button>}
+                                      style={{width: 280}}>
                                     {
                                         this.props.chooseComponentData.eventType === 1 ?
-                                        [
-                                            <p>地址：{this.props.chooseComponentData.postUrl}</p>,
-                                            <p>数据：{this.props.chooseComponentData.postFieldList.join(",")}</p>
-                                        ] : []
+                                            [
+                                                <p>地址：{this.props.chooseComponentData.postUrl}</p>,
+                                                <p>数据：{this.props.chooseComponentData.postFieldList.join(",")}</p>
+                                            ] :
+                                            [
+                                                <pre>{"function(widgetList) {"}</pre>,
+                                                <pre>{this.props.chooseComponentData.code}</pre>,
+                                                <pre>{"}"}</pre>,
+                                            ]
                                     }
                                 </Card> : <Button onClick={this.props.onButtonEventBind}>绑定</Button>
                         }
@@ -144,7 +155,7 @@ export default class PageAttributesPanel extends React.Component {
             case WIDGET_TYPE.INPUT:
                 return [
                     <Form.Item label="唯一标识">
-                        <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName} />
+                        <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName}/>
                     </Form.Item>,
                     <Form.Item label="输入类型">
                         <Select value={this.props.chooseComponentData.inputType} onChange={this.handleChangeInputType}>
@@ -157,33 +168,37 @@ export default class PageAttributesPanel extends React.Component {
                         </Select>
                     </Form.Item>,
                     <Form.Item label="提示文字">
-                        <Input value={this.props.chooseComponentData.placeholder} onChange={this.handleChangePlaceholder} />
+                        <Input value={this.props.chooseComponentData.placeholder}
+                               onChange={this.handleChangePlaceholder}/>
                     </Form.Item>,
                     <Form.Item label="文字大小">
-                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize} />
+                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize}/>
                     </Form.Item>,
                     <Form.Item label="文字横对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign} onChange={this.handleChangeTextAlign}>
+                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign}
+                                     onChange={this.handleChangeTextAlign}>
                             <Radio.Button value="flex-start">居左</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
                             <Radio.Button value="flex-end">居右</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
                     <Form.Item label="文字竖对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.alignItems} onChange={this.handleChangeAlignItems}>
+                        <Radio.Group size="small" value={this.props.chooseComponentData.alignItems}
+                                     onChange={this.handleChangeAlignItems}>
                             <Radio.Button value="flex-start">居上</Radio.Button>
                             <Radio.Button value="center">居中</Radio.Button>
                             <Radio.Button value="flex-end">居下</Radio.Button>
                         </Radio.Group>
                     </Form.Item>,
                     <Form.Item label="文字颜色">
-                        <Input type="color" value={this.props.chooseComponentData.textColor} onChange={this.handleChangeTextColor} />
+                        <Input type="color" value={this.props.chooseComponentData.textColor}
+                               onChange={this.handleChangeTextColor}/>
                     </Form.Item>,
                 ];
             case WIDGET_TYPE.IMAGE:
                 return [
                     <Form.Item label="地址">
-                        <Input value={this.props.chooseComponentData.src} onChange={this.handleChangeSrc} />
+                        <Input value={this.props.chooseComponentData.src} onChange={this.handleChangeSrc}/>
                     </Form.Item>,
                 ];
             default:
@@ -200,7 +215,7 @@ export default class PageAttributesPanel extends React.Component {
             <div className="page-editor-attributes-panel-from-group-title">公共属性</div>
             <Form {...this.formItemLayout}>
                 <Form.Item label="x">
-                    <Input value={chooseComponentData.x} onChange={this.handleChangeX} />
+                    <Input value={chooseComponentData.x} onChange={this.handleChangeX}/>
                     <ButtonGroup size="small">
                         <Button onClick={this.setXLeft}>居左</Button>
                         <Button onClick={this.setXCenter}>居中</Button>
@@ -208,7 +223,7 @@ export default class PageAttributesPanel extends React.Component {
                     </ButtonGroup>
                 </Form.Item>
                 <Form.Item label="y">
-                    <Input value={chooseComponentData.y} onChange={this.handleChangeY} />
+                    <Input value={chooseComponentData.y} onChange={this.handleChangeY}/>
                 </Form.Item>
                 <Form.Item label="宽度">
                     <Row>
@@ -221,30 +236,34 @@ export default class PageAttributesPanel extends React.Component {
                             />
                         </Col>
                         <Col span={7} offset={1}>
-                            <Input value={chooseComponentData.width} onChange={this.handleChangeWidth} />
+                            <Input value={chooseComponentData.width} onChange={this.handleChangeWidth}/>
                         </Col>
                     </Row>
                 </Form.Item>
                 <Form.Item label="高度">
-                    <Input value={chooseComponentData.height} onChange={this.handleChangeHeight} />
+                    <Input value={chooseComponentData.height} onChange={this.handleChangeHeight}/>
                 </Form.Item>
                 <Form.Item label="背景色">
-                    <Input type="color" value={chooseComponentData.background} onChange={this.handleChangeBackground} disabled={chooseComponentData.backgroundTransparent} />
-                    <Checkbox checked={chooseComponentData.backgroundTransparent} onChange={this.handleChangeBackgroundTransparent}>背景透明</Checkbox>
+                    <Input type="color" value={chooseComponentData.background} onChange={this.handleChangeBackground}
+                           disabled={chooseComponentData.backgroundTransparent}/>
+                    <Checkbox checked={chooseComponentData.backgroundTransparent}
+                              onChange={this.handleChangeBackgroundTransparent}>背景透明</Checkbox>
                 </Form.Item>
                 <Form.Item label="边框">
                     <Row>
                         <Col span={7}>
-                            <Input value={chooseComponentData.borderWidth} onChange={this.handleChangeBorderWidth} />
+                            <Input value={chooseComponentData.borderWidth} onChange={this.handleChangeBorderWidth}/>
                         </Col>
                         <Col span={7} offset={1}>
-                            <Select value={chooseComponentData.borderLineType} onChange={this.handleChangeBorderLineType}>
+                            <Select value={chooseComponentData.borderLineType}
+                                    onChange={this.handleChangeBorderLineType}>
                                 <Option value="solid">直线</Option>
                                 <Option value="dashed">点线</Option>
                             </Select>
                         </Col>
                         <Col span={7} offset={1}>
-                            <Input type="color" value={chooseComponentData.borderColor} onChange={this.handleChangeBorderColor} />
+                            <Input type="color" value={chooseComponentData.borderColor}
+                                   onChange={this.handleChangeBorderColor}/>
                         </Col>
                     </Row>
                 </Form.Item>
@@ -258,7 +277,8 @@ export default class PageAttributesPanel extends React.Component {
             <div className="page-editor-attributes-panel-from-group-title">组件操作</div>
             <Row>
                 <Col span={7} offset={1}>
-                    <Button className="page-editor-attributes-panel-delete-button" block onClick={this.props.deleteComponent}>删除</Button>
+                    <Button className="page-editor-attributes-panel-delete-button" block
+                            onClick={this.props.deleteComponent}>删除</Button>
                 </Col>
                 <Col span={7} offset={1}>
                 </Col>

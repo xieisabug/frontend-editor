@@ -1,4 +1,4 @@
-import {Button, Form, Input, Modal, Select} from "antd";
+import {Form, Input, Modal, Select} from "antd";
 import * as PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
 import {WIDGET_TYPE} from "../../Constants";
@@ -9,6 +9,7 @@ export function ButtonEventBindDialog(props) {
     const [eventType, setEventType] = useState(props.data ? props.data.eventType: -1);
     const [postFieldList, setPostFieldList] = useState(props.data ? props.data.postFieldList: []);
     const [postUrl, setPostUrl] = useState(props.data ? props.data.postUrl: "");
+    const [code, setCode] = useState(props.data ? props.data.code: "");
 
     let formItemLayout = {
         labelCol: {
@@ -22,7 +23,8 @@ export function ButtonEventBindDialog(props) {
         props.onOk({
             eventType,
             postFieldList,
-            postUrl
+            postUrl,
+            code
         });
     }
 
@@ -30,6 +32,7 @@ export function ButtonEventBindDialog(props) {
         setEventType(props.data ? props.data.eventType: -1);
         setPostFieldList(props.data ? props.data.postFieldList: []);
         setPostUrl(props.data ? props.data.postUrl: "");
+        setCode(props.data ? props.data.code: "");
     }, [props.data]);
 
     function getEventTypeComponent() {
@@ -50,7 +53,10 @@ export function ButtonEventBindDialog(props) {
                 ];
             case 2:
                 return [
-
+                    <p>此方法需要谨慎使用，必须有编程经验，否则很容易出错</p>,
+                    <pre>{"function(widgetList) {"}</pre>,
+                    <Input.TextArea value={code} onChange={event => setCode(event.target.value)} />,
+                    <pre>{"}"}</pre>
                 ];
             default:
                 return null;
