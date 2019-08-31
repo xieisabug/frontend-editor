@@ -25,3 +25,5 @@ export const WIDGET_PROPERTY = {
 };
 
 export const ADSORPTION_POWER = 5;
+
+export const SERVER_HOST = "http://localhost:4001";

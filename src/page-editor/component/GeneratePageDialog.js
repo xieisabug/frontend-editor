@@ -1,9 +1,12 @@
 import {Button, Modal} from "antd";
 import * as PropTypes from "prop-types";
-import React from "react";
+import React, {useState} from "react";
 import {copyToClipboard} from "../../Utils";
+import {savePage, updatePage} from "../page.service";
 
 export default function GeneratePageDialog(props) {
+    const [randomNumber, setRandomNumber] = useState(-1);
+
     let metaData = props.metaData.map(i => { // 因为我是以380为页面宽度的，所以映射到小程序760rpx需要乘以2
         return Object.assign({}, i, {
             x: i.x * 2,
@@ -18,7 +21,19 @@ export default function GeneratePageDialog(props) {
         copyToClipboard(JSON.stringify(metaData, undefined, 4));
     }
 
-    console.log(metaData)
+    function savePageData() {
+        if (randomNumber !== -1) {
+            updatePage(randomNumber, props.metaData)
+                .then(function(res) {
+                    setRandomNumber(res.data);
+                })
+        } else {
+            savePage(props.metaData)
+                .then(function(res) {
+                    setRandomNumber(res.data);
+                })
+        }
+    }
 
     return [
         <Modal
@@ -38,9 +53,12 @@ export default function GeneratePageDialog(props) {
                 </div>
             </div>
             <div>
-                <p>2.直接下载页面文件。适用于生成文件自己编写逻辑层或者页面为纯展示页面的情况。</p>
+                <p>2.在线预览。点击保存之后，获取随机码，扫码小程序输入随机码即可预览。（不定期清除随机码，不可长期使用）</p>
                 <div>
-                    <Button>下载</Button>
+                    <Button onClick={savePageData}>保存</Button>
+                </div>
+                <div hidden={randomNumber === -1}>
+                    随机码：{randomNumber}
                 </div>
             </div>
             <div>
