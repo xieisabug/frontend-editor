@@ -44,6 +44,7 @@ export default function GeneratePageDialog(props) {
             onCancel={props.closeExportDialog}
             cancelButtonProps={{hidden: true}}
             zIndex={100000}
+            key={"model1"}
         >
             <p>生成页面有三个方式：</p>
             <div>
@@ -78,6 +79,7 @@ export default function GeneratePageDialog(props) {
             cancelButtonProps={{hidden: true}}
             zIndex={100000}
             width={800}
+            key={"model2"}
         >
             <div>
                 <Button onClick={copy}>复制</Button>

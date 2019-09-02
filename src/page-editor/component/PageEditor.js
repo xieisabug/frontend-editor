@@ -53,11 +53,13 @@ export default class PageEditor extends React.Component {
         this.hAssistLine = pageDom.querySelector(".h-assistant-line");
         this.vAssistLine = pageDom.querySelector(".v-assistant-line");
         this.changeSizeAreaDom = pageDom.querySelector(".page-editor-change-size-area");
+        this.choosePreviewDom = pageDom.querySelector(".page-editor-editor-preview-box");
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.chooseType !== prevProps.chooseType && this.props.chooseType !== "") {
-            this.choosePreviewDom = document.querySelector(".page-editor-editor-" + this.props.chooseType + "-preview-box");
+        if (this.props.chooseType !== prevProps.chooseType && this.props.chooseType !== -1) {
+            this.choosePreviewDom.style.width = WIDGET_PROPERTY[this.props.chooseType].width + "px";
+            this.choosePreviewDom.style.height = WIDGET_PROPERTY[this.props.chooseType].height + "px";
         }
 
         if (this.props.chooseComponentData !== prevProps.chooseComponentData && this.props.chooseComponentData) {
@@ -87,7 +89,7 @@ export default class PageEditor extends React.Component {
         this.chooseComponentData = null;
         this.chooseComponentIndex = -1;
 
-        if (this.props.chooseType === "") { // 处理选择已经添加的组件，进行选定的操作
+        if (this.props.chooseType === -1) { // 处理选择已经添加的组件，进行选定的操作
             const { widgetList } = this.props;
             let x = this.endX - this.miniAppPagePosition.left;
             let y = this.endY - this.miniAppPagePosition.top;
@@ -122,7 +124,7 @@ export default class PageEditor extends React.Component {
         this.endX = e.pageX;
         this.endY = e.pageY;
 
-        if (this.props.chooseType !== "") { // 处理选择了要添加的组件
+        if (this.props.chooseType !== -1) { // 处理选择了要添加的组件
             if (this.isInMiniAppPagePreview(e)) { // 在页面中，随着鼠标显示预览组件
                 let {top, left} = this.calPreviewPosition();
                 let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
@@ -342,7 +344,7 @@ export default class PageEditor extends React.Component {
     };
 
     onMouseUp = (e) => {
-        if (this.props.chooseType !== "") { // 确定添加组件的位置
+        if (this.props.chooseType !== -1) { // 确定添加组件的位置
             if (this.isInMiniAppPagePreview(e)) {
                 let {top, left} = this.calPreviewPosition();
                 let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
@@ -433,7 +435,6 @@ export default class PageEditor extends React.Component {
                 }
                 this.props.addWidget(data);
                 this.choosePreviewDom.style.display = `none`;
-                this.choosePreviewDom = null;
             }
         } else {
             if (this.isMouseDown) {
@@ -631,7 +632,7 @@ export default class PageEditor extends React.Component {
     }
 
     render() {
-        let editorPageClassName = classNames("page-editor-editor-page", {"selected-tool": this.props.chooseType !== ""});
+        let editorPageClassName = classNames("page-editor-editor-page", {"selected-tool": this.props.chooseType !== -1});
 
         return (
             <div className="page-editor-editor-container">
@@ -641,26 +642,7 @@ export default class PageEditor extends React.Component {
                     <ChangeSizeAreaComponent chooseComponentData={this.props.chooseComponentData}/>
                     <MovePreviewAreaComponent chooseComponentData={this.props.chooseComponentData}/>
 
-                    <div className={"page-editor-editor-" + WIDGET_TYPE.BUTTON + "-preview-box"}
-                         style={{
-                             width: WIDGET_PROPERTY[WIDGET_TYPE.BUTTON].width + "px",
-                             height: WIDGET_PROPERTY[WIDGET_TYPE.BUTTON].height + "px"
-                         }}/>
-                    <div className={"page-editor-editor-" + WIDGET_TYPE.IMAGE + "-preview-box"}
-                         style={{
-                             width: WIDGET_PROPERTY[WIDGET_TYPE.IMAGE].width + "px",
-                             height: WIDGET_PROPERTY[WIDGET_TYPE.IMAGE].height + "px"
-                         }}/>
-                    <div className={"page-editor-editor-" + WIDGET_TYPE.TEXT + "-preview-box"}
-                         style={{
-                             width: WIDGET_PROPERTY[WIDGET_TYPE.TEXT].width + "px",
-                             height: WIDGET_PROPERTY[WIDGET_TYPE.TEXT].height + "px"
-                         }}/>
-                    <div className={"page-editor-editor-" + WIDGET_TYPE.INPUT + "-preview-box"}
-                         style={{
-                             width: WIDGET_PROPERTY[WIDGET_TYPE.INPUT].width + "px",
-                             height: WIDGET_PROPERTY[WIDGET_TYPE.INPUT].height + "px"
-                         }}/>
+                    <div className={"page-editor-editor-preview-box"} />
 
                     <div className="h-assistant-line" />
                     <div className="v-assistant-line" />

@@ -10,6 +10,7 @@ import AboutDialog from "./component/AboutDialog";
 
 import "./style/page-editor.css"
 import {ButtonEventBindDialog} from "./component/ButtonEventBindDialog";
+import {WIDGET_TYPE} from "../Constants";
 
 
 class PageEditorIndex extends React.Component {
@@ -18,7 +19,7 @@ class PageEditorIndex extends React.Component {
         super(props, context);
 
         this.state = {
-            chooseType: "",
+            chooseType: -1,
             widgetList: [],
             chooseComponentIndex: -1,
             chooseComponentData: null,
@@ -91,7 +92,7 @@ class PageEditorIndex extends React.Component {
     handleChooseWidgetType = (type) => {
         if (this.state.chooseType === type) {
             this.setState({
-                chooseType: ""
+                chooseType: -1
             })
         } else {
             this.setState({
@@ -108,7 +109,7 @@ class PageEditorIndex extends React.Component {
         widgetList.push(data);
 
         this.setState({
-            chooseType: "",
+            chooseType: -1,
             widgetList
         })
     };
@@ -179,6 +180,8 @@ class PageEditorIndex extends React.Component {
         return (
             <div className="page-editor">
                 <Toolbar
+                    buttonList={[WIDGET_TYPE.BUTTON, WIDGET_TYPE.IMAGE, WIDGET_TYPE.INPUT, WIDGET_TYPE.TEXT,
+                        WIDGET_TYPE.CHECKBOX, WIDGET_TYPE.RADIO, WIDGET_TYPE.TEXTAREA, WIDGET_TYPE.GALLERY]}
                     chooseType={this.state.chooseType}
                     handleChooseWidgetType={this.handleChooseWidgetType}
                     onExportButtonClick={this.handleOpenExportDialog}

@@ -86,17 +86,7 @@
     justify-content: center;
 }
 
-/*button*/
-.page-editor-editor-1-preview-box {
-    display: none;
-    position: absolute;
-    border: 1px solid cornflowerblue;
-    border-radius: 3px;
-    top: 0;
-    left: 0;
-}
-/*image*/
-.page-editor-editor-4-preview-box, .page-editor-editor-2-preview-box, .page-editor-editor-3-preview-box {
+.page-editor-editor-preview-box {
     display: none;
     position: absolute;
     border: 1px solid cornflowerblue;

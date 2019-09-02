@@ -2,48 +2,36 @@ import React from "react";
 import {Button} from "antd";
 import classNames from "classnames";
 
-import {WIDGET_TYPE} from "../../Constants";
+import {WIDGET_PROPERTY} from "../../Constants";
 import * as PropTypes from "prop-types";
 
 
 function IconButtonComponent(props) {
     let buttonClassName = classNames("page-editor-toolbar-widget-item", {"active": props.active});
-    let iconClassName = classNames("iconfont", props.icon);
+    let iconClassName = classNames("iconfont", WIDGET_PROPERTY[props.type].icon);
+    function handleClick() {
+        props.onClick(props.type);
+    }
     return <div
         className={buttonClassName}
-        onClick={props.onClick}
-        title={props.tips}>
+        onClick={handleClick}
+        title={WIDGET_PROPERTY[props.type].tips}>
         <i className={iconClassName}/>
     </div>;
 }
 
 function Toolbar(props) {
 
-    const handleChooseButton = () => {
-        props.handleChooseWidgetType(WIDGET_TYPE.BUTTON);
-    };
-
-    const handleChooseImage = () => {
-        props.handleChooseWidgetType(WIDGET_TYPE.IMAGE);
-    };
-
-    const handleChooseInput = () => {
-        props.handleChooseWidgetType(WIDGET_TYPE.INPUT);
-    };
-
-    const handleChooseText = () => {
-        props.handleChooseWidgetType(WIDGET_TYPE.TEXT);
-    };
+    function handleChoose(type){
+        props.handleChooseWidgetType(type);
+    }
 
     return <div className="page-editor-toolbar">
-        <IconButtonComponent active={props.chooseType === WIDGET_TYPE.BUTTON} onClick={handleChooseButton}
-                             icon="icon-button" tips="按钮"/>
-        <IconButtonComponent active={props.chooseType === WIDGET_TYPE.IMAGE} onClick={handleChooseImage}
-                             icon="icon-image" tips="图片"/>
-        <IconButtonComponent active={props.chooseType === WIDGET_TYPE.INPUT} onClick={handleChooseInput}
-                             icon="icon-input" tips="输入框"/>
-        <IconButtonComponent active={props.chooseType === WIDGET_TYPE.TEXT} onClick={handleChooseText}
-                             icon="icon-text" tips="文字"/>
+        {
+            props.buttonList.map(function(i) {
+                return <IconButtonComponent type={i} active={props.chooseType === i} onClick={handleChoose} key={i} />
+            })
+        }
         <div style={{flex: 1}}/>
         <Button onClick={props.onExportButtonClick} size="small" className="right-space">导出</Button>
         <Button onClick={props.onAboutButtonClick} size="small">关于</Button>
@@ -55,6 +43,7 @@ Toolbar.propTypes = {
     handleChooseWidgetType: PropTypes.func,
     onExportButtonClick: PropTypes.func,
     onAboutButtonClick: PropTypes.func,
+    buttonList: PropTypes.array,
 };
 
 export default Toolbar;
