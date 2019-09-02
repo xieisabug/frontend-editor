@@ -8,6 +8,7 @@ import ChangeSizeAreaComponent from "./ChangeSizeArea";
 import MovePreviewAreaComponent from "./MovePreviewArea";
 import WidgetInput from "./widget/WidgetInput";
 import WidgetText from "./widget/WidgetText";
+import WidgetGallery from "./widget/WidgetGallery";
 
 export default class PageEditor extends React.Component {
 
@@ -430,6 +431,9 @@ export default class PageEditor extends React.Component {
                         data.backgroundTransparent = false;
                         data.name = "data" + this.dataGen++; // 数据组件唯一标识
                         break;
+                    case WIDGET_TYPE.GALLERY:
+                        data.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658";
+                        break;
                     default:
                         break;
                 }
@@ -625,6 +629,8 @@ export default class PageEditor extends React.Component {
                     return <WidgetInput data={w} key={w.id} />;
                 case WIDGET_TYPE.TEXT:
                     return <WidgetText data={w} key={w.id} />;
+                case WIDGET_TYPE.GALLERY:
+                    return <WidgetGallery data={w} key={w.id}/>
                 default:
                     return null;
             }
