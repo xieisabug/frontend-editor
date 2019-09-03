@@ -8,7 +8,7 @@ export default function WidgetGallery(props) {
         <img className={`widget-gallery-image`} draggable="false" src={props.data.srcList.length && props.data.srcList[0]} alt=""/>
         <div className={"widget-gallery-dot-container"} style={{display: props.data.showDots ? "flex": "none"}}>
             {props.data.srcList.map((i, index) => {
-                return <div className={"widget-gallery-dot"} style={{backgroundColor: index === 0 ? props.data.activeDotsColor: props.data.dotsColor}} />;
+                return <div key={index} className={"widget-gallery-dot"} style={{backgroundColor: index === 0 ? props.data.activeDotsColor: props.data.dotsColor}} />;
             })}
         </div>
     </div>

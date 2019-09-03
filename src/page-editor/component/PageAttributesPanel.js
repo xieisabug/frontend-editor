@@ -251,7 +251,7 @@ export default class PageAttributesPanel extends React.Component {
                     <Form.Item label="图片列表">
                         {
                             this.props.chooseComponentData.srcList.map((s, index) => {
-                                return <Row>
+                                return <Row key={index}>
                                     <Col span={21}>
                                         <Input value={s} onChange={this.handleChangeSrcList(index)}/>
                                     </Col>
