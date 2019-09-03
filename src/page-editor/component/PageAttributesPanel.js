@@ -35,6 +35,9 @@ export default class PageAttributesPanel extends React.Component {
         this.handleSlideChangeInterval = this.handleSlideChange.bind(this, "interval");
         this.handleChangeInterval = this.handleNumberInputChange.bind(this, "interval");
         this.handleChangeCircular = this.handleCheckBoxChange.bind(this, "circular");
+        this.handleChangeSrcList = this.handleListInputChange.bind(this, "srcList");
+        this.handleDeleteSrcList = this.handleListDelete.bind(this, "srcList");
+        this.handleAddSrcList = this.handleListInputAdd.bind(this, "srcList");
 
         this.formItemLayout = {
             labelCol: {
@@ -72,6 +75,34 @@ export default class PageAttributesPanel extends React.Component {
 
     handleSlideChange(field, value) {
         this.handleInputChange(field, value)
+    }
+
+    handleListInputChange(field, index) {
+        return (event) => {
+            let list = this.props.chooseComponentData[field].slice();
+            list[index] = event.target.value;
+            this.props.editWidget(this.props.chooseComponentIndex, {
+                [field]: list
+            }, true)
+        }
+    }
+
+    handleListDelete(field, index) {
+        return (event) => {
+            let list = this.props.chooseComponentData[field].slice();
+            list.splice(index, 1);
+            this.props.editWidget(this.props.chooseComponentIndex, {
+                [field]: list
+            }, true)
+        }
+    }
+
+    handleListInputAdd(field) {
+        let list = this.props.chooseComponentData[field].slice();
+        list.push("");
+        this.props.editWidget(this.props.chooseComponentIndex, {
+            [field]: list
+        }, true)
     }
 
     setXLeft = () => {
@@ -217,6 +248,23 @@ export default class PageAttributesPanel extends React.Component {
                 ];
             case WIDGET_TYPE.GALLERY:
                 return [
+                    <Form.Item label="图片列表">
+                        {
+                            this.props.chooseComponentData.srcList.map((s, index) => {
+                                return <Row>
+                                    <Col span={21}>
+                                        <Input value={s} onChange={this.handleChangeSrcList(index)}/>
+                                    </Col>
+                                    <Col span={2} offset={1}>
+                                        <Button type="primary" size="small" shape="circle" icon="minus" onClick={this.handleDeleteSrcList(index)} />
+                                    </Col>
+                                </Row>
+                            })
+                        }
+                        <Row>
+                            <Button type="primary" size="small" shape="circle" icon="plus" onClick={this.handleAddSrcList}/>
+                        </Row>
+                    </Form.Item>,
                     <Form.Item label="显示指示点">
                         <Checkbox checked={this.props.chooseComponentData.showDots}
                                   onChange={this.handleChangeShowDots} />
