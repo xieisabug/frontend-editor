@@ -188,9 +188,6 @@ class PageEditorIndex extends React.Component {
                     onAboutButtonClick={this.handleOpenAboutDialog}
                 />
                 <div className="page-editor-center-container">
-                    <PageThumb
-                        pages={this.props.pages}
-                    />
                     <PageEditor
                         chooseType={this.state.chooseType}
                         addWidget={this.addWidget}

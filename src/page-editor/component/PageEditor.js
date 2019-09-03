@@ -404,7 +404,7 @@ export default class PageEditor extends React.Component {
                         data.textSize = 14;
                         data.textAlign = "center";
                         data.alignItems = "center";
-                        data.textColor = "#000";
+                        data.textColor = "#000000";
                         data.eventType = -1;
                         data.postFieldList = [];
                         data.postUrl = "";
@@ -418,7 +418,7 @@ export default class PageEditor extends React.Component {
                         data.text = "Text";
                         data.textSize = 14;
                         data.textAlign = "left";
-                        data.textColor = "#000";
+                        data.textColor = "#000000";
                         break;
                     case WIDGET_TYPE.INPUT:
                         data.inputType = "text";
@@ -427,12 +427,18 @@ export default class PageEditor extends React.Component {
                         data.textSize = 14;
                         data.textAlign = "flex-start";
                         data.alignItems = "center";
-                        data.textColor = "#000";
+                        data.textColor = "#000000";
                         data.backgroundTransparent = false;
                         data.name = "data" + this.dataGen++; // 数据组件唯一标识
                         break;
                     case WIDGET_TYPE.GALLERY:
                         data.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658";
+                        data.showDots = true;
+                        data.autoplay = true;
+                        data.dotsColor = "#ffffff";
+                        data.activeDotsColor = "#666666";
+                        data.interval = 5;
+                        data.circular = true;
                         break;
                     default:
                         break;
@@ -630,7 +636,7 @@ export default class PageEditor extends React.Component {
                 case WIDGET_TYPE.TEXT:
                     return <WidgetText data={w} key={w.id} />;
                 case WIDGET_TYPE.GALLERY:
-                    return <WidgetGallery data={w} key={w.id}/>
+                    return <WidgetGallery data={w} key={w.id}/>;
                 default:
                     return null;
             }

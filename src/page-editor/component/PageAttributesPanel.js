@@ -28,6 +28,13 @@ export default class PageAttributesPanel extends React.Component {
         this.handleChangeTextAlign = this.handleTextInputChange.bind(this, "textAlign");
         this.handleChangeAlignItems = this.handleTextInputChange.bind(this, "alignItems");
         this.handleChangeInputType = this.handleSelectChange.bind(this, "inputType");
+        this.handleChangeShowDots = this.handleCheckBoxChange.bind(this, "showDots");
+        this.handleChangeDotsColor = this.handleTextInputChange.bind(this, "dotsColor");
+        this.handleChangeActiveDotsColor = this.handleTextInputChange.bind(this, "activeDotsColor");
+        this.handleChangeAutoplay = this.handleCheckBoxChange.bind(this, "autoplay");
+        this.handleSlideChangeInterval = this.handleSlideChange.bind(this, "interval");
+        this.handleChangeInterval = this.handleNumberInputChange.bind(this, "interval");
+        this.handleChangeCircular = this.handleCheckBoxChange.bind(this, "circular");
 
         this.formItemLayout = {
             labelCol: {
@@ -206,6 +213,44 @@ export default class PageAttributesPanel extends React.Component {
                 return [
                     <Form.Item label="地址">
                         <Input value={this.props.chooseComponentData.src} onChange={this.handleChangeSrc}/>
+                    </Form.Item>,
+                ];
+            case WIDGET_TYPE.GALLERY:
+                return [
+                    <Form.Item label="显示指示点">
+                        <Checkbox checked={this.props.chooseComponentData.showDots}
+                                  onChange={this.handleChangeShowDots} />
+                    </Form.Item>,
+                    <Form.Item label="点颜色">
+                        <Input type="color" disabled={!this.props.chooseComponentData.showDots} value={this.props.chooseComponentData.dotsColor} onChange={this.handleChangeDotsColor}/>
+                    </Form.Item>,
+                    <Form.Item label="选中点颜色">
+                        <Input type="color" disabled={!this.props.chooseComponentData.showDots} value={this.props.chooseComponentData.activeDotsColor} onChange={this.handleChangeActiveDotsColor}/>
+                    </Form.Item>,
+                    <Form.Item label="自动切换">
+                        <Checkbox checked={this.props.chooseComponentData.autoplay}
+                                  onChange={this.handleChangeAutoplay} />
+                    </Form.Item>,
+                    <Form.Item label="切换时长">
+                        <Col span={16}>
+                            <Slider
+                                min={1}
+                                max={10}
+                                onChange={this.handleSlideChangeInterval}
+                                value={this.props.chooseComponentData.interval}
+                                disabled={!this.props.chooseComponentData.autoplay}
+                            />
+                        </Col>
+                        <Col span={5} offset={1}>
+                            <Input value={this.props.chooseComponentData.interval} onChange={this.handleChangeInterval} disabled={!this.props.chooseComponentData.autoplay}/>
+                        </Col>
+                        <Col span={1} offset={1}>
+                            <span>秒</span>
+                        </Col>
+                    </Form.Item>,
+                    <Form.Item label="循环切换">
+                        <Checkbox checked={this.props.chooseComponentData.circular}
+                                  onChange={this.handleChangeCircular} />
                     </Form.Item>,
                 ];
             default:
