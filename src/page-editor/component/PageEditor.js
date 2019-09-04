@@ -144,7 +144,7 @@ export default class PageEditor extends React.Component {
                 }
 
 
-                this.props.widgetList.every(w => {
+                this.props.widgetList.some(w => {
                     if (!vFind) { // 没有页面级辅助线的情况下
                         if (Math.abs(w.x - left) <= ADSORPTION_POWER) { // 检查组件左侧
                             left = w.x;
@@ -207,7 +207,7 @@ export default class PageEditor extends React.Component {
                         }
                     }
 
-                    return !vFind && !hFind;
+                    return vFind && hFind;
                 });
 
                 this.vAssistLine.style.display = vFind ? "block" : "none";
@@ -265,7 +265,7 @@ export default class PageEditor extends React.Component {
                         vFind = true;
                     }
 
-                    this.props.widgetList.every(w => {
+                    this.props.widgetList.some(w => {
                         if (!vFind) {
                             if (w.id === this.chooseComponentData.id) return true;
                             if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
@@ -330,7 +330,7 @@ export default class PageEditor extends React.Component {
                             }
                         }
 
-                        return !vFind && !hFind;
+                        return vFind && hFind;
                     });
 
                     this.vAssistLine.style.display = vFind ? "block" : "none";
