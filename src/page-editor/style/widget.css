@@ -9,17 +9,35 @@
     background: white;
     border-radius: 3px;
 }
+
 .widget-image {
     border: 1px solid #ccc;
 }
+
 .widget-text {
 }
+
 .widget-input {
     display: flex;
     border: 1px solid #ccc;
     background: white;
     font-size: 14px;
 }
+
+.widget-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.widget-checkbox-box {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #666;
+    border-radius: 2px;
+    margin-right: 5px;
+    background: white;
+}
+
 .widget-gallery {
 }
 .widget-gallery-image {

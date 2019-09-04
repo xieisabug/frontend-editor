@@ -24,3 +24,13 @@ TODO
 - [ ] scrollview组件
 - [ ] list组件
 - [ ] 多页面的设置
+
+
+## widget
+
+1. Constants.js里面增加Widget的property。
+2. PageEditor.js里renderWidget增加render。
+3. widget.css里面增加widget的css。
+4. PageEditor.js里onMouseUp增加data数据处理。
+5. PageAttributesPanel.js里增加修改特殊属性的dom。
+6. 如果是数组组件需要在ButtonEventBindDialog.js里要增加数据类型的筛选并且data中必须要有name属性
