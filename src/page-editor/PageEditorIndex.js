@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import Toolbar from "./component/Toolbar"
-import PageThumb from "./component/PageThumb";
 import PageEditor from "./component/PageEditor";
 import PageAttributesPanel from "./component/PageAttributesPanel";
 import GeneratePageDialog from "./component/GeneratePageDialog";
