@@ -255,6 +255,15 @@ export default class PageAttributesPanel extends React.Component {
                         <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName}/>
                     </Form.Item>,
                 ];
+            case WIDGET_TYPE.RADIO:
+                return [
+                    <Form.Item label="文字">
+                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/>
+                    </Form.Item>,
+                    <Form.Item label="值名">
+                        <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName}/>
+                    </Form.Item>,
+                ];
             case WIDGET_TYPE.GALLERY:
                 return [
                     <Form.Item label="图片列表">

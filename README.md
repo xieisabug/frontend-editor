@@ -16,7 +16,7 @@ TODO
 - [ ] h5生成
 - [ ] 各个组件theme的选择
 - [ ] 轻富文本组件
-- [ ] checkbox组件
+- [x] checkbox组件
 - [ ] radio组件
 - [ ] textarea组件
 - [ ] slider组件
