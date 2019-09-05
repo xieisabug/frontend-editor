@@ -38,7 +38,7 @@ export function ButtonEventBindDialog(props) {
     function getEventTypeComponent() {
         switch (eventType) {
             case 1:
-                let dataComponentName = props.widgetList.filter(i => i.type === WIDGET_TYPE.INPUT || i.type === WIDGET_TYPE.CHECKBOX || WIDGET_TYPE.RADIO).map(i => i.name);
+                let dataComponentName = Array.from(new Set(props.widgetList.filter(i => i.type === WIDGET_TYPE.INPUT || i.type === WIDGET_TYPE.CHECKBOX || i.type === WIDGET_TYPE.RADIO).map(i => i.name)));
                 return [
                     <p>只支持post方式提交</p>,
                     <Form.Item label="提交地址">

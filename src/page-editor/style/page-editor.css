@@ -87,6 +87,9 @@
     align-items: center;
     justify-content: center;
 }
+.page-editor-attributes-panel-tips {
+    color: #ccc;
+}
 
 .page-editor-editor-preview-box {
     display: none;

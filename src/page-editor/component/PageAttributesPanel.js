@@ -262,6 +262,7 @@ export default class PageAttributesPanel extends React.Component {
                     </Form.Item>,
                     <Form.Item label="值名">
                         <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName}/>
+                        <div className={"page-editor-attributes-panel-tips"}>* 相同值名的radio会互斥</div>
                     </Form.Item>,
                 ];
             case WIDGET_TYPE.GALLERY:
