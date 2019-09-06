@@ -9,11 +9,11 @@ export default function GeneratePageDialog(props) {
 
     let metaData = props.metaData.map(i => { // 因为我是以380为页面宽度的，所以映射到小程序760rpx需要乘以2
         return Object.assign({}, i, {
-            x: i.x * 2,
-            y: i.y * 2,
-            width: i.width * 2,
-            height: i.height * 2,
-            borderWidth: i.borderWidth * 2
+            x: i.x,
+            y: i.y,
+            width: i.width,
+            height: i.height,
+            borderWidth: i.borderWidth
         })
     });
 

@@ -17,10 +17,10 @@ TODO
 - [ ] 各个组件theme的选择
 - [ ] 轻富文本组件
 - [x] checkbox组件
-- [ ] radio组件
+- [x] radio组件
 - [ ] textarea组件
 - [ ] slider组件
-- [ ] swiper组件
+- [x] swiper组件
 - [ ] scrollview组件
 - [ ] list组件
 - [ ] 多页面的设置
