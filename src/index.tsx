@@ -8,7 +8,12 @@ import './index.css';
 
 import PageEditorIndex from './page-editor/PageEditorIndex';
 import * as serviceWorker from './serviceWorker';
-import rootReducer from "./reducer/reducer"
+import rootReducer from "./reducer/reducer";
+import {DataKeyGenerator, IdGenerator, ZIndexGenerator} from "./Utils";
+
+IdGenerator.init();
+ZIndexGenerator.init();
+DataKeyGenerator.init();
 
 function configureStore() {
     return createStore(

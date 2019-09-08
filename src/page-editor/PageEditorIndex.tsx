@@ -10,6 +10,7 @@ import AboutDialog from "./component/AboutDialog";
 import "./style/page-editor.css"
 import {ButtonEventBindDialog} from "./component/ButtonEventBindDialog";
 import {WIDGET_TYPE} from "../Constants";
+import {DataKeyGenerator, IdGenerator} from "../Utils";
 
 class PageEditorIndex extends React.Component<any, any> {
 
@@ -22,6 +23,8 @@ class PageEditorIndex extends React.Component<any, any> {
     handleOpenButtonEventBindDialog: any;
     handleCloseButtonEventBindDialog: any;
 
+    copyComponentData: any;
+
     constructor(props: any, context: any) {
         super(props, context);
 
@@ -33,7 +36,8 @@ class PageEditorIndex extends React.Component<any, any> {
             mainDialogIsOpen: false,
             metaDataDialogIsOpen: false,
             aboutDialogIsOpen: false,
-            buttonEventBindDialogIsOpen: false
+            buttonEventBindDialogIsOpen: false,
+            ctrlIsDown: false,
         };
 
         this.handleOpenExportDialog = this.handleChangeDialogStatus.bind(this, "mainDialog", true);
@@ -47,7 +51,8 @@ class PageEditorIndex extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        document.addEventListener("keydown", this.handleKeyDown)
+        document.addEventListener("keydown", this.handleKeyDown);
+        document.addEventListener("keyup", this.handleKeyUp);
     }
 
     /**
@@ -87,6 +92,39 @@ class PageEditorIndex extends React.Component<any, any> {
                         x: this.state.chooseComponentData.x + 1 > 380 ? 380 : this.state.chooseComponentData.x + 1
                     }, true)
                 }
+                break;
+            case "KeyC":
+                if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
+                    this.copyComponentData = Object.assign({}, this.state.chooseComponentData);
+                }
+                break;
+            case "ControlLeft":
+                this.setState({
+                    ctrlIsDown: e.ctrlKey
+                });
+                break;
+            default:
+                break;
+        }
+    };
+
+    handleKeyUp = (e: any) => {
+        switch (e.code) {
+            case "KeyV":
+                if (e.target.tagName !== "INPUT" && this.copyComponentData) {
+                    this.addWidget(Object.assign({}, this.copyComponentData, {
+                        id: IdGenerator.instance.getKey(),
+                        name: this.copyComponentData.isDataWidget ? "copy" + DataKeyGenerator.instance.getKey() : this.copyComponentData.name,
+                        x: this.copyComponentData.x - 10 < 0 ? this.copyComponentData.x + 10: this.copyComponentData.x - 10,
+                        y: this.copyComponentData.y - 10 < 0 ? this.copyComponentData.y + 10: this.copyComponentData.y - 10,
+                        z: this.copyComponentData.z + 1
+                    }));
+                }
+                break;
+            case "ControlLeft":
+                this.setState({
+                    ctrlIsDown: e.ctrlKey
+                });
                 break;
             default:
                 break;
@@ -204,6 +242,8 @@ class PageEditorIndex extends React.Component<any, any> {
 
                         handleChooseComponentData={this.handleChooseComponentData}
                         chooseComponentData={this.state.chooseComponentData}
+
+                        ctrlIsDown={this.state.ctrlIsDown}
                     />
                     <PageAttributesPanel
                         chooseComponentData={this.state.chooseComponentData}

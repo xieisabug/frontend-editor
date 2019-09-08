@@ -72,6 +72,9 @@
 .page-editor-editor-page.selected-tool {
     cursor: move;
 }
+.page-editor-editor-page.ctrl-is-down {
+    cursor: copy;
+}
 
 .page-editor-attributes-panel {
     flex: 0 0 400px;

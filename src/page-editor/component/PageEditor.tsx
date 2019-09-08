@@ -11,12 +11,10 @@ import WidgetText from "./widget/WidgetText";
 import WidgetGallery from "./widget/WidgetGallery";
 import WidgetCheckbox from "./widget/WidgetCheckbox";
 import WidgetRadio from "./widget/WidgetRadio";
+import {DataKeyGenerator, IdGenerator, ZIndexGenerator} from "../../Utils";
 
 export default class PageEditor extends React.Component<any, any> {
 
-    idGen = 1; // id计数
-    zGen = 1; // zIndex计数
-    dataGen = 1; // data组件计数
     isMouseDown = false;
     startX = 0; // 鼠标点击开始x
     startY = 0; // 鼠标点击开始y
@@ -36,13 +34,6 @@ export default class PageEditor extends React.Component<any, any> {
 
     hAssistLine: any = null;
     vAssistLine: any = null;
-
-    constructor(props: any, context: any) {
-        super(props, context);
-
-        this.state = {
-        }
-    }
 
     componentDidMount() {
         this.calMiniAppPagePosition();
@@ -387,13 +378,13 @@ export default class PageEditor extends React.Component<any, any> {
                 this.hAssistLine.style.display = "none";
 
                 const data:any = {
-                    id: this.idGen++,
+                    id: IdGenerator.instance.getKey(),
                     type: this.props.chooseType,
                     x: left,
                     y: top,
                     width: WIDGET_PROPERTY[this.props.chooseType].width,
                     height: WIDGET_PROPERTY[this.props.chooseType].height,
-                    z: this.zGen++,
+                    z: ZIndexGenerator.instance.getKey(),
                     background: "#ffffff",
                     backgroundTransparent: true,
                     borderWidth: 0,
@@ -432,15 +423,18 @@ export default class PageEditor extends React.Component<any, any> {
                         data.alignItems = "center";
                         data.textColor = "#000000";
                         data.backgroundTransparent = false;
-                        data.name = "input" + this.dataGen++; // 数据组件唯一标识
+                        data.isDataWidget = true;
+                        data.name = "input" + DataKeyGenerator.instance.getKey(); // 数据组件唯一标识
                         break;
                     case WIDGET_TYPE.CHECKBOX:
                         data.text = "选项";
-                        data.name = "checkbox" + this.dataGen++; // 数据组件唯一标识
+                        data.isDataWidget = true;
+                        data.name = "checkbox" + DataKeyGenerator.instance.getKey(); // 数据组件唯一标识
                         break;
                     case WIDGET_TYPE.RADIO:
                         data.text = "选项";
-                        data.name = "radio" + this.dataGen++; // 数据组件唯一标识
+                        data.isDataWidget = true;
+                        data.name = "radio" + DataKeyGenerator.instance.getKey(); // 数据组件唯一标识
                         break;
                     case WIDGET_TYPE.GALLERY:
                         data.srcList = ["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658"];
@@ -661,7 +655,10 @@ export default class PageEditor extends React.Component<any, any> {
     }
 
     render() {
-        let editorPageClassName = classNames("page-editor-editor-page", {"selected-tool": this.props.chooseType !== -1});
+        let editorPageClassName = classNames("page-editor-editor-page", {
+            "selected-tool": this.props.chooseType !== -1,
+            "ctrl-is-down": this.props.ctrlIsDown
+        });
 
         return (
             <div className="page-editor-editor-container">
