@@ -536,11 +536,19 @@ export default class PageEditor extends React.Component<any, any> {
                         x: this.chooseComponentData.x + left,
                         y: this.chooseComponentData.y + top
                     };
-                    Object.assign(this.chooseComponentData, changeData);
                     this.movePreviewDom.style.display = "none";
                     this.movePreviewDom.style.transform = null;
 
-                    this.props.editWidget(this.chooseComponentIndex, changeData, true);
+                    if (this.props.ctrlIsDown) {
+                        this.props.addWidget(Object.assign({}, this.props.chooseComponentData, changeData, {
+                            id: IdGenerator.instance.getKey(),
+                            name: this.props.chooseComponentData.isDataWidget ? "copy" + DataKeyGenerator.instance.getKey() : this.props.chooseComponentData.name,
+                            z: this.props.chooseComponentData.z + 1
+                        }))
+                    } else {
+                        Object.assign(this.chooseComponentData, changeData);
+                        this.props.editWidget(this.chooseComponentIndex, changeData, true);
+                    }
                 }
             }
         }
