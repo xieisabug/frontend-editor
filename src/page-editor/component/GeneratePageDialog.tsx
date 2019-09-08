@@ -1,13 +1,14 @@
 import {Button, Modal} from "antd";
 import * as PropTypes from "prop-types";
-import React, {useState} from "react";
+import * as React from "react";
+import {useState} from "react";
 import {copyToClipboard} from "../../Utils";
 import {savePage, updatePage} from "../page.service";
 
-export default function GeneratePageDialog(props) {
+export default function GeneratePageDialog(props: any) {
     const [randomNumber, setRandomNumber] = useState(-1);
 
-    let metaData = props.metaData.map(i => { // 因为我是以380为页面宽度的，所以映射到小程序760rpx需要乘以2
+    let metaData = props.metaData.map((i: any) => { // 因为我是以380为页面宽度的，所以映射到小程序760rpx需要乘以2
         return Object.assign({}, i, {
             x: i.x,
             y: i.y,
@@ -35,7 +36,7 @@ export default function GeneratePageDialog(props) {
         }
     }
 
-    return [
+    return <React.Fragment>
         <Modal
             title="生成页面"
             visible={props.mainDialogIsOpen}
@@ -69,7 +70,7 @@ export default function GeneratePageDialog(props) {
                     <Button>获取元数据</Button>
                 </div>
             </div>
-        </Modal>,
+        </Modal>
         <Modal
             title="元数据"
             visible={props.metaDataDialogIsOpen}
@@ -88,7 +89,7 @@ export default function GeneratePageDialog(props) {
                 {JSON.stringify(metaData, undefined, 4)}
             </pre>
         </Modal>
-    ];
+    </React.Fragment>;
 }
 
 GeneratePageDialog.propTypes = {

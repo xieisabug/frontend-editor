@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {getCommonStyle} from "../../../Utils";
 
-export default function WidgetInput(props) {
+export default function WidgetInput(props: any) {
     const style = Object.assign({}, getCommonStyle(props), {
         fontSize: props.data.textSize + "px",
         color: props.data.textColor,

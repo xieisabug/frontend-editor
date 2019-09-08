@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default function MovePreviewAreaComponent(props) {
+export default function MovePreviewAreaComponent(props: any) {
 
     let style = {};
     if (props.chooseComponentData) {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import classNames from "classnames";
 
-export default function ChangeSizeAreaComponent(props) {
+export default function ChangeSizeAreaComponent(props: any) {
     let changeSizeAreaClassName = classNames("page-editor-change-size-area", { "show": props.chooseComponentData !== null });
 
     return <div className={changeSizeAreaClassName}>

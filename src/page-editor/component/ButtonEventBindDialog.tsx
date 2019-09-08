@@ -1,11 +1,12 @@
 import {Form, Input, Modal, Select} from "antd";
 import * as PropTypes from "prop-types";
-import React, {useEffect, useState} from "react";
+import * as React from "react";
+import {useEffect, useState} from "react";
 import {WIDGET_TYPE} from "../../Constants";
 
 const { Option } = Select;
 
-export function ButtonEventBindDialog(props) {
+export function ButtonEventBindDialog(props: any) {
     const [eventType, setEventType] = useState(props.data ? props.data.eventType: -1);
     const [postFieldList, setPostFieldList] = useState(props.data ? props.data.postFieldList: []);
     const [postUrl, setPostUrl] = useState(props.data ? props.data.postUrl: "");
@@ -38,7 +39,14 @@ export function ButtonEventBindDialog(props) {
     function getEventTypeComponent() {
         switch (eventType) {
             case 1:
-                let dataComponentName = Array.from(new Set(props.widgetList.filter(i => i.type === WIDGET_TYPE.INPUT || i.type === WIDGET_TYPE.CHECKBOX || i.type === WIDGET_TYPE.RADIO).map(i => i.name)));
+                let dataComponentName: Array<string> =
+                    Array.from(
+                        new Set(
+                            props.widgetList
+                                .filter((i: any) => i.type === WIDGET_TYPE.INPUT || i.type === WIDGET_TYPE.CHECKBOX || i.type === WIDGET_TYPE.RADIO)
+                                .map((i: any) => i.name)
+                        )
+                    );
                 return [
                     <p>只支持post方式提交</p>,
                     <Form.Item label="提交地址">
@@ -47,7 +55,7 @@ export function ButtonEventBindDialog(props) {
                     <Form.Item label="提交字段">
                         <Select mode={"multiple"} value={postFieldList} onChange={setPostFieldList} dropdownStyle={{zIndex: 100001}}>
                             <Option value={-1}>无</Option>
-                            {dataComponentName.map(i => <Option value={i}>{i}</Option>)}
+                            {dataComponentName.map((i:string) => <Option value={i}>{i}</Option>)}
                         </Select>
                     </Form.Item>
                 ];
@@ -90,5 +98,6 @@ ButtonEventBindDialog.propTypes = {
     visible: PropTypes.bool,
     onOk: PropTypes.func,
     onCancel: PropTypes.func,
-    data: PropTypes.object
+    data: PropTypes.object,
+    widgetList: PropTypes.array
 };

@@ -1,12 +1,10 @@
-import React from "react";
+import * as React from "react";
 import {Button} from "antd";
 import classNames from "classnames";
 
 import {WIDGET_PROPERTY} from "../../Constants";
-import * as PropTypes from "prop-types";
 
-
-function IconButtonComponent(props) {
+function IconButtonComponent(props: any) {
     let buttonClassName = classNames("page-editor-toolbar-widget-item", {"active": props.active});
     let iconClassName = classNames("iconfont", WIDGET_PROPERTY[props.type].icon);
     function handleClick() {
@@ -20,9 +18,9 @@ function IconButtonComponent(props) {
     </div>;
 }
 
-function Toolbar(props) {
+function Toolbar(props: ToolbarPropTypes) {
 
-    function handleChoose(type){
+    function handleChoose(type: number){
         props.handleChooseWidgetType(type);
     }
 
@@ -38,12 +36,12 @@ function Toolbar(props) {
     </div>
 }
 
-Toolbar.propTypes = {
-    chooseType: PropTypes.number,
-    handleChooseWidgetType: PropTypes.func,
-    onExportButtonClick: PropTypes.func,
-    onAboutButtonClick: PropTypes.func,
-    buttonList: PropTypes.array,
-};
+interface ToolbarPropTypes {
+    chooseType: number,
+    handleChooseWidgetType: Function,
+    onExportButtonClick: React.MouseEventHandler<HTMLElement>,
+    onAboutButtonClick: React.MouseEventHandler<HTMLElement>,
+    buttonList: Array<any>,
+}
 
 export default Toolbar;

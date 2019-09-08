@@ -1,8 +1,8 @@
+import * as React from "react";
 import {Modal} from "antd";
 import * as PropTypes from "prop-types";
-import React from "react";
 
-export default function AboutDialog(props) {
+export default function AboutDialog(props: any) {
     return <Modal
         title="关于"
         visible={props.visible}

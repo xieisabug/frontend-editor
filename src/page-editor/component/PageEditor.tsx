@@ -12,7 +12,7 @@ import WidgetGallery from "./widget/WidgetGallery";
 import WidgetCheckbox from "./widget/WidgetCheckbox";
 import WidgetRadio from "./widget/WidgetRadio";
 
-export default class PageEditor extends React.Component {
+export default class PageEditor extends React.Component<any, any> {
 
     idGen = 1; // id计数
     zGen = 1; // zIndex计数
@@ -22,21 +22,22 @@ export default class PageEditor extends React.Component {
     startY = 0; // 鼠标点击开始y
     endX = 0; // 鼠标结束x
     endY = 0; // 鼠标结束y
-    choosePreviewDom = null; // 选择添加组件类型对应的预览组件dom
-    miniAppPagePosition = null; // 小程序预览页面的位置
-    chooseComponentData = null; // 选择页面上的组件的数据
-    chooseComponentDom = null; // 选择的页面上的组件的dom
+    choosePreviewDom: any = null; // 选择添加组件类型对应的预览组件dom
+    miniAppPagePosition: any = null; // 小程序预览页面的位置
+    chooseComponentData: any = null; // 选择页面上的组件的数据
+    chooseComponentDom: any = null; // 选择的页面上的组件的dom
     chooseComponentIndex = -1; // 选择的页面上的组件的index
+    changeSizeAreaDom: any = null;
 
     isResizeComponent = false;
     resizeType = "";
 
-    movePreviewDom = null;
+    movePreviewDom: any = null;
 
-    hAssistLine = null;
-    vAssistLine = null;
+    hAssistLine: any = null;
+    vAssistLine: any = null;
 
-    constructor(props, context) {
+    constructor(props: any, context: any) {
         super(props, context);
 
         this.state = {
@@ -46,7 +47,7 @@ export default class PageEditor extends React.Component {
     componentDidMount() {
         this.calMiniAppPagePosition();
 
-        let pageDom = document.querySelector(".page-editor-editor-page");
+        let pageDom: any = document.querySelector(".page-editor-editor-page");
         pageDom.addEventListener("mousedown", this.onMouseDown);
         document.addEventListener("mousemove", this.onMouseMove);
         document.addEventListener("mouseup", this.onMouseUp);
@@ -59,7 +60,7 @@ export default class PageEditor extends React.Component {
         this.choosePreviewDom = pageDom.querySelector(".page-editor-editor-preview-box");
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps: any, prevState: any, snapshot: any) {
         if (this.props.chooseType !== prevProps.chooseType && this.props.chooseType !== -1) {
             this.choosePreviewDom.style.width = WIDGET_PROPERTY[this.props.chooseType].width + "px";
             this.choosePreviewDom.style.height = WIDGET_PROPERTY[this.props.chooseType].height + "px";
@@ -73,7 +74,7 @@ export default class PageEditor extends React.Component {
         }
     }
 
-    onMouseDown = (e) => {
+    onMouseDown = (e: any) => {
         this.isMouseDown = true;
         this.startX = e.pageX;
         this.startY = e.pageY;
@@ -96,8 +97,8 @@ export default class PageEditor extends React.Component {
             const { widgetList } = this.props;
             let x = this.endX - this.miniAppPagePosition.left;
             let y = this.endY - this.miniAppPagePosition.top;
-            let positionInPageView = {x, y}, componentInClick = [], componentInClickIndex = [];
-            widgetList.forEach((w, index) => {
+            let positionInPageView = {x, y}, componentInClick:Array<any> = [], componentInClickIndex: Array<number> = [];
+            widgetList.forEach((w: any, index: number) => {
                 if (this.isInComponent(positionInPageView, w)) {
                     componentInClick.push(w);
                     componentInClickIndex.push(index);
@@ -123,7 +124,7 @@ export default class PageEditor extends React.Component {
         }
     };
 
-    onMouseMove = (e) => {
+    onMouseMove = (e: any) => {
         this.endX = e.pageX;
         this.endY = e.pageY;
 
@@ -145,7 +146,7 @@ export default class PageEditor extends React.Component {
                 }
 
 
-                this.props.widgetList.some(w => {
+                this.props.widgetList.some((w: any) => {
                     if (!vFind) { // 没有页面级辅助线的情况下
                         if (Math.abs(w.x - left) <= ADSORPTION_POWER) { // 检查组件左侧
                             left = w.x;
@@ -266,7 +267,7 @@ export default class PageEditor extends React.Component {
                         vFind = true;
                     }
 
-                    this.props.widgetList.some(w => {
+                    this.props.widgetList.some((w: any) => {
                         if (!vFind) {
                             if (w.id === this.chooseComponentData.id) return true;
                             if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
@@ -346,7 +347,7 @@ export default class PageEditor extends React.Component {
         }
     };
 
-    onMouseUp = (e) => {
+    onMouseUp = (e: any) => {
         if (this.props.chooseType !== -1) { // 确定添加组件的位置
             if (this.isInMiniAppPagePreview(e)) {
                 let {top, left} = this.calPreviewPosition();
@@ -359,7 +360,7 @@ export default class PageEditor extends React.Component {
                     left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2);
                     vFind = true;
                 }
-                this.props.widgetList.every(w => {
+                this.props.widgetList.every((w: any) => {
                     if (!vFind) {
                         if (Math.abs(w.x - left) <= ADSORPTION_POWER) {
                             left = w.x;
@@ -385,7 +386,7 @@ export default class PageEditor extends React.Component {
                 this.vAssistLine.style.display = "none";
                 this.hAssistLine.style.display = "none";
 
-                const data = {
+                const data:any = {
                     id: this.idGen++,
                     type: this.props.chooseType,
                     x: left,
@@ -463,7 +464,7 @@ export default class PageEditor extends React.Component {
                         let top = this.endY - this.startY;
                         let left = this.endX - this.startX;
 
-                        let changeData = {};
+                        let changeData:any = {};
                         switch (this.resizeType) {
                             case "top":
                                 changeData.y = this.props.chooseComponentData.y + top;
@@ -509,7 +510,7 @@ export default class PageEditor extends React.Component {
                         vFind = true;
                     }
 
-                    this.props.widgetList.every(w => {
+                    this.props.widgetList.every((w: any) => {
                         if (!vFind) {
                             if (w.id === this.chooseComponentData.id) return true;
                             if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
@@ -598,19 +599,21 @@ export default class PageEditor extends React.Component {
      * 计算当前小程序预览页面的位置
      */
     calMiniAppPagePosition = () => {
-        let element = document.querySelector(".page-editor-editor-page");
-        this.miniAppPagePosition = {
-            width: element.clientWidth,
-            height: element.clientHeight,
-            left: element.offsetLeft,
-            top: element.offsetTop
-        };
+        let element: HTMLDivElement|null = document.querySelector(".page-editor-editor-page");
+        if (element) {
+            this.miniAppPagePosition = {
+                width: element.clientWidth,
+                height: element.clientHeight,
+                left: element.offsetLeft,
+                top: element.offsetTop
+            };
+        }
     };
 
     /**
      * 计算鼠标是否在预览页面的内部
      */
-    isInMiniAppPagePreview = (event) => {
+    isInMiniAppPagePreview = (event: any) => {
         return (event.pageX) >= this.miniAppPagePosition.left &&
             (event.pageX) <= (this.miniAppPagePosition.left + this.miniAppPagePosition.width) &&
             (event.pageY) >= this.miniAppPagePosition.top &&
@@ -624,7 +627,7 @@ export default class PageEditor extends React.Component {
      * @param component
      * @returns {boolean}
      */
-    isInComponent = ({x, y}, component) => {
+    isInComponent = ({x, y}: any, component: any) => {
         return x >= component.x &&
             x <= (component.x + component.width) &&
             y >= component.y &&
@@ -635,7 +638,7 @@ export default class PageEditor extends React.Component {
      * 渲染组件
      */
     renderWidget() {
-        return this.props.widgetList.map(function(w) {
+        return this.props.widgetList.map(function(w: any) {
             switch (w.type) {
                 case WIDGET_TYPE.BUTTON:
                     return <WidgetButton data={w} key={w.id} />;

@@ -5,8 +5,40 @@ import {WIDGET_TYPE} from "../../Constants";
 const {Option} = Select;
 const ButtonGroup = Button.Group;
 
-export default class PageAttributesPanel extends React.Component {
-    constructor(props, context) {
+export default class PageAttributesPanel extends React.Component<any, any> {
+    handleChangeX: any;
+    handleChangeY: any;
+    handleChangeWidth: any;
+    handleSlideChangeWidth: any;
+    handleChangeHeight: any;
+    handleChangeText: any;
+    handleChangeName: any;
+    handleChangePlaceholder: any;
+    handleChangeSrc: any;
+    handleChangeBackground: any;
+    handleChangeBackgroundTransparent: any;
+    handleChangeBorderColor: any;
+    handleChangeBorderWidth: any;
+    handleChangeBorderLineType: any;
+    handleChangeTextSize: any;
+    handleChangeTextColor: any;
+    handleChangeTextAlign: any;
+    handleChangeAlignItems: any;
+    handleChangeInputType: any;
+    handleChangeShowDots: any;
+    handleChangeDotsColor: any;
+    handleChangeActiveDotsColor: any;
+    handleChangeAutoplay: any;
+    handleSlideChangeInterval: any;
+    handleChangeInterval: any;
+    handleChangeCircular: any;
+    handleChangeSrcList: any;
+    handleDeleteSrcList: any;
+    handleAddSrcList: any;
+
+    formItemLayout: any;
+
+    constructor(props: any, context: any) {
         super(props, context);
 
         this.handleChangeX = this.handleNumberInputChange.bind(this, "x");
@@ -49,36 +81,36 @@ export default class PageAttributesPanel extends React.Component {
         };
     }
 
-    handleInputChange(field, value) {
+    handleInputChange(field: string, value: any) {
         this.props.editWidget(this.props.chooseComponentIndex, {
             [field]: value
         }, true)
     }
 
-    handleNumberInputChange(field, event) {
+    handleNumberInputChange(field: string, event: any) {
         if (/^\d*\.?\d*$/.test(event.target.value)) {
             this.handleInputChange(field, +event.target.value);
         }
     }
 
-    handleTextInputChange(field, event) {
+    handleTextInputChange(field: string, event: any) {
         this.handleInputChange(field, event.target.value)
     }
 
-    handleSelectChange(field, value) {
+    handleSelectChange(field: string, value: any) {
         this.handleInputChange(field, value)
     }
 
-    handleCheckBoxChange(field, event) {
+    handleCheckBoxChange(field: string, event: any) {
         this.handleInputChange(field, event.target.checked)
     }
 
-    handleSlideChange(field, value) {
+    handleSlideChange(field: string, value: any) {
         this.handleInputChange(field, value)
     }
 
-    handleListInputChange(field, index) {
-        return (event) => {
+    handleListInputChange(field: string, index: number) {
+        return (event: any) => {
             let list = this.props.chooseComponentData[field].slice();
             list[index] = event.target.value;
             this.props.editWidget(this.props.chooseComponentIndex, {
@@ -87,8 +119,8 @@ export default class PageAttributesPanel extends React.Component {
         }
     }
 
-    handleListDelete(field, index) {
-        return (event) => {
+    handleListDelete(field: string, index: number) {
+        return (event: any) => {
             let list = this.props.chooseComponentData[field].slice();
             list.splice(index, 1);
             this.props.editWidget(this.props.chooseComponentIndex, {
@@ -97,7 +129,7 @@ export default class PageAttributesPanel extends React.Component {
         }
     }
 
-    handleListInputAdd(field) {
+    handleListInputAdd(field: string) {
         let list = this.props.chooseComponentData[field].slice();
         list.push("");
         this.props.editWidget(this.props.chooseComponentIndex, {
@@ -269,7 +301,7 @@ export default class PageAttributesPanel extends React.Component {
                 return [
                     <Form.Item label="图片列表">
                         {
-                            this.props.chooseComponentData.srcList.map((s, index) => {
+                            this.props.chooseComponentData.srcList.map((s: string, index: number) => {
                                 return <Row key={index}>
                                     <Col span={21}>
                                         <Input value={s} onChange={this.handleChangeSrcList(index)}/>

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {connect} from 'react-redux';
 
 import Toolbar from "./component/Toolbar"
@@ -11,10 +11,18 @@ import "./style/page-editor.css"
 import {ButtonEventBindDialog} from "./component/ButtonEventBindDialog";
 import {WIDGET_TYPE} from "../Constants";
 
+class PageEditorIndex extends React.Component<any, any> {
 
-class PageEditorIndex extends React.Component {
+    handleOpenExportDialog:React.MouseEventHandler<HTMLElement>;
+    handleCloseExportDialog:React.MouseEventHandler<HTMLElement>;
+    handleOpenMetaDataDialog:React.MouseEventHandler<HTMLElement>;
+    handleCloseMetaDataDialog:React.MouseEventHandler<HTMLElement>;
+    handleOpenAboutDialog:React.MouseEventHandler<HTMLElement>;
+    handleCloseAboutDialog:React.MouseEventHandler<HTMLElement>;
+    handleOpenButtonEventBindDialog: any;
+    handleCloseButtonEventBindDialog: any;
 
-    constructor(props, context) {
+    constructor(props: any, context: any) {
         super(props, context);
 
         this.state = {
@@ -45,7 +53,7 @@ class PageEditorIndex extends React.Component {
     /**
      * 按键事件
      */
-    handleKeyDown = (e) => {
+    handleKeyDown = (e: any) => {
         switch (e.code) {
             case "Delete":
                 if (e.target.tagName !== "INPUT") {
@@ -88,7 +96,7 @@ class PageEditorIndex extends React.Component {
     /**
      * 选择添加的组件类型
      */
-    handleChooseWidgetType = (type) => {
+    handleChooseWidgetType = (type: number) => {
         if (this.state.chooseType === type) {
             this.setState({
                 chooseType: -1
@@ -103,7 +111,7 @@ class PageEditorIndex extends React.Component {
     /**
      * 添加组件
      */
-    addWidget = (data) => {
+    addWidget = (data: any) => {
         let widgetList = this.state.widgetList.slice();
         widgetList.push(data);
 
@@ -116,7 +124,7 @@ class PageEditorIndex extends React.Component {
     /**
      * 编辑组件
      */
-    editWidget = (index, data, isChoose) => {
+    editWidget = (index: number, data: any, isChoose: boolean) => {
         let widgetList = this.state.widgetList.slice();
 
         let newComponent = Object.assign({}, widgetList[index], data);
@@ -142,7 +150,7 @@ class PageEditorIndex extends React.Component {
     /**
      * 选择组件
      */
-    handleChooseComponentData = (index, data) => {
+    handleChooseComponentData = (index: number, data: any) => {
         this.setState({
             chooseComponentIndex: index,
             chooseComponentData: data
@@ -164,13 +172,13 @@ class PageEditorIndex extends React.Component {
         }
     };
 
-    handleChangeDialogStatus(dialogName, status) {
+    handleChangeDialogStatus(dialogName: string, status: boolean) {
         this.setState({
             [dialogName + "IsOpen"]: status
         })
     };
 
-    handleConfirmButtonEventBindDialog = (data) => {
+    handleConfirmButtonEventBindDialog = (data: any) => {
         this.editWidget(this.state.chooseComponentIndex, data, true);
         this.handleCloseButtonEventBindDialog();
     };
@@ -229,10 +237,10 @@ class PageEditorIndex extends React.Component {
 
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: any) => ({
     simpleAction: () => dispatch({})
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
     ...state.pageReducer
 });
 

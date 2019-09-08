@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {getCommonStyle} from "../../../Utils";
 
-export default function WidgetCheckbox(props) {
+export default function WidgetCheckbox(props: any) {
     const style = Object.assign({}, getCommonStyle(props));
     return <div className={`widget-item widget-checkbox widget-item-${props.data.id}`} style={style}>
         <div className={"widget-checkbox-box"} />
