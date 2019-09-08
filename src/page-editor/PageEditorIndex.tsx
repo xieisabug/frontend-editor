@@ -60,11 +60,6 @@ class PageEditorIndex extends React.Component<any, any> {
      */
     handleKeyDown = (e: any) => {
         switch (e.code) {
-            case "Delete":
-                if (e.target.tagName !== "INPUT") {
-                    this.handleDeleteComponent()
-                }
-                break;
             case "ArrowUp":
                 if (e.target.tagName !== "INPUT" && this.state.chooseComponentData) {
                     this.editWidget(this.state.chooseComponentIndex, {
@@ -110,6 +105,11 @@ class PageEditorIndex extends React.Component<any, any> {
 
     handleKeyUp = (e: any) => {
         switch (e.code) {
+            case "Delete":
+                if (e.target.tagName !== "INPUT") {
+                    this.handleDeleteComponent()
+                }
+                break;
             case "KeyV":
                 if (e.target.tagName !== "INPUT" && this.copyComponentData) {
                     this.addWidget(Object.assign({}, this.copyComponentData, {
