@@ -148,6 +148,7 @@
     position: absolute;
     cursor: move;
     border: 1px solid cornflowerblue;
+    z-index: 99999;
 }
 
 .page-editor-attributes-panel-from-group-title {
