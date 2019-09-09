@@ -31,6 +31,7 @@ function Toolbar(props: ToolbarPropTypes) {
             })
         }
         <div style={{flex: 1}}/>
+        <Button onClick={props.onPageSettingButtonClick} size="small" className="right-space">页面配置</Button>
         <Button onClick={props.onExportButtonClick} size="small" className="right-space">导出</Button>
         <Button onClick={props.onAboutButtonClick} size="small">关于</Button>
     </div>
@@ -41,6 +42,7 @@ interface ToolbarPropTypes {
     handleChooseWidgetType: Function,
     onExportButtonClick: React.MouseEventHandler<HTMLElement>,
     onAboutButtonClick: React.MouseEventHandler<HTMLElement>,
+    onPageSettingButtonClick: any,
     buttonList: Array<any>,
 }
 

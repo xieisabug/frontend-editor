@@ -4,13 +4,14 @@ import {connect} from 'react-redux';
 import Toolbar from "./component/Toolbar"
 import PageEditor from "./component/PageEditor";
 import PageAttributesPanel from "./component/PageAttributesPanel";
-import GeneratePageDialog from "./component/GeneratePageDialog";
-import AboutDialog from "./component/AboutDialog";
+import GeneratePageDialog from "./component/dialog/GeneratePageDialog";
+import AboutDialog from "./component/dialog/AboutDialog";
 
 import "./style/page-editor.css"
-import {ButtonEventBindDialog} from "./component/ButtonEventBindDialog";
+import {ButtonEventBindDialog} from "./component/dialog/ButtonEventBindDialog";
 import {WIDGET_TYPE} from "../Constants";
 import {DataKeyGenerator, IdGenerator, WidgetFactory} from "../Utils";
+import PageSettingDialog from "./component/dialog/PageSettingDialog";
 
 class PageEditorIndex extends React.Component<any, any> {
 
@@ -22,6 +23,8 @@ class PageEditorIndex extends React.Component<any, any> {
     handleCloseAboutDialog:React.MouseEventHandler<HTMLElement>;
     handleOpenButtonEventBindDialog: any;
     handleCloseButtonEventBindDialog: any;
+    handleOpenPageSettingDialog: any;
+    handleClosePageSettingDialog: any;
 
     copyComponentData: any;
 
@@ -29,6 +32,16 @@ class PageEditorIndex extends React.Component<any, any> {
         super(props, context);
 
         this.state = {
+            pageList: [
+                {
+                    id: 0,
+                    name: "page1",
+                    scrollable: true,
+                    isTabPage: true
+                }
+            ],
+            choosePageIndex: 0,
+
             chooseType: -1,
             widgetList: [],
             chooseComponentIndex: -1,
@@ -37,6 +50,7 @@ class PageEditorIndex extends React.Component<any, any> {
             metaDataDialogIsOpen: false,
             aboutDialogIsOpen: false,
             buttonEventBindDialogIsOpen: false,
+            pageSettingDialogIsOpen: false,
             ctrlIsDown: false,
         };
 
@@ -48,6 +62,8 @@ class PageEditorIndex extends React.Component<any, any> {
         this.handleCloseAboutDialog = this.handleChangeDialogStatus.bind(this, "aboutDialog", false);
         this.handleOpenButtonEventBindDialog = this.handleChangeDialogStatus.bind(this, "buttonEventBindDialog", true);
         this.handleCloseButtonEventBindDialog = this.handleChangeDialogStatus.bind(this, "buttonEventBindDialog", false);
+        this.handleOpenPageSettingDialog = this.handleChangeDialogStatus.bind(this, "pageSettingDialog", true);
+        this.handleClosePageSettingDialog = this.handleChangeDialogStatus.bind(this, "pageSettingDialog", false);
     }
 
     componentDidMount() {
@@ -231,6 +247,7 @@ class PageEditorIndex extends React.Component<any, any> {
                     handleChooseWidgetType={this.handleChooseWidgetType}
                     onExportButtonClick={this.handleOpenExportDialog}
                     onAboutButtonClick={this.handleOpenAboutDialog}
+                    onPageSettingButtonClick={this.handleOpenPageSettingDialog}
                 />
                 <div className="page-editor-center-container">
                     <PageEditor
@@ -270,6 +287,12 @@ class PageEditorIndex extends React.Component<any, any> {
                     visible={this.state.buttonEventBindDialogIsOpen}
                     onOk={this.handleConfirmButtonEventBindDialog}
                     onCancel={this.handleCloseButtonEventBindDialog}
+                />
+                <PageSettingDialog
+                    visible={this.state.pageSettingDialogIsOpen}
+                    onOk={this.handleClosePageSettingDialog}
+                    pageList={this.state.pageList}
+                    choosePageIndex={this.state.choosePageIndex}
                 />
             </div>
         );

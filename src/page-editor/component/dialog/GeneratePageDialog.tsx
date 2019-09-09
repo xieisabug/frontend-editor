@@ -2,8 +2,8 @@ import {Button, Modal} from "antd";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import {useState} from "react";
-import {copyToClipboard} from "../../Utils";
-import {savePage, updatePage} from "../page.service";
+import {copyToClipboard} from "../../../Utils";
+import {savePage, updatePage} from "../../page.service";
 
 export default function GeneratePageDialog(props: any) {
     const [randomNumber, setRandomNumber] = useState(-1);

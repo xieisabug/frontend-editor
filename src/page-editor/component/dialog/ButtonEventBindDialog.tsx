@@ -2,7 +2,7 @@ import {Form, Input, Modal, Select} from "antd";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {WIDGET_TYPE} from "../../Constants";
+import {WIDGET_TYPE} from "../../../Constants";
 
 const { Option } = Select;
 

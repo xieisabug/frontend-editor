@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {Form, Input, Row, Col, Select, Slider, Button, Radio, Checkbox, Card} from "antd";
-import {WIDGET_TYPE} from "../../Constants";
+import {Form, Input, Row, Col, Select, Slider, Button, Checkbox} from "antd";
 import {WidgetFactory} from "../../Utils";
 
 const {Option} = Select;
