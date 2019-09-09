@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {DataKeyGenerator, getCommonStyle} from "../../../Utils";
-import {WidgetBase} from "./WidgetBase";
+import {WidgetBase, WidgetProperty} from "./WidgetBase";
 import {WIDGET_TYPE} from "../../../Constants";
 import {Form, Input} from "antd";
 
@@ -19,7 +19,7 @@ export class WidgetRadioClass implements WidgetBase {
         ];
     }
 
-    getProperty(): any {
+    getProperty(): WidgetProperty {
         return {
             width: 80,
             height: 30,

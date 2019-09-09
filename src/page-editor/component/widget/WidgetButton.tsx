@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {getCommonStyle} from "../../../Utils";
-import {WidgetBase} from "./WidgetBase";
+import {WidgetBase, WidgetProperty} from "./WidgetBase";
 import {WIDGET_TYPE} from "../../../Constants";
 import {Button, Card, Form, Input, Radio} from "antd";
 
@@ -59,7 +59,7 @@ export class WidgetButtonClass implements WidgetBase{
         ];
     }
 
-    getProperty(): any {
+    getProperty(): WidgetProperty {
         return {
             width: 80,
             height: 30,

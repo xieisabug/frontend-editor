@@ -2,12 +2,12 @@ import * as React from 'react';
 import {getCommonStyle} from "../../../Utils";
 import {WIDGET_TYPE} from "../../../Constants";
 import {Form, Input, Radio} from "antd";
-import {WidgetBase} from "./WidgetBase";
+import {WidgetBase, WidgetProperty} from "./WidgetBase";
 
 export class WidgetTextClass implements WidgetBase {
     type = WIDGET_TYPE.TEXT;
 
-    getProperty() {
+    getProperty(): WidgetProperty {
         return {
             width: 80,
             height: 30,

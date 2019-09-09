@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {getCommonStyle} from "../../../Utils";
-import {WidgetBase} from "./WidgetBase";
+import {WidgetBase, WidgetProperty} from "./WidgetBase";
 import {WIDGET_TYPE} from "../../../Constants";
 import {Button, Checkbox, Col, Form, Input, Row, Slider} from "antd";
 
@@ -64,7 +64,7 @@ export class WidgetGalleryClass implements WidgetBase {
         ];
     }
 
-    getProperty(): any {
+    getProperty(): WidgetProperty {
         return {
             width: 380,
             height: 200,
