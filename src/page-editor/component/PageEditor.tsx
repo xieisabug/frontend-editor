@@ -113,7 +113,7 @@ export default class PageEditor extends React.Component<any, any> {
         this.endX = e.pageX;
         this.endY = e.pageY;
 
-        if (this.props.chooseType !== -1) { // 处理选择了要添加的组件
+        if (this.props.chooseType !== -1) { // 添加的组件
             if (this.isInMiniAppPagePreview(e)) { // 在页面中，随着鼠标显示预览组件
                 let {top, left} = this.calPreviewPosition();
                 const properties = WidgetFactory.properties(this.props.chooseType);
@@ -210,7 +210,7 @@ export default class PageEditor extends React.Component<any, any> {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) {
 
-                    if (this.isResizeComponent) {
+                    if (this.isResizeComponent) { // 修改大小
                         let top = this.endY - this.startY;
                         let left = this.endX - this.startX;
 
@@ -255,7 +255,8 @@ export default class PageEditor extends React.Component<any, any> {
 
                     this.props.widgetList.some((w: any) => {
                         if (!vFind) {
-                            if (w.id === this.chooseComponentData.id) return true;
+                            if (w.id === this.chooseComponentData.id) return false;
+
                             if (Math.abs(w.x - absLeft) <= ADSORPTION_POWER) {
                                 left = w.x - this.chooseComponentData.x;
                                 this.vAssistLine.style.left = w.x + "px";
