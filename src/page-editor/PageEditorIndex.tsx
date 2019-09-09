@@ -10,7 +10,7 @@ import AboutDialog from "./component/AboutDialog";
 import "./style/page-editor.css"
 import {ButtonEventBindDialog} from "./component/ButtonEventBindDialog";
 import {WIDGET_TYPE} from "../Constants";
-import {DataKeyGenerator, IdGenerator} from "../Utils";
+import {DataKeyGenerator, IdGenerator, WidgetFactory} from "../Utils";
 
 class PageEditorIndex extends React.Component<any, any> {
 
@@ -226,7 +226,7 @@ class PageEditorIndex extends React.Component<any, any> {
             <div className="page-editor">
                 <Toolbar
                     buttonList={[WIDGET_TYPE.BUTTON, WIDGET_TYPE.IMAGE, WIDGET_TYPE.INPUT, WIDGET_TYPE.TEXT,
-                        WIDGET_TYPE.CHECKBOX, WIDGET_TYPE.RADIO, WIDGET_TYPE.TEXTAREA, WIDGET_TYPE.GALLERY]}
+                        WIDGET_TYPE.CHECKBOX, WIDGET_TYPE.RADIO, WIDGET_TYPE.GALLERY]}
                     chooseType={this.state.chooseType}
                     handleChooseWidgetType={this.handleChooseWidgetType}
                     onExportButtonClick={this.handleOpenExportDialog}

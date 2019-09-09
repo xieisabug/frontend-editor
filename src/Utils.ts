@@ -1,3 +1,5 @@
+import {WidgetBase} from "./page-editor/component/widget/WidgetBase";
+
 export function getCommonStyle(props: any) {
     return {
         left: props.data.x + "px",
@@ -88,5 +90,32 @@ export class DataKeyGenerator {
 
     getKey() {
         return this.dataKey++;
+    }
+}
+
+export class WidgetFactory {
+    static widgetList: Array<WidgetBase> = [];
+    static widgetMap: { [s: number]: WidgetBase;} = {};
+
+    static register(type: number, typeClass: { new (): WidgetBase; }) {
+        this.widgetMap[type] = new typeClass();
+    }
+
+    static handleInitData(type: number, data: any) {
+        const widget = this.widgetMap[type];
+        widget.handleInitData(data);
+        return widget;
+    }
+
+    static properties(type: number) {
+        return this.widgetMap[type].getProperty();
+    }
+
+    static render(type: number, props: any) {
+        return this.widgetMap[type].render(props);
+    }
+
+    static editPanel(data: any, methodCollection: any) {
+        return this.widgetMap[data.type].getEditPanel(data, methodCollection);
     }
 }

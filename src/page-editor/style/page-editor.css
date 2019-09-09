@@ -84,6 +84,7 @@
     font-size: 14px;
     overflow-x: hidden;
     overflow-y: auto;
+    padding-bottom: 20px;
 }
 .page-editor-attributes-panel.no-choose-component {
     display: flex;

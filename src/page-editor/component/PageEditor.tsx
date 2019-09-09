@@ -1,17 +1,10 @@
 import * as React from 'react';
 import classNames from "classnames";
 
-import {ADSORPTION_POWER, WIDGET_PROPERTY, WIDGET_TYPE} from "../../Constants";
-import WidgetButton from "./widget/WidgetButton";
-import WidgetImage from "./widget/WidgetImage";
+import {ADSORPTION_POWER} from "../../Constants";
 import ChangeSizeAreaComponent from "./ChangeSizeArea";
 import MovePreviewAreaComponent from "./MovePreviewArea";
-import WidgetInput from "./widget/WidgetInput";
-import WidgetText from "./widget/WidgetText";
-import WidgetGallery from "./widget/WidgetGallery";
-import WidgetCheckbox from "./widget/WidgetCheckbox";
-import WidgetRadio from "./widget/WidgetRadio";
-import {DataKeyGenerator, IdGenerator, ZIndexGenerator} from "../../Utils";
+import {DataKeyGenerator, IdGenerator, WidgetFactory, ZIndexGenerator} from "../../Utils";
 
 export default class PageEditor extends React.Component<any, any> {
 
@@ -53,8 +46,9 @@ export default class PageEditor extends React.Component<any, any> {
 
     componentDidUpdate(prevProps: any, prevState: any, snapshot: any) {
         if (this.props.chooseType !== prevProps.chooseType && this.props.chooseType !== -1) {
-            this.choosePreviewDom.style.width = WIDGET_PROPERTY[this.props.chooseType].width + "px";
-            this.choosePreviewDom.style.height = WIDGET_PROPERTY[this.props.chooseType].height + "px";
+            const properties = WidgetFactory.properties(this.props.chooseType);
+            this.choosePreviewDom.style.width = properties.width + "px";
+            this.choosePreviewDom.style.height = properties.height + "px";
         }
 
         if (this.props.chooseComponentData !== prevProps.chooseComponentData && this.props.chooseComponentData) {
@@ -122,13 +116,14 @@ export default class PageEditor extends React.Component<any, any> {
         if (this.props.chooseType !== -1) { // 处理选择了要添加的组件
             if (this.isInMiniAppPagePreview(e)) { // 在页面中，随着鼠标显示预览组件
                 let {top, left} = this.calPreviewPosition();
-                let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
-                    center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)),
-                    hCenter = (top + (WIDGET_PROPERTY[this.props.chooseType].height / 2));
+                const properties = WidgetFactory.properties(this.props.chooseType);
+                let right = left + properties.width,
+                    center = (left + (properties.width / 2)),
+                    hCenter = (top + (properties.height / 2));
 
                 let vFind = false, hFind = false;
                 if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
-                    left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2);
+                    left = (380 / 2) - (properties.width / 2);
                     this.vAssistLine.style.display = "block";
                     this.vAssistLine.style.height = "100%";
                     this.vAssistLine.style.top = "0";
@@ -144,12 +139,12 @@ export default class PageEditor extends React.Component<any, any> {
                             this.vAssistLine.style.left = left + "px";
                             vFind = true;
                         } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) { // 检查组件右侧
-                            left = (w.x + w.width) - WIDGET_PROPERTY[this.props.chooseType].width;
-                            this.vAssistLine.style.left = left + WIDGET_PROPERTY[this.props.chooseType].width + "px";
+                            left = (w.x + w.width) - properties.width;
+                            this.vAssistLine.style.left = left + properties.width + "px";
                             vFind = true;
                         } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) { // 检查组件中间
-                            left = (w.x + w.width / 2) - WIDGET_PROPERTY[this.props.chooseType].width / 2;
-                            this.vAssistLine.style.left = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)) + "px";
+                            left = (w.x + w.width / 2) - properties.width / 2;
+                            this.vAssistLine.style.left = (left + (properties.width / 2)) + "px";
                             vFind = true;
                         }
                         if (vFind) { // 找到的情况下，算出辅助线的位置和长短
@@ -162,12 +157,12 @@ export default class PageEditor extends React.Component<any, any> {
                                     this.vAssistLine.style.top = w.y + w.height + "px";
                                 }
                             } else {
-                                if ((top + WIDGET_PROPERTY[this.props.chooseType].height) > w.y) {
-                                    this.vAssistLine.style.height = (w.y + w.height) - (top + WIDGET_PROPERTY[this.props.chooseType].height) + "px";
-                                    this.vAssistLine.style.top = top + WIDGET_PROPERTY[this.props.chooseType].height + "px";
+                                if ((top + properties.height) > w.y) {
+                                    this.vAssistLine.style.height = (w.y + w.height) - (top + properties.height) + "px";
+                                    this.vAssistLine.style.top = top + properties.height + "px";
                                 } else {
-                                    this.vAssistLine.style.height = w.y - top - WIDGET_PROPERTY[this.props.chooseType].height + "px";
-                                    this.vAssistLine.style.top = top + WIDGET_PROPERTY[this.props.chooseType].height + "px";
+                                    this.vAssistLine.style.height = w.y - top - properties.height + "px";
+                                    this.vAssistLine.style.top = top + properties.height + "px";
                                 }
                             }
                         }
@@ -175,7 +170,7 @@ export default class PageEditor extends React.Component<any, any> {
 
                     if (!hFind) { // 没有页面级竖直辅助线的情况下
                         if (Math.abs(hCenter - (w.y + w.height / 2)) <= ADSORPTION_POWER) { // 检查组件中间
-                            top = w.y + w.height / 2 - WIDGET_PROPERTY[this.props.chooseType].height / 2;
+                            top = w.y + w.height / 2 - properties.height / 2;
                             this.hAssistLine.style.top = w.y + w.height / 2 + "px";
                             hFind = true;
                         }
@@ -189,12 +184,12 @@ export default class PageEditor extends React.Component<any, any> {
                                     this.hAssistLine.style.left = w.x + w.width + "px";
                                 }
                             } else {
-                                if ((left + WIDGET_PROPERTY[this.props.chooseType].width) > w.x) {
-                                    this.hAssistLine.style.width = (w.x + w.width) - (left + WIDGET_PROPERTY[this.props.chooseType].width) + "px";
-                                    this.hAssistLine.style.left = left + WIDGET_PROPERTY[this.props.chooseType].width + "px";
+                                if ((left + properties.width) > w.x) {
+                                    this.hAssistLine.style.width = (w.x + w.width) - (left + properties.width) + "px";
+                                    this.hAssistLine.style.left = left + properties.width + "px";
                                 } else {
-                                    this.hAssistLine.style.width = w.x - left - WIDGET_PROPERTY[this.props.chooseType].width + "px";
-                                    this.hAssistLine.style.left = left + WIDGET_PROPERTY[this.props.chooseType].width + "px";
+                                    this.hAssistLine.style.width = w.x - left - properties.width + "px";
+                                    this.hAssistLine.style.left = left + properties.width + "px";
                                 }
                             }
                         }
@@ -342,13 +337,14 @@ export default class PageEditor extends React.Component<any, any> {
         if (this.props.chooseType !== -1) { // 确定添加组件的位置
             if (this.isInMiniAppPagePreview(e)) {
                 let {top, left} = this.calPreviewPosition();
-                let right = left + WIDGET_PROPERTY[this.props.chooseType].width,
-                    center = (left + (WIDGET_PROPERTY[this.props.chooseType].width / 2)),
-                    hCenter = (top + (WIDGET_PROPERTY[this.props.chooseType].height / 2));
+                const properties = WidgetFactory.properties(this.props.chooseType);
+                let right = left + properties.width,
+                    center = (left + (properties.width / 2)),
+                    hCenter = (top + (properties.height / 2));
 
                 let vFind = false, hFind = false;
                 if (Math.abs(center - (380 / 2)) <= ADSORPTION_POWER) {
-                    left = (380 / 2) - (WIDGET_PROPERTY[this.props.chooseType].width / 2);
+                    left = (380 / 2) - (properties.width / 2);
                     vFind = true;
                 }
                 this.props.widgetList.every((w: any) => {
@@ -357,17 +353,17 @@ export default class PageEditor extends React.Component<any, any> {
                             left = w.x;
                             vFind = true;
                         } else if (Math.abs((w.x + w.width) - right) <= ADSORPTION_POWER) {
-                            left = (w.x + w.width) - WIDGET_PROPERTY[this.props.chooseType].width;
+                            left = (w.x + w.width) - properties.width;
                             vFind = true;
                         } else if (Math.abs((w.x + w.width / 2) - center) <= ADSORPTION_POWER) {
-                            left = (w.x + w.width / 2) - WIDGET_PROPERTY[this.props.chooseType].width / 2;
+                            left = (w.x + w.width / 2) - properties.width / 2;
                             vFind = true;
                         }
                     }
 
                     if (!hFind) {
                         if (Math.abs(hCenter - (w.y + w.height / 2)) <= ADSORPTION_POWER) { // 检查组件中间
-                            top = w.y + w.height / 2 - WIDGET_PROPERTY[this.props.chooseType].height / 2;
+                            top = w.y + w.height / 2 - properties.height / 2;
                             hFind = true;
                         }
                     }
@@ -382,8 +378,8 @@ export default class PageEditor extends React.Component<any, any> {
                     type: this.props.chooseType,
                     x: left,
                     y: top,
-                    width: WIDGET_PROPERTY[this.props.chooseType].width,
-                    height: WIDGET_PROPERTY[this.props.chooseType].height,
+                    width: properties.width,
+                    height: properties.height,
                     z: ZIndexGenerator.instance.getKey(),
                     background: "#ffffff",
                     backgroundTransparent: true,
@@ -391,63 +387,7 @@ export default class PageEditor extends React.Component<any, any> {
                     borderLineType: "solid",
                     borderColor: "#cccccc"
                 };
-                switch (data.type) {
-                    case WIDGET_TYPE.BUTTON:
-                        data.text = "button";
-                        data.borderWidth = 1;
-                        data.textSize = 14;
-                        data.textAlign = "center";
-                        data.alignItems = "center";
-                        data.textColor = "#000000";
-                        data.eventType = -1;
-                        data.postFieldList = [];
-                        data.postUrl = "";
-                        data.code = "";
-                        data.backgroundTransparent = false;
-                        break;
-                    case WIDGET_TYPE.IMAGE:
-                        data.src = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658";
-                        break;
-                    case WIDGET_TYPE.TEXT:
-                        data.text = "Text";
-                        data.textSize = 14;
-                        data.textAlign = "left";
-                        data.textColor = "#000000";
-                        break;
-                    case WIDGET_TYPE.INPUT:
-                        data.inputType = "text";
-                        data.placeholder = "请输入";
-                        data.borderWidth = 1;
-                        data.textSize = 14;
-                        data.textAlign = "flex-start";
-                        data.alignItems = "center";
-                        data.textColor = "#000000";
-                        data.backgroundTransparent = false;
-                        data.isDataWidget = true;
-                        data.name = "input" + DataKeyGenerator.instance.getKey(); // 数据组件唯一标识
-                        break;
-                    case WIDGET_TYPE.CHECKBOX:
-                        data.text = "选项";
-                        data.isDataWidget = true;
-                        data.name = "checkbox" + DataKeyGenerator.instance.getKey(); // 数据组件唯一标识
-                        break;
-                    case WIDGET_TYPE.RADIO:
-                        data.text = "选项";
-                        data.isDataWidget = true;
-                        data.name = "radio" + DataKeyGenerator.instance.getKey(); // 数据组件唯一标识
-                        break;
-                    case WIDGET_TYPE.GALLERY:
-                        data.srcList = ["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566052499151&di=283ac410e3ebb3d23a04ad82a562cdb5&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e3ead27ad747c7c92e659ac5774587a680bb8d25252-mRVFlu_fw658"];
-                        data.showDots = true;
-                        data.autoplay = true;
-                        data.dotsColor = "#ffffff";
-                        data.activeDotsColor = "#666666";
-                        data.interval = 5;
-                        data.circular = true;
-                        break;
-                    default:
-                        break;
-                }
+                WidgetFactory.handleInitData(this.props.chooseType, data);
                 this.props.addWidget(data);
                 this.choosePreviewDom.style.display = `none`;
             }
@@ -580,18 +520,20 @@ export default class PageEditor extends React.Component<any, any> {
      */
     calPreviewPosition() {
         this.choosePreviewDom.style.display = `block`;
-        let top = this.endY - this.miniAppPagePosition.top - WIDGET_PROPERTY[this.props.chooseType].height / 2;
-        let left = this.endX - this.miniAppPagePosition.left - WIDGET_PROPERTY[this.props.chooseType].width / 2;
+        const properties = WidgetFactory.properties(this.props.chooseType);
+
+        let top = this.endY - this.miniAppPagePosition.top - properties.height / 2;
+        let left = this.endX - this.miniAppPagePosition.left - properties.width / 2;
 
         if (top < 0) {
             top = 0
-        } else if (top > (this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height)) {
-            top = this.miniAppPagePosition.height - WIDGET_PROPERTY[this.props.chooseType].height
+        } else if (top > (this.miniAppPagePosition.height - properties.height)) {
+            top = this.miniAppPagePosition.height - properties.height
         }
         if (left < 0) {
             left = 0
-        } else if (left > (this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width)) {
-            left = this.miniAppPagePosition.width - WIDGET_PROPERTY[this.props.chooseType].width
+        } else if (left > (this.miniAppPagePosition.width - properties.width)) {
+            left = this.miniAppPagePosition.width - properties.width
         }
 
         return {top, left};
@@ -641,24 +583,7 @@ export default class PageEditor extends React.Component<any, any> {
      */
     renderWidget() {
         return this.props.widgetList.map(function(w: any) {
-            switch (w.type) {
-                case WIDGET_TYPE.BUTTON:
-                    return <WidgetButton data={w} key={w.id} />;
-                case WIDGET_TYPE.IMAGE:
-                    return <WidgetImage data={w} key={w.id} />;
-                case WIDGET_TYPE.INPUT:
-                    return <WidgetInput data={w} key={w.id} />;
-                case WIDGET_TYPE.TEXT:
-                    return <WidgetText data={w} key={w.id} />;
-                case WIDGET_TYPE.CHECKBOX:
-                    return <WidgetCheckbox data={w} k={w.id}/>;
-                case WIDGET_TYPE.RADIO:
-                    return <WidgetRadio data={w} k={w.id}/>;
-                case WIDGET_TYPE.GALLERY:
-                    return <WidgetGallery data={w} key={w.id}/>;
-                default:
-                    return null;
-            }
+            return WidgetFactory.render(w.type, { data: w })
         })
     }
 

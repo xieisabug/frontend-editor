@@ -9,11 +9,27 @@ import './index.css';
 import PageEditorIndex from './page-editor/PageEditorIndex';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from "./reducer/reducer";
-import {DataKeyGenerator, IdGenerator, ZIndexGenerator} from "./Utils";
+import {DataKeyGenerator, IdGenerator, WidgetFactory, ZIndexGenerator} from "./Utils";
+import {WIDGET_TYPE} from "./Constants";
+import {WidgetButtonClass} from "./page-editor/component/widget/WidgetButton";
+import {WidgetCheckboxClass} from "./page-editor/component/widget/WidgetCheckbox";
+import {WidgetGalleryClass} from "./page-editor/component/widget/WidgetGallery";
+import {WidgetImageClass} from "./page-editor/component/widget/WidgetImage";
+import {WidgetInputClass} from "./page-editor/component/widget/WidgetInput";
+import {WidgetRadioClass} from "./page-editor/component/widget/WidgetRadio";
+import {WidgetTextClass} from "./page-editor/component/widget/WidgetText";
 
 IdGenerator.init();
 ZIndexGenerator.init();
 DataKeyGenerator.init();
+
+WidgetFactory.register(WIDGET_TYPE.BUTTON, WidgetButtonClass);
+WidgetFactory.register(WIDGET_TYPE.CHECKBOX, WidgetCheckboxClass);
+WidgetFactory.register(WIDGET_TYPE.GALLERY, WidgetGalleryClass);
+WidgetFactory.register(WIDGET_TYPE.IMAGE, WidgetImageClass);
+WidgetFactory.register(WIDGET_TYPE.INPUT, WidgetInputClass);
+WidgetFactory.register(WIDGET_TYPE.RADIO, WidgetRadioClass);
+WidgetFactory.register(WIDGET_TYPE.TEXT, WidgetTextClass);
 
 function configureStore() {
     return createStore(

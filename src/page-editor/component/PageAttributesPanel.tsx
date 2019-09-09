@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Form, Input, Row, Col, Select, Slider, Button, Radio, Checkbox, Card} from "antd";
 import {WIDGET_TYPE} from "../../Constants";
+import {WidgetFactory} from "../../Utils";
 
 const {Option} = Select;
 const ButtonGroup = Button.Group;
@@ -38,6 +39,8 @@ export default class PageAttributesPanel extends React.Component<any, any> {
 
     formItemLayout: any;
 
+    methodCollection: any = {};
+
     constructor(props: any, context: any) {
         super(props, context);
 
@@ -70,6 +73,39 @@ export default class PageAttributesPanel extends React.Component<any, any> {
         this.handleChangeSrcList = this.handleListInputChange.bind(this, "srcList");
         this.handleDeleteSrcList = this.handleListDelete.bind(this, "srcList");
         this.handleAddSrcList = this.handleListInputAdd.bind(this, "srcList");
+
+        this.methodCollection = {
+            handleChangeX : this.handleChangeX,
+            handleChangeY : this.handleChangeY,
+            handleChangeWidth : this.handleChangeWidth,
+            handleSlideChangeWidth : this.handleSlideChangeWidth,
+            handleChangeHeight : this.handleChangeHeight,
+            handleChangeText : this.handleChangeText,
+            handleChangeName : this.handleChangeName,
+            handleChangePlaceholder : this.handleChangePlaceholder,
+            handleChangeSrc : this.handleChangeSrc,
+            handleChangeBackground : this.handleChangeBackground,
+            handleChangeBackgroundTransparent : this.handleChangeBackgroundTransparent,
+            handleChangeBorderColor : this.handleChangeBorderColor,
+            handleChangeBorderWidth : this.handleChangeBorderWidth,
+            handleChangeBorderLineType : this.handleChangeBorderLineType,
+            handleChangeTextSize : this.handleChangeTextSize,
+            handleChangeTextColor : this.handleChangeTextColor,
+            handleChangeTextAlign : this.handleChangeTextAlign,
+            handleChangeAlignItems : this.handleChangeAlignItems,
+            handleChangeInputType : this.handleChangeInputType,
+            handleChangeShowDots : this.handleChangeShowDots,
+            handleChangeDotsColor : this.handleChangeDotsColor,
+            handleChangeActiveDotsColor : this.handleChangeActiveDotsColor,
+            handleChangeAutoplay : this.handleChangeAutoplay,
+            handleSlideChangeInterval : this.handleSlideChangeInterval,
+            handleChangeInterval : this.handleChangeInterval,
+            handleChangeCircular : this.handleChangeCircular,
+            handleChangeSrcList : this.handleChangeSrcList,
+            handleDeleteSrcList : this.handleDeleteSrcList,
+            handleAddSrcList : this.handleAddSrcList,
+            onButtonEventBind: props.onButtonEventBind
+        };
 
         this.formItemLayout = {
             labelCol: {
@@ -157,204 +193,7 @@ export default class PageAttributesPanel extends React.Component<any, any> {
     };
 
     renderWidgetTypeEditor() {
-        switch (this.props.chooseComponentData.type) {
-            case WIDGET_TYPE.TEXT:
-                return [
-                    <Form.Item label="文字">
-                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/>
-                    </Form.Item>,
-                    <Form.Item label="文字大小">
-                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize}/>
-                    </Form.Item>,
-                    <Form.Item label="文字对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign}
-                                     onChange={this.handleChangeTextAlign}>
-                            <Radio.Button value="left">居左</Radio.Button>
-                            <Radio.Button value="center">居中</Radio.Button>
-                            <Radio.Button value="right">居右</Radio.Button>
-                        </Radio.Group>
-                    </Form.Item>,
-                    <Form.Item label="文字颜色">
-                        <Input type="color" value={this.props.chooseComponentData.textColor}
-                               onChange={this.handleChangeTextColor}/>
-                    </Form.Item>,
-                ];
-            case WIDGET_TYPE.BUTTON:
-                return [
-                    <Form.Item label="文字">
-                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/>
-                    </Form.Item>,
-                    <Form.Item label="文字大小">
-                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize}/>
-                    </Form.Item>,
-                    <Form.Item label="文字横对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign}
-                                     onChange={this.handleChangeTextAlign}>
-                            <Radio.Button value="flex-start">居左</Radio.Button>
-                            <Radio.Button value="center">居中</Radio.Button>
-                            <Radio.Button value="flex-end">居右</Radio.Button>
-                        </Radio.Group>
-                    </Form.Item>,
-                    <Form.Item label="文字竖对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.alignItems}
-                                     onChange={this.handleChangeAlignItems}>
-                            <Radio.Button value="flex-start">居上</Radio.Button>
-                            <Radio.Button value="center">居中</Radio.Button>
-                            <Radio.Button value="flex-end">居下</Radio.Button>
-                        </Radio.Group>
-                    </Form.Item>,
-                    <Form.Item label="文字颜色">
-                        <Input type="color" value={this.props.chooseComponentData.textColor}
-                               onChange={this.handleChangeTextColor}/>
-                    </Form.Item>,
-                    <Form.Item label="事件绑定">
-                        {
-                            this.props.chooseComponentData.eventType !== -1 ?
-                                <Card title={this.props.chooseComponentData.eventType === 1 ? "提交数据" : "自定义"}
-                                      extra={<Button size="small" onClick={this.props.onButtonEventBind}>编辑</Button>}
-                                      style={{width: 280}}>
-                                    {
-                                        this.props.chooseComponentData.eventType === 1 ?
-                                            [
-                                                <p>地址：{this.props.chooseComponentData.postUrl}</p>,
-                                                <p>数据：{this.props.chooseComponentData.postFieldList.join(",")}</p>
-                                            ] :
-                                            [
-                                                <pre>{"function(widgetList) {"}</pre>,
-                                                <pre>{this.props.chooseComponentData.code}</pre>,
-                                                <pre>{"}"}</pre>,
-                                            ]
-                                    }
-                                </Card> : <Button onClick={this.props.onButtonEventBind}>绑定</Button>
-                        }
-                    </Form.Item>,
-                ];
-            case WIDGET_TYPE.INPUT:
-                return [
-                    <Form.Item label="唯一标识">
-                        <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName}/>
-                    </Form.Item>,
-                    <Form.Item label="输入类型">
-                        <Select value={this.props.chooseComponentData.inputType} onChange={this.handleChangeInputType}>
-                            <Option value="text">文字</Option>
-                            <Option value="number">数字</Option>
-                            <Option value="date">日期</Option>
-                            <Option value="datetime">日期时间</Option>
-                            <Option value="idcard">身份证</Option>
-                            <Option value="digit">带小数点数字</Option>
-                        </Select>
-                    </Form.Item>,
-                    <Form.Item label="提示文字">
-                        <Input value={this.props.chooseComponentData.placeholder}
-                               onChange={this.handleChangePlaceholder}/>
-                    </Form.Item>,
-                    <Form.Item label="文字大小">
-                        <Input value={this.props.chooseComponentData.textSize} onChange={this.handleChangeTextSize}/>
-                    </Form.Item>,
-                    <Form.Item label="文字横对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.textAlign}
-                                     onChange={this.handleChangeTextAlign}>
-                            <Radio.Button value="flex-start">居左</Radio.Button>
-                            <Radio.Button value="center">居中</Radio.Button>
-                            <Radio.Button value="flex-end">居右</Radio.Button>
-                        </Radio.Group>
-                    </Form.Item>,
-                    <Form.Item label="文字竖对齐">
-                        <Radio.Group size="small" value={this.props.chooseComponentData.alignItems}
-                                     onChange={this.handleChangeAlignItems}>
-                            <Radio.Button value="flex-start">居上</Radio.Button>
-                            <Radio.Button value="center">居中</Radio.Button>
-                            <Radio.Button value="flex-end">居下</Radio.Button>
-                        </Radio.Group>
-                    </Form.Item>,
-                    <Form.Item label="文字颜色">
-                        <Input type="color" value={this.props.chooseComponentData.textColor}
-                               onChange={this.handleChangeTextColor}/>
-                    </Form.Item>,
-                ];
-            case WIDGET_TYPE.IMAGE:
-                return [
-                    <Form.Item label="地址">
-                        <Input value={this.props.chooseComponentData.src} onChange={this.handleChangeSrc}/>
-                    </Form.Item>,
-                ];
-            case WIDGET_TYPE.CHECKBOX:
-                return [
-                    <Form.Item label="文字">
-                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/>
-                    </Form.Item>,
-                    <Form.Item label="值名">
-                        <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName}/>
-                    </Form.Item>,
-                ];
-            case WIDGET_TYPE.RADIO:
-                return [
-                    <Form.Item label="文字">
-                        <Input value={this.props.chooseComponentData.text} onChange={this.handleChangeText}/>
-                    </Form.Item>,
-                    <Form.Item label="值名">
-                        <Input value={this.props.chooseComponentData.name} onChange={this.handleChangeName}/>
-                        <div className={"page-editor-attributes-panel-tips"}>* 相同值名的radio会互斥</div>
-                    </Form.Item>,
-                ];
-            case WIDGET_TYPE.GALLERY:
-                return [
-                    <Form.Item label="图片列表">
-                        {
-                            this.props.chooseComponentData.srcList.map((s: string, index: number) => {
-                                return <Row key={index}>
-                                    <Col span={21}>
-                                        <Input value={s} onChange={this.handleChangeSrcList(index)}/>
-                                    </Col>
-                                    <Col span={2} offset={1}>
-                                        <Button type="primary" size="small" shape="circle" icon="minus" onClick={this.handleDeleteSrcList(index)} />
-                                    </Col>
-                                </Row>
-                            })
-                        }
-                        <Row>
-                            <Button type="primary" size="small" shape="circle" icon="plus" onClick={this.handleAddSrcList}/>
-                        </Row>
-                    </Form.Item>,
-                    <Form.Item label="显示指示点">
-                        <Checkbox checked={this.props.chooseComponentData.showDots}
-                                  onChange={this.handleChangeShowDots} />
-                    </Form.Item>,
-                    <Form.Item label="点颜色">
-                        <Input type="color" disabled={!this.props.chooseComponentData.showDots} value={this.props.chooseComponentData.dotsColor} onChange={this.handleChangeDotsColor}/>
-                    </Form.Item>,
-                    <Form.Item label="选中点颜色">
-                        <Input type="color" disabled={!this.props.chooseComponentData.showDots} value={this.props.chooseComponentData.activeDotsColor} onChange={this.handleChangeActiveDotsColor}/>
-                    </Form.Item>,
-                    <Form.Item label="自动切换">
-                        <Checkbox checked={this.props.chooseComponentData.autoplay}
-                                  onChange={this.handleChangeAutoplay} />
-                    </Form.Item>,
-                    <Form.Item label="切换时长">
-                        <Col span={16}>
-                            <Slider
-                                min={1}
-                                max={10}
-                                onChange={this.handleSlideChangeInterval}
-                                value={this.props.chooseComponentData.interval}
-                                disabled={!this.props.chooseComponentData.autoplay}
-                            />
-                        </Col>
-                        <Col span={5} offset={1}>
-                            <Input value={this.props.chooseComponentData.interval} onChange={this.handleChangeInterval} disabled={!this.props.chooseComponentData.autoplay}/>
-                        </Col>
-                        <Col span={1} offset={1}>
-                            <span>秒</span>
-                        </Col>
-                    </Form.Item>,
-                    <Form.Item label="循环切换">
-                        <Checkbox checked={this.props.chooseComponentData.circular}
-                                  onChange={this.handleChangeCircular} />
-                    </Form.Item>,
-                ];
-            default:
-                return null;
-        }
+        return WidgetFactory.editPanel(this.props.chooseComponentData, this.methodCollection);
     }
 
     render() {
