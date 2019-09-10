@@ -19,6 +19,7 @@ export default function AboutDialog(props: any) {
         <p>4.公司有类似的需求或者您有框架，想要<strong>接入可视化编辑界面</strong>或者<strong>学习相关技术</strong>。</p>
         <p>5.仅仅想要使用本工具<strong>制作界面</strong>。</p>
         <p><a href="http://www.xiejingyang.com" target="_blank" rel="noopener noreferrer">我的博客</a></p>
+        <p><a href="https://github.com/xieisabug/web-flow-chart" target="_blank" rel="noopener noreferrer">本项目源码</a></p>
         <p>QQ: 136419808</p>
     </Modal>;
 }
