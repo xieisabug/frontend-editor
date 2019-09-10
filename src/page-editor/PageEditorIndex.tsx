@@ -10,7 +10,7 @@ import AboutDialog from "./component/dialog/AboutDialog";
 import "./style/page-editor.css"
 import {ButtonEventBindDialog} from "./component/dialog/ButtonEventBindDialog";
 import {WIDGET_TYPE} from "../Constants";
-import {DataKeyGenerator, IdGenerator, WidgetFactory} from "../Utils";
+import {DataKeyGenerator, IdGenerator} from "../Utils";
 import PageSettingDialog from "./component/dialog/PageSettingDialog";
 
 class PageEditorIndex extends React.Component<any, any> {

@@ -61,6 +61,8 @@ export default function GeneratePageDialog(props: any) {
                 </div>
                 <div hidden={randomNumber === -1}>
                     随机码：{randomNumber}
+                    <img src={"/qrcode.png"} alt={"qr code"}/>
+
                 </div>
             </div>
             <div>
