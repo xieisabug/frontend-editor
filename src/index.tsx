@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import {Provider} from "react-redux";
+import {composeWithDevTools} from "redux-devtools-extension"
 
 import './index.css';
 
 import PageEditorIndex from './page-editor/PageEditorIndex';
 import * as serviceWorker from './serviceWorker';
-import rootReducer from "./reducer/reducer";
+import rootReducer from "./reducer";
 import {DataKeyGenerator, IdGenerator, WidgetFactory, ZIndexGenerator} from "./Utils";
 import {WIDGET_TYPE} from "./Constants";
 import {WidgetButtonClass} from "./page-editor/component/widget/WidgetButton";
@@ -34,7 +35,9 @@ WidgetFactory.register(WIDGET_TYPE.TEXT, WidgetTextClass);
 function configureStore() {
     return createStore(
         rootReducer,
-        applyMiddleware(thunk)
+        composeWithDevTools(
+            applyMiddleware(thunk)
+        )
     );
 }
 

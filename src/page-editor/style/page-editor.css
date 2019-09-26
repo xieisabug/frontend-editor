@@ -49,7 +49,13 @@
 
 .page-editor-thumb {
     flex: 0 0 200px;
-    background: aquamarine;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    overflow: auto;
+    user-select: none;
 }
 
 .page-editor-editor-container {
@@ -204,4 +210,19 @@
 }
 .dialog-form-item-tips:before {
     content: "* ";
+}
+
+.page-thumb-item {
+    width: 100px;
+    height: 150px;
+    flex: 0 0 150px;
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.page-thumb-item.active {
+    border: 2px solid cornflowerblue;
 }

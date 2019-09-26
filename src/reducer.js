@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import pageReducer from './page.reducer';
+import pageReducer from './page-editor/page-editor.reducer';
 
 export default combineReducers({
     pageReducer

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
 
 import Toolbar from "./component/Toolbar"
 import PageEditor from "./component/PageEditor";
@@ -12,6 +13,8 @@ import {ButtonEventBindDialog} from "./component/dialog/ButtonEventBindDialog";
 import {WIDGET_TYPE} from "../Constants";
 import {DataKeyGenerator, IdGenerator} from "../Utils";
 import PageSettingDialog from "./component/dialog/PageSettingDialog";
+import PageThumb from "./component/PageThumb";
+import * as Actions from "./page-editor.actions"
 
 class PageEditorIndex extends React.Component<any, any> {
 
@@ -32,18 +35,7 @@ class PageEditorIndex extends React.Component<any, any> {
         super(props, context);
 
         this.state = {
-            pageList: [
-                {
-                    id: 0,
-                    name: "page1",
-                    scrollable: true,
-                    isTabPage: true
-                }
-            ],
-            choosePageIndex: 0,
-
             chooseType: -1,
-            widgetList: [],
             chooseComponentIndex: -1,
             chooseComponentData: null,
             mainDialogIsOpen: false,
@@ -69,6 +61,21 @@ class PageEditorIndex extends React.Component<any, any> {
     componentDidMount() {
         document.addEventListener("keydown", this.handleKeyDown);
         document.addEventListener("keyup", this.handleKeyUp);
+    }
+
+    componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
+        if (this.props.currentPageIndex !== prevProps.currentPageIndex) {
+            this.setState({
+                chooseType: -1,
+                chooseComponentIndex: -1,
+                chooseComponentData: null,
+                mainDialogIsOpen: false,
+                metaDataDialogIsOpen: false,
+                aboutDialogIsOpen: false,
+                buttonEventBindDialogIsOpen: false,
+                pageSettingDialogIsOpen: false,
+            })
+        }
     }
 
     /**
@@ -166,12 +173,9 @@ class PageEditorIndex extends React.Component<any, any> {
      * 添加组件
      */
     addWidget = (data: any) => {
-        let widgetList = this.state.widgetList.slice();
-        widgetList.push(data);
-
+        this.props.addWidget(data);
         this.setState({
             chooseType: -1,
-            widgetList
         })
     };
 
@@ -179,9 +183,10 @@ class PageEditorIndex extends React.Component<any, any> {
      * 编辑组件
      */
     editWidget = (index: number, data: any, isChoose: boolean) => {
-        let widgetList = this.state.widgetList.slice();
+        const { pages, currentPageIndex, editWidget } = this.props;
+        let pageData = pages[currentPageIndex].data;
 
-        let newComponent = Object.assign({}, widgetList[index], data);
+        let newComponent = Object.assign({}, pageData[index], data);
 
         if (newComponent.width > 380) newComponent.width = 380;
         if (newComponent.x < 0) newComponent.x = 0;
@@ -189,14 +194,13 @@ class PageEditorIndex extends React.Component<any, any> {
         if (newComponent.width + newComponent.x > 380) newComponent.x = 380 - newComponent.width;
         if (newComponent.y < 0) newComponent.y = 0;
 
-        widgetList[index] = newComponent;
+        editWidget(index, newComponent);
 
         let chooseComponentData = this.state.chooseComponentData;
         if (isChoose) {
-            chooseComponentData = widgetList[index];
+            chooseComponentData = newComponent;
         }
         this.setState({
-            widgetList,
             chooseComponentData
         })
     };
@@ -216,12 +220,10 @@ class PageEditorIndex extends React.Component<any, any> {
      */
     handleDeleteComponent = () => {
         if (this.state.chooseComponentIndex !== -1) {
-            let widgetList = this.state.widgetList.slice();
-            widgetList.splice(this.state.chooseComponentIndex, 1);
+            this.props.deleteWidget(this.state.chooseComponentIndex);
             this.setState({
                 chooseComponentIndex: -1,
                 chooseComponentData: null,
-                widgetList
             })
         }
     };
@@ -238,6 +240,11 @@ class PageEditorIndex extends React.Component<any, any> {
     };
 
     render() {
+        const {
+            pages, currentPageIndex,
+
+            addPage, changeCurrentPage
+        } = this.props;
         return (
             <div className="page-editor">
                 <Toolbar
@@ -250,12 +257,18 @@ class PageEditorIndex extends React.Component<any, any> {
                     onPageSettingButtonClick={this.handleOpenPageSettingDialog}
                 />
                 <div className="page-editor-center-container">
+                    <PageThumb
+                        pages={pages}
+                        currentPageIndex={currentPageIndex}
+                        addPage={addPage}
+                        changeCurrentPage={changeCurrentPage}
+                    />
                     <PageEditor
                         chooseType={this.state.chooseType}
                         addWidget={this.addWidget}
                         editWidget={this.editWidget}
 
-                        widgetList={this.state.widgetList}
+                        widgetList={pages[currentPageIndex].data}
 
                         handleChooseComponentData={this.handleChooseComponentData}
                         chooseComponentData={this.state.chooseComponentData}
@@ -273,7 +286,7 @@ class PageEditorIndex extends React.Component<any, any> {
                     />
                 </div>
                 <GeneratePageDialog
-                    metaData={this.state.widgetList}
+                    metaData={pages[currentPageIndex].data}
                     mainDialogIsOpen={this.state.mainDialogIsOpen}
                     metaDataDialogIsOpen={this.state.metaDataDialogIsOpen}
                     openMetaDataDialog={this.handleOpenMetaDataDialog}
@@ -291,8 +304,8 @@ class PageEditorIndex extends React.Component<any, any> {
                 <PageSettingDialog
                     visible={this.state.pageSettingDialogIsOpen}
                     onOk={this.handleClosePageSettingDialog}
-                    pageList={this.state.pageList}
-                    choosePageIndex={this.state.choosePageIndex}
+                    pageList={pages}
+                    choosePageIndex={currentPageIndex}
                 />
             </div>
         );
@@ -300,9 +313,9 @@ class PageEditorIndex extends React.Component<any, any> {
 
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-    simpleAction: () => dispatch({})
-});
+const mapDispatchToProps = (dispatch: any) => {
+    return bindActionCreators<any, any>(Actions, dispatch);
+};
 const mapStateToProps = (state: any) => ({
     ...state.pageReducer
 });
