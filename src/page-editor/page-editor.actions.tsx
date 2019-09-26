@@ -1,8 +1,9 @@
 import * as ActionType from "./page-editor.constants";
 
-export function addPage() {
+export function addPage(pageType: number) {
     return {
-        type: ActionType.ADD_PAGE
+        type: ActionType.ADD_PAGE,
+        pageType
     }
 }
 

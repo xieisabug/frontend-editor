@@ -201,8 +201,8 @@ export default class PageAttributesPanel extends React.Component<any, any> {
 
         return <div className="page-editor-attributes-panel">
 
-            <div className="page-editor-attributes-panel-from-group-title">公共属性</div>
-            <Form {...this.formItemLayout}>
+            <div className="page-editor-attributes-panel-from-group-title" style={{display: chooseComponentData.hideCommonAttributeForm ? "none": "block"}}>公共属性</div>
+            <Form {...this.formItemLayout} style={{display: chooseComponentData.hideCommonAttributeForm ? "none": "block"}}>
                 <Form.Item label="x">
                     <Input value={chooseComponentData.x} onChange={this.handleChangeX}/>
                     <ButtonGroup size="small">

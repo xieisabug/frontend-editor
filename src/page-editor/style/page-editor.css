@@ -226,3 +226,26 @@
 .page-thumb-item.active {
     border: 2px solid cornflowerblue;
 }
+
+.page-template-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+.page-template-item {
+    width: 120px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+.page-template-item:hover {
+    background: #fafafa;
+}
+.page-template-item-img {
+    width: 100px;
+    height: 100px;
+}

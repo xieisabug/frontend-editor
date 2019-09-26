@@ -6,7 +6,8 @@ export const WIDGET_TYPE = {
     CHECKBOX: 5,
     RADIO: 6,
     TEXTAREA: 7,
-    GALLERY: 8
+    GALLERY: 8,
+    TAB: 9,
 };
 
 export const WIDGET_PROPERTY = {

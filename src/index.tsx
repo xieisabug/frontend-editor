@@ -19,6 +19,7 @@ import {WidgetImageClass} from "./page-editor/component/widget/WidgetImage";
 import {WidgetInputClass} from "./page-editor/component/widget/WidgetInput";
 import {WidgetRadioClass} from "./page-editor/component/widget/WidgetRadio";
 import {WidgetTextClass} from "./page-editor/component/widget/WidgetText";
+import {WidgetTabClass} from "./page-editor/component/widget/WidgetTab";
 
 IdGenerator.init();
 ZIndexGenerator.init();
@@ -31,6 +32,7 @@ WidgetFactory.register(WIDGET_TYPE.IMAGE, WidgetImageClass);
 WidgetFactory.register(WIDGET_TYPE.INPUT, WidgetInputClass);
 WidgetFactory.register(WIDGET_TYPE.RADIO, WidgetRadioClass);
 WidgetFactory.register(WIDGET_TYPE.TEXT, WidgetTextClass);
+WidgetFactory.register(WIDGET_TYPE.TAB, WidgetTabClass);
 
 function configureStore() {
     return createStore(

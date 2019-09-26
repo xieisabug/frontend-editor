@@ -15,6 +15,7 @@ import {DataKeyGenerator, IdGenerator} from "../Utils";
 import PageSettingDialog from "./component/dialog/PageSettingDialog";
 import PageThumb from "./component/PageThumb";
 import * as Actions from "./page-editor.actions"
+import NewPageTemplateDialog from "./component/dialog/NewPageTemplateDialog";
 
 class PageEditorIndex extends React.Component<any, any> {
 
@@ -28,6 +29,8 @@ class PageEditorIndex extends React.Component<any, any> {
     handleCloseButtonEventBindDialog: any;
     handleOpenPageSettingDialog: any;
     handleClosePageSettingDialog: any;
+    handleOpenNewPageTemplateDialog: any;
+    handleCloseNewPageTemplateDialog: any;
 
     copyComponentData: any;
 
@@ -43,6 +46,7 @@ class PageEditorIndex extends React.Component<any, any> {
             aboutDialogIsOpen: false,
             buttonEventBindDialogIsOpen: false,
             pageSettingDialogIsOpen: false,
+            newPageTemplateDialogIsOpen: false,
             ctrlIsDown: false,
         };
 
@@ -56,6 +60,8 @@ class PageEditorIndex extends React.Component<any, any> {
         this.handleCloseButtonEventBindDialog = this.handleChangeDialogStatus.bind(this, "buttonEventBindDialog", false);
         this.handleOpenPageSettingDialog = this.handleChangeDialogStatus.bind(this, "pageSettingDialog", true);
         this.handleClosePageSettingDialog = this.handleChangeDialogStatus.bind(this, "pageSettingDialog", false);
+        this.handleOpenNewPageTemplateDialog = this.handleChangeDialogStatus.bind(this, "newPageTemplateDialog", true);
+        this.handleCloseNewPageTemplateDialog = this.handleChangeDialogStatus.bind(this, "newPageTemplateDialog", false);
     }
 
     componentDidMount() {
@@ -239,17 +245,29 @@ class PageEditorIndex extends React.Component<any, any> {
         this.handleCloseButtonEventBindDialog();
     };
 
+    getToolbarButtonList = () => {
+        const {
+            pages, currentPageIndex,
+        } = this.props;
+
+        if (pages[currentPageIndex].pageSetting.isTabPage) {
+            return [];
+        }
+        return [WIDGET_TYPE.BUTTON, WIDGET_TYPE.IMAGE, WIDGET_TYPE.INPUT, WIDGET_TYPE.TEXT,
+            WIDGET_TYPE.CHECKBOX, WIDGET_TYPE.RADIO, WIDGET_TYPE.GALLERY]
+    };
+
     render() {
         const {
             pages, currentPageIndex,
 
             addPage, changeCurrentPage
         } = this.props;
+
         return (
             <div className="page-editor">
                 <Toolbar
-                    buttonList={[WIDGET_TYPE.BUTTON, WIDGET_TYPE.IMAGE, WIDGET_TYPE.INPUT, WIDGET_TYPE.TEXT,
-                        WIDGET_TYPE.CHECKBOX, WIDGET_TYPE.RADIO, WIDGET_TYPE.GALLERY]}
+                    buttonList={this.getToolbarButtonList()}
                     chooseType={this.state.chooseType}
                     handleChooseWidgetType={this.handleChooseWidgetType}
                     onExportButtonClick={this.handleOpenExportDialog}
@@ -260,7 +278,7 @@ class PageEditorIndex extends React.Component<any, any> {
                     <PageThumb
                         pages={pages}
                         currentPageIndex={currentPageIndex}
-                        addPage={addPage}
+                        addPage={this.handleOpenNewPageTemplateDialog}
                         changeCurrentPage={changeCurrentPage}
                     />
                     <PageEditor
@@ -306,6 +324,11 @@ class PageEditorIndex extends React.Component<any, any> {
                     onOk={this.handleClosePageSettingDialog}
                     pageList={pages}
                     choosePageIndex={currentPageIndex}
+                />
+                <NewPageTemplateDialog
+                    open={this.state.newPageTemplateDialogIsOpen}
+                    closeDialog={this.handleCloseNewPageTemplateDialog}
+                    addPage={addPage}
                 />
             </div>
         );

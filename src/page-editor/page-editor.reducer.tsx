@@ -1,4 +1,6 @@
 import * as ActionType from "./page-editor.constants";
+import {IdGenerator, ZIndexGenerator} from "../Utils";
+import {WIDGET_TYPE} from "../Constants";
 
 const initialState = {
     pages: [ {
@@ -33,13 +35,56 @@ export default (state = initialState, action: any) => {
 }
 
 function handleAddPage(state: any, action: any) {
-    let newPage = {
-        name: "页面" + state.pageIdIndex,
-        data: [],
-        pageSetting: {
-            isScrollPage: false
-        }
-    };
+    let newPage;
+    switch (action.pageType) {
+        case 0:
+            newPage = {
+                name: "页面" + state.pageIdIndex,
+                data: [],
+                pageSetting: {
+                    isScrollPage: false,
+                    isTabPage: false
+                }
+            };
+            break;
+        case 1:
+            newPage = {
+                name: "页面" + state.pageIdIndex,
+                data: [
+                    {
+                        id: IdGenerator.instance.getKey(),
+                        type: WIDGET_TYPE.TAB,
+                        x: 0,
+                        y: 615,
+                        width: 380,
+                        height: 60,
+                        z: ZIndexGenerator.instance.getKey(),
+                        background: "#ffffff",
+                        backgroundTransparent: false,
+                        borderWidth: 1,
+                        borderLineType: "solid",
+                        borderColor: "#cccccc",
+                        tabList: [],
+                        hideCommonAttributeForm: true
+                    }
+                ],
+                pageSetting: {
+                    isScrollPage: false,
+                    isTabPage: true
+                }
+            };
+            break;
+        default:
+            newPage = {
+                name: "页面" + state.pageIdIndex,
+                data: [],
+                pageSetting: {
+                    isScrollPage: false,
+                    isTabPage: false
+                }
+            };
+            break;
+    }
     let pages = state.pages.slice();
     pages.push(newPage);
     return Object.assign({}, state, { pages, pageIdIndex: state.pageIdIndex + 1})
