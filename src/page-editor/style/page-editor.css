@@ -192,3 +192,16 @@
     display: none;
     z-index: 0;
 }
+
+.dialog-form-item-tips {
+    color: #ccc;
+    font-size: 12px;
+    line-height: 18px;
+    display: inline-block;
+    max-width: 250px;
+    margin-left: 20px;
+    vertical-align: text-top;
+}
+.dialog-form-item-tips:before {
+    content: "* ";
+}
