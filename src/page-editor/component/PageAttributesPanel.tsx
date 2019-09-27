@@ -72,6 +72,7 @@ export default class PageAttributesPanel extends React.Component<any, any> {
         this.handleChangeSrcList = this.handleListInputChange.bind(this, "srcList");
         this.handleDeleteSrcList = this.handleListDelete.bind(this, "srcList");
         this.handleAddSrcList = this.handleListInputAdd.bind(this, "srcList");
+        this.handleChangePosition = this.handleChangePosition.bind(this);
 
         this.methodCollection = {
             handleChangeX : this.handleChangeX,
@@ -103,6 +104,7 @@ export default class PageAttributesPanel extends React.Component<any, any> {
             handleChangeSrcList : this.handleChangeSrcList,
             handleDeleteSrcList : this.handleDeleteSrcList,
             handleAddSrcList : this.handleAddSrcList,
+            handleChangePosition : this.handleChangePosition,
             onButtonEventBind: props.onButtonEventBind
         };
 
@@ -190,6 +192,14 @@ export default class PageAttributesPanel extends React.Component<any, any> {
     subZ = () => {
         this.handleInputChange("z", this.props.chooseComponentData.z - 1 < 0 ? 0 : this.props.chooseComponentData.z - 1)
     };
+
+    // 修改tab位置的方法，因为tab的修改伴随很多逻辑，所以必须单独写一个放在这里
+    handleChangePosition(event: any) {
+        this.props.editWidget(this.props.chooseComponentIndex, {
+            "position": event.target.value,
+            "y": event.target.value === "top" ? 0 : 615
+        }, true)
+    }
 
     renderWidgetTypeEditor() {
         return WidgetFactory.editPanel(this.props.chooseComponentData, this.methodCollection);

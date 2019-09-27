@@ -17,7 +17,8 @@ export function addWidget(data: any) {
 export function editWidget(index: number, data: any) {
     return {
         type: ActionType.EDIT_WIDGET,
-        data
+        data,
+        index
     }
 }
 
