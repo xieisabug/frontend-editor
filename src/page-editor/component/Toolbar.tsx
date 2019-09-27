@@ -26,7 +26,7 @@ function Toolbar(props: ToolbarPropTypes) {
 
     return <div className="page-editor-toolbar">
         {
-            props.buttonList.map(function(i) {
+            props.buttonList.length === 0 ? <span>本页面不支持自由添加组件</span> : props.buttonList.map(function(i) {
                 return <IconButtonComponent type={i} active={props.chooseType === i} onClick={handleChoose} key={i} />
             })
         }
