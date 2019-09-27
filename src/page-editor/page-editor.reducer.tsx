@@ -87,7 +87,7 @@ function handleAddPage(state: any, action: any) {
     }
     let pages = state.pages.slice();
     pages.push(newPage);
-    return Object.assign({}, state, { pages, pageIdIndex: state.pageIdIndex + 1})
+    return Object.assign({}, state, { pages, pageIdIndex: state.pageIdIndex + 1, currentPageIndex: pages.length - 1})
 }
 
 function handleAddWidget(state: any, action: any) {
