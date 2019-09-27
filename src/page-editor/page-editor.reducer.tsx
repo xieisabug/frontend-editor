@@ -65,7 +65,9 @@ function handleAddPage(state: any, action: any) {
                         borderLineType: "solid",
                         borderColor: "#cccccc",
                         tabList: [],
-                        hideCommonAttributeForm: true
+                        hideCommonAttributeForm: true,
+                        disableMove: true,
+                        disableChangeSize: true
                     }
                 ],
                 pageSetting: {

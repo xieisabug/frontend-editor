@@ -211,6 +211,8 @@ export default class PageEditor extends React.Component<any, any> {
                 if (this.chooseComponentData !== null) {
 
                     if (this.isResizeComponent) { // 修改大小
+                        if (this.chooseComponentData.disableChangeSize) return; // 如果组件配置不可修改大小，则直接返回
+
                         let top = this.endY - this.startY;
                         let left = this.endX - this.startX;
 
@@ -236,6 +238,9 @@ export default class PageEditor extends React.Component<any, any> {
 
                         return;
                     }
+
+                    // 移动
+                    if (this.chooseComponentData.disableMove) return; // 如果组件配置不可移动位置，则直接返回
 
                     let {top, left} = this.calMovePosition();
                     let absTop = top + this.chooseComponentData.y, absLeft = left + this.chooseComponentData.x,
@@ -396,6 +401,8 @@ export default class PageEditor extends React.Component<any, any> {
             if (this.isMouseDown) {
                 if (this.chooseComponentData !== null) { // 移动已经添加的组件
                     if (this.isResizeComponent) {
+                        if (this.chooseComponentData.disableChangeSize) return; // 如果组件配置不可修改大小，则直接返回
+
                         let top = this.endY - this.startY;
                         let left = this.endX - this.startX;
 
@@ -431,6 +438,8 @@ export default class PageEditor extends React.Component<any, any> {
                         this.isMouseDown = false;
                         return;
                     }
+
+                    if (this.chooseComponentData.disableMove) return; // 如果组件配置不可移动位置，则直接返回
 
                     let {top, left} = this.calMovePosition();
 

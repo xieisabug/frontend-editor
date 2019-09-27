@@ -147,6 +147,12 @@
     left: -5px;
     cursor: w-resize;
 }
+.page-editor-change-size-area.disable-change-size .page-editor-change-size-area-top,
+.page-editor-change-size-area.disable-change-size .page-editor-change-size-area-right,
+.page-editor-change-size-area.disable-change-size .page-editor-change-size-area-bottom,
+.page-editor-change-size-area.disable-change-size .page-editor-change-size-area-left {
+    cursor: no-drop;
+}
 
 /*组件移动预览样式*/
 .page-editor-move-preview-area {
