@@ -25,6 +25,7 @@ TODO
 - [x] swiper组件
 - [ ] scrollview组件
 - [ ] list组件
+- [x] tab组件
 - [ ] 图表组件
 - [ ] 多页面的设置
 

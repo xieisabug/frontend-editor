@@ -2,7 +2,8 @@ import * as React from 'react';
 import {getCommonStyle} from "../../../Utils";
 import {WidgetBase, WidgetProperty} from "./WidgetBase";
 import {WIDGET_TYPE} from "../../../Constants";
-import {Form, Radio} from "antd";
+import {Form, Radio, Select} from "antd";
+const {Option} = Select;
 
 export class WidgetTabClass implements WidgetBase{
     type: number = WIDGET_TYPE.TAB;
@@ -15,6 +16,16 @@ export class WidgetTabClass implements WidgetBase{
                     <Radio.Button value="top">顶部</Radio.Button>
                     <Radio.Button value="bottom">底部</Radio.Button>
                 </Radio.Group>
+            </Form.Item>,
+            <Form.Item label="Tab配置">
+                <div className="widget-tab-config-container">
+                    {data.tabList.map((tab: any) => {
+                        return <Select value={tab.name}>
+                            <Option value="页面0">页面0</Option>
+                            <Option value="页面1">页面1</Option>
+                        </Select>
+                    })}
+                </div>
             </Form.Item>,
         ];
     }
@@ -37,7 +48,11 @@ export class WidgetTabClass implements WidgetBase{
             border: "0",
             [props.data.position === "top" ? "borderBottom": "borderTop"]: `${props.data.borderWidth}px ${props.data.borderLineType} ${props.data.borderColor}`
         });
-        return <div className={`widget-item widget-tab widget-item-${props.data.id}`} style={style}>123</div>
+        return <div className={`widget-item widget-tab widget-item-${props.data.id}`} style={style}>
+            {props.data.tabList.map((tab:any) => {
+                return <div>{tab.name}</div>
+            })}
+        </div>
     }
 
 }

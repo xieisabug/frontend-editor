@@ -67,7 +67,10 @@ function handleAddPage(state: any, action: any) {
                         hideCommonAttributeForm: true,
                         disableMove: true,
                         disableChangeSize: true,
-                        tabList: [],
+                        tabList: [
+                            { name: "页面0" },
+                            { name: "页面1" },
+                        ],
                         position: "bottom"
                     }
                 ],
