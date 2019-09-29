@@ -254,7 +254,7 @@ class PageEditorIndex extends React.Component<any, any> {
             return [];
         }
         return [WIDGET_TYPE.BUTTON, WIDGET_TYPE.IMAGE, WIDGET_TYPE.INPUT, WIDGET_TYPE.TEXT,
-            WIDGET_TYPE.CHECKBOX, WIDGET_TYPE.RADIO, WIDGET_TYPE.GALLERY]
+            WIDGET_TYPE.CHECKBOX, WIDGET_TYPE.RADIO, WIDGET_TYPE.GALLERY, WIDGET_TYPE.RECT, WIDGET_TYPE.CIRCLE]
     };
 
     render() {

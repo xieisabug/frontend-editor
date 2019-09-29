@@ -2,18 +2,19 @@ import * as React from "react";
 import {Button} from "antd";
 import classNames from "classnames";
 
-import {WIDGET_PROPERTY} from "../../Constants";
+import {WidgetFactory} from "../../Utils";
 
 function IconButtonComponent(props: any) {
+    let property = WidgetFactory.properties(props.type);
     let buttonClassName = classNames("page-editor-toolbar-widget-item", {"active": props.active});
-    let iconClassName = classNames("iconfont", WIDGET_PROPERTY[props.type].icon);
+    let iconClassName = classNames("iconfont", property.icon);
     function handleClick() {
         props.onClick(props.type);
     }
     return <div
         className={buttonClassName}
         onClick={handleClick}
-        title={WIDGET_PROPERTY[props.type].tips}>
+        title={property.tips}>
         <i className={iconClassName}/>
     </div>;
 }

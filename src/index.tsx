@@ -20,6 +20,8 @@ import {WidgetInputClass} from "./page-editor/component/widget/WidgetInput";
 import {WidgetRadioClass} from "./page-editor/component/widget/WidgetRadio";
 import {WidgetTextClass} from "./page-editor/component/widget/WidgetText";
 import {WidgetTabClass} from "./page-editor/component/widget/WidgetTab";
+import {WidgetRectClass} from "./page-editor/component/widget/WidgetRect";
+import {WidgetCircleClass} from "./page-editor/component/widget/WidgetCircle";
 
 IdGenerator.init();
 ZIndexGenerator.init();
@@ -33,6 +35,8 @@ WidgetFactory.register(WIDGET_TYPE.INPUT, WidgetInputClass);
 WidgetFactory.register(WIDGET_TYPE.RADIO, WidgetRadioClass);
 WidgetFactory.register(WIDGET_TYPE.TEXT, WidgetTextClass);
 WidgetFactory.register(WIDGET_TYPE.TAB, WidgetTabClass);
+WidgetFactory.register(WIDGET_TYPE.RECT, WidgetRectClass);
+WidgetFactory.register(WIDGET_TYPE.CIRCLE, WidgetCircleClass);
 
 function configureStore() {
     return createStore(

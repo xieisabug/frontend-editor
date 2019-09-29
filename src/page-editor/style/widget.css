@@ -83,3 +83,7 @@
     padding: 5px;
     box-sizing: border-box;
 }
+
+.widget-circle {
+    border-radius: 50%;
+}

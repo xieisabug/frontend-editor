@@ -35,6 +35,8 @@ export default class PageAttributesPanel extends React.Component<any, any> {
     handleChangeSrcList: any;
     handleDeleteSrcList: any;
     handleAddSrcList: any;
+    handleChangeBorderRadius: any;
+    handleSlideChangeBorderRadius: any;
 
     formItemLayout: any;
 
@@ -72,6 +74,8 @@ export default class PageAttributesPanel extends React.Component<any, any> {
         this.handleChangeSrcList = this.handleListInputChange.bind(this, "srcList");
         this.handleDeleteSrcList = this.handleListDelete.bind(this, "srcList");
         this.handleAddSrcList = this.handleListInputAdd.bind(this, "srcList");
+        this.handleChangeBorderRadius = this.handleNumberInputChange.bind(this, "borderRadius");
+        this.handleSlideChangeBorderRadius = this.handleSlideChange.bind(this, "borderRadius");
         this.handleChangePosition = this.handleChangePosition.bind(this);
 
         this.methodCollection = {
@@ -105,6 +109,8 @@ export default class PageAttributesPanel extends React.Component<any, any> {
             handleDeleteSrcList : this.handleDeleteSrcList,
             handleAddSrcList : this.handleAddSrcList,
             handleChangePosition : this.handleChangePosition,
+            handleChangeBorderRadius: this.handleChangeBorderRadius,
+            handleSlideChangeBorderRadius: this.handleSlideChangeBorderRadius,
             onButtonEventBind: props.onButtonEventBind
         };
 
@@ -209,6 +215,8 @@ export default class PageAttributesPanel extends React.Component<any, any> {
         const {chooseComponentData} = this.props;
         if (!chooseComponentData) return <div className="page-editor-attributes-panel no-choose-component">未选定组件</div>;
 
+        const widgetTypeEditor = this.renderWidgetTypeEditor();
+
         return <div className="page-editor-attributes-panel">
 
             <div className="page-editor-attributes-panel-from-group-title" style={{display: chooseComponentData.hideCommonAttributeForm ? "none": "block"}}>公共属性</div>
@@ -272,9 +280,9 @@ export default class PageAttributesPanel extends React.Component<any, any> {
                 </Form.Item>
             </Form>
 
-            <div className="page-editor-attributes-panel-from-group-title">组件属性</div>
+            <div className="page-editor-attributes-panel-from-group-title" style={{display: widgetTypeEditor && widgetTypeEditor.length ? "block": "none"}}>组件属性</div>
             <Form {...this.formItemLayout}>
-                {this.renderWidgetTypeEditor()}
+                {widgetTypeEditor}
             </Form>
 
             <div className="page-editor-attributes-panel-from-group-title">组件操作</div>
