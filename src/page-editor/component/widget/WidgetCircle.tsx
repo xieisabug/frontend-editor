@@ -2,7 +2,6 @@ import * as React from 'react';
 import {getCommonStyle} from "../../../Utils";
 import {WidgetBase, WidgetProperty} from "./WidgetBase";
 import {WIDGET_TYPE} from "../../../Constants";
-import { Form, Input, } from "antd";
 
 export class WidgetCircleClass implements WidgetBase{
     type: number = WIDGET_TYPE.CIRCLE;

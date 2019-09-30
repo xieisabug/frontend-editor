@@ -48,6 +48,7 @@ class PageEditorIndex extends React.Component<any, any> {
             pageSettingDialogIsOpen: false,
             newPageTemplateDialogIsOpen: false,
             ctrlIsDown: false,
+            selectManyList: []
         };
 
         this.handleOpenExportDialog = this.handleChangeDialogStatus.bind(this, "mainDialog", true);
@@ -221,6 +222,12 @@ class PageEditorIndex extends React.Component<any, any> {
         })
     };
 
+    handleChooseManyData = (list: any) => {
+        this.setState({
+            selectManyList: list
+        })
+    };
+
     /**
      * 删除组件
      */
@@ -290,6 +297,8 @@ class PageEditorIndex extends React.Component<any, any> {
 
                         handleChooseComponentData={this.handleChooseComponentData}
                         chooseComponentData={this.state.chooseComponentData}
+                        handleChooseManyData={this.handleChooseManyData}
+                        selectManyList={this.state.selectManyList}
 
                         ctrlIsDown={this.state.ctrlIsDown}
                     />

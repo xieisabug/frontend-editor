@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 export default function ChangeSizeAreaComponent(props: any) {
     let changeSizeAreaClassName = classNames("page-editor-change-size-area", {
-        "show": props.chooseComponentData !== null,
+        "show": props.chooseComponentData !== null || props.selectManyList.length !== 0,
         "disable-change-size": props.chooseComponentData !== null && props.chooseComponentData.disableChangeSize
     });
 

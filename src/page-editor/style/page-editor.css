@@ -115,6 +115,7 @@
     position: absolute;
     cursor: move;
     z-index: 99999;
+    border: 1px solid #1a73e8;
 }
 .page-editor-change-size-area.show {
     display: block;
@@ -123,28 +124,28 @@
     width: 10px;
     height: 10px;
     position: absolute;
-    border: 1px solid #666;
-    background: white;
+    border: 1px solid white;
+    background: #1a73e8;
     box-sizing: border-box;
 }
 .page-editor-change-size-area-top {
-    top: -5px;
-    left: calc(50% - 5px);
+    top: -6px;
+    left: calc(50% - 6px);
     cursor: n-resize;
 }
 .page-editor-change-size-area-bottom {
-    bottom: -5px;
-    left: calc(50% - 5px);
+    bottom: -6px;
+    left: calc(50% - 6px);
     cursor: s-resize;
 }
 .page-editor-change-size-area-right {
-    top: calc(50% - 5px);
-    right: -5px;
+    top: calc(50% - 6px);
+    right: -6px;
     cursor: e-resize;
 }
 .page-editor-change-size-area-left {
-    top: calc(50% - 5px);
-    left: -5px;
+    top: calc(50% - 6px);
+    left: -6px;
     cursor: w-resize;
 }
 .page-editor-change-size-area.disable-change-size .page-editor-change-size-area-top,

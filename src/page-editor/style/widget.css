@@ -3,6 +3,12 @@
     cursor: pointer;
 }
 
+.widget-select {
+    border: 6px solid rgba(138, 180, 248, 0.6);
+    position: absolute;
+    box-sizing: content-box;
+}
+
 .widget-button {
     display: flex;
     border: 1px solid #ccc;

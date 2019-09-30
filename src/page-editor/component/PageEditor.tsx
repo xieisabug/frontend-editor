@@ -23,6 +23,8 @@ export default class PageEditor extends React.Component<any, any> {
     isResizeComponent = false;
     resizeType = "";
 
+    isSelectMany = false;
+
     movePreviewDom: any = null;
 
     hAssistLine: any = null;
@@ -52,10 +54,25 @@ export default class PageEditor extends React.Component<any, any> {
         }
 
         if (this.props.chooseComponentData !== prevProps.chooseComponentData && this.props.chooseComponentData) {
-            this.changeSizeAreaDom.style.left = this.props.chooseComponentData.x + "px";
-            this.changeSizeAreaDom.style.top = this.props.chooseComponentData.y + "px";
-            this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width + "px";
-            this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height + "px";
+            this.changeSizeAreaDom.style.left = this.props.chooseComponentData.x - 3 + "px";
+            this.changeSizeAreaDom.style.top = this.props.chooseComponentData.y - 3 + "px";
+            this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width + 6 + "px";
+            this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height + 6 + "px";
+        }
+
+        if (this.props.selectManyList !== prevProps.selectManyList && this.props.selectManyList.length) {
+            let minX = 99999999, minY = 9999999, maxX = -9999999, maxY = -9999999;
+            this.props.selectManyList.forEach((c: any) => {
+                if (c.x < minX) minX = c.x;
+                if (c.y < minY) minY = c.y;
+                if ((c.x + c.width) > maxX) maxX = c.x + c.width;
+                if ((c.y + c.height) > maxY) maxY = c.y + c.height;
+            });
+
+            this.changeSizeAreaDom.style.left = minX - 3 + "px";
+            this.changeSizeAreaDom.style.top = minY - 3 + "px";
+            this.changeSizeAreaDom.style.width = maxX - minX + 6 + "px";
+            this.changeSizeAreaDom.style.height = maxY - minY + 6 + "px";
         }
     }
 
@@ -77,6 +94,7 @@ export default class PageEditor extends React.Component<any, any> {
 
         this.chooseComponentData = null;
         this.chooseComponentIndex = -1;
+        this.props.handleChooseManyData([]);
 
         if (this.props.chooseType === -1) { // 处理选择已经添加的组件，进行选定的操作
             const { widgetList } = this.props;
@@ -106,6 +124,8 @@ export default class PageEditor extends React.Component<any, any> {
             }
 
             this.props.handleChooseComponentData(this.chooseComponentIndex, this.chooseComponentData);
+
+            this.isSelectMany = this.chooseComponentIndex === -1;
         }
     };
 
@@ -499,6 +519,19 @@ export default class PageEditor extends React.Component<any, any> {
                         Object.assign(this.chooseComponentData, changeData);
                         this.props.editWidget(this.chooseComponentIndex, changeData, true);
                     }
+                } else if (this.isSelectMany) { // 框选区域里的所有组件
+                    let x = this.startX - this.miniAppPagePosition.left, y = this.startY - this.miniAppPagePosition.top,
+                        endX = this.endX - this.miniAppPagePosition.left, endY = this.endY - this.miniAppPagePosition.top;
+                    let componentList = this.props.widgetList.filter((w: any) => {
+                        return w.x >= x && w.y >= y && endX >= (w.x + w.width) && endY >= (w.y + w.height)
+                    });
+                    if (componentList.length === 1) {
+                        this.chooseComponentData = componentList[0];
+                        this.chooseComponentIndex = this.props.widgetList.findIndex((i: any) => i.id === this.chooseComponentData.id);
+                        this.props.handleChooseComponentData(this.chooseComponentIndex, this.chooseComponentData);
+                    } else if (componentList.length > 1) {
+                        this.props.handleChooseManyData(componentList);
+                    }
                 }
             }
         }
@@ -592,9 +625,16 @@ export default class PageEditor extends React.Component<any, any> {
      * 渲染组件
      */
     renderWidget() {
-        return this.props.widgetList.map(function(w: any) {
-            return WidgetFactory.render(w.type, { data: w })
-        })
+        if (!this.chooseComponentData && this.props.selectManyList.length) {
+            let idList = this.props.selectManyList.map((i: any) => i.id);
+            return this.props.widgetList.map((w: any) => {
+                return WidgetFactory.render(w.type, { data: w, isSelect: idList.indexOf(w.id) !== -1 })
+            })
+        } else {
+            return this.props.widgetList.map((w: any) => {
+                return WidgetFactory.render(w.type, { data: w, isSelect: this.chooseComponentData && w.id === this.chooseComponentData.id })
+            })
+        }
     }
 
     render() {
@@ -608,7 +648,7 @@ export default class PageEditor extends React.Component<any, any> {
                 <div className={editorPageClassName}>
                     {this.renderWidget()}
 
-                    <ChangeSizeAreaComponent chooseComponentData={this.props.chooseComponentData}/>
+                    <ChangeSizeAreaComponent chooseComponentData={this.props.chooseComponentData} selectManyList={this.props.selectManyList}/>
                     <MovePreviewAreaComponent chooseComponentData={this.props.chooseComponentData}/>
 
                     <div className={"page-editor-editor-preview-box"} />

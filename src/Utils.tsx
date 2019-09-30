@@ -1,4 +1,5 @@
 import {WidgetBase} from "./page-editor/component/widget/WidgetBase";
+import React from "react";
 
 export function getCommonStyle(props: any) {
     return {
@@ -112,7 +113,12 @@ export class WidgetFactory {
     }
 
     static render(type: number, props: any) {
-        return this.widgetMap[type].render(props);
+        if (props.isSelect) {
+            return [<div className="widget-select" style={{left: props.data.x - 6, top: props.data.y - 6, width: props.data.width, height: props.data.height}}>
+            </div>, this.widgetMap[type].render(props)];
+        } else {
+            return this.widgetMap[type].render(props)
+        }
     }
 
     static editPanel(data: any, methodCollection: any) {
