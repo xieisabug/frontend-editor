@@ -256,3 +256,8 @@
     width: 100px;
     height: 100px;
 }
+
+.page-editor-select-many-area {
+    position: absolute;
+    border: 1px solid #ccc;
+}

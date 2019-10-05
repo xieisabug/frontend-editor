@@ -252,6 +252,20 @@ class PageEditorIndex extends React.Component<any, any> {
         this.handleCloseButtonEventBindDialog();
     };
 
+    refreshSelectManyList = () => {
+        const {pages, currentPageIndex} = this.props;
+        let selectManyList: any[] = [], idList = this.state.selectManyList.map((i: any) => i.id);
+        pages[currentPageIndex].data.forEach((i: any) => {
+            if (idList.indexOf(i.id) !== -1) {
+                selectManyList.push(Object.assign({}, i));
+            }
+        });
+
+        this.setState({
+            selectManyList
+        })
+    };
+
     getToolbarButtonList = () => {
         const {
             pages, currentPageIndex,
@@ -299,6 +313,7 @@ class PageEditorIndex extends React.Component<any, any> {
                         chooseComponentData={this.state.chooseComponentData}
                         handleChooseManyData={this.handleChooseManyData}
                         selectManyList={this.state.selectManyList}
+                        refreshSelectManyList={this.refreshSelectManyList}
 
                         ctrlIsDown={this.state.ctrlIsDown}
                     />
@@ -322,7 +337,7 @@ class PageEditorIndex extends React.Component<any, any> {
                 />
                 <AboutDialog visible={this.state.aboutDialogIsOpen} onOk={this.handleCloseAboutDialog}/>
                 <ButtonEventBindDialog
-                    widgetList={this.state.widgetList}
+                    widgetList={pages[currentPageIndex].data}
                     data={this.state.chooseComponentData}
                     visible={this.state.buttonEventBindDialogIsOpen}
                     onOk={this.handleConfirmButtonEventBindDialog}
