@@ -22,6 +22,7 @@ import {WidgetTextClass} from "./page-editor/component/widget/WidgetText";
 import {WidgetTabClass} from "./page-editor/component/widget/WidgetTab";
 import {WidgetRectClass} from "./page-editor/component/widget/WidgetRect";
 import {WidgetCircleClass} from "./page-editor/component/widget/WidgetCircle";
+import {WidgetDishClass} from "./page-editor/component/widget/WidgetDish";
 
 IdGenerator.init();
 ZIndexGenerator.init();
@@ -37,6 +38,7 @@ WidgetFactory.register(WIDGET_TYPE.TEXT, WidgetTextClass);
 WidgetFactory.register(WIDGET_TYPE.TAB, WidgetTabClass);
 WidgetFactory.register(WIDGET_TYPE.RECT, WidgetRectClass);
 WidgetFactory.register(WIDGET_TYPE.CIRCLE, WidgetCircleClass);
+WidgetFactory.register(WIDGET_TYPE.DISH, WidgetDishClass);
 
 function configureStore() {
     return createStore(

@@ -36,6 +36,7 @@ export default class PageAttributesPanel extends React.Component<any, any> {
     handleDeleteSrcList: any;
     handleAddSrcList: any;
     handleChangeBorderRadius: any;
+    handleChangeDish: any;
     handleSlideChangeBorderRadius: any;
 
     formItemLayout: any;
@@ -76,6 +77,7 @@ export default class PageAttributesPanel extends React.Component<any, any> {
         this.handleAddSrcList = this.handleListInputAdd.bind(this, "srcList");
         this.handleChangeBorderRadius = this.handleNumberInputChange.bind(this, "borderRadius");
         this.handleSlideChangeBorderRadius = this.handleSlideChange.bind(this, "borderRadius");
+        this.handleChangeDish = this.handleSelectChange.bind(this, "dishId");
         this.handleChangePosition = this.handleChangePosition.bind(this);
 
         this.methodCollection = {
@@ -111,6 +113,7 @@ export default class PageAttributesPanel extends React.Component<any, any> {
             handleChangePosition : this.handleChangePosition,
             handleChangeBorderRadius: this.handleChangeBorderRadius,
             handleSlideChangeBorderRadius: this.handleSlideChangeBorderRadius,
+            handleChangeDish: this.handleChangeDish,
             onButtonEventBind: props.onButtonEventBind
         };
 

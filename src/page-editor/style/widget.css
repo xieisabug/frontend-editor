@@ -93,3 +93,8 @@
 .widget-circle {
     border-radius: 50%;
 }
+
+.widget-dish {
+    display: flex;
+    align-items: center;
+}

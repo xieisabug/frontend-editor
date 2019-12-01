@@ -10,6 +10,7 @@ export const WIDGET_TYPE = {
     TAB: 9,
     RECT: 10,
     CIRCLE: 11,
+    DISH: 12
 };
 
 export const ADSORPTION_POWER = 5;
