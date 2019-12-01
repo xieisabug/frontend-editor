@@ -319,6 +319,7 @@ class PageEditorIndex extends React.Component<any, any> {
                     />
                     <PageAttributesPanel
                         chooseComponentData={this.state.chooseComponentData}
+                        selectManyList={this.state.selectManyList}
                         chooseComponentIndex={this.state.chooseComponentIndex}
 
                         editWidget={this.editWidget}

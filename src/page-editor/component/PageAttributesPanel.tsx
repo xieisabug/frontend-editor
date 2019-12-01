@@ -208,14 +208,22 @@ export default class PageAttributesPanel extends React.Component<any, any> {
     }
 
     renderWidgetTypeEditor() {
-        return WidgetFactory.editPanel(this.props.chooseComponentData, this.methodCollection);
+        if (this.props.selectManyList.length) {
+            return null
+        } else {
+            return WidgetFactory.editPanel(this.props.chooseComponentData, this.methodCollection);
+        }
+
     }
 
     render() {
         const {chooseComponentData} = this.props;
         if (!chooseComponentData) return <div className="page-editor-attributes-panel no-choose-component">未选定组件</div>;
-
+        if (this.props.selectManyList.length) {
+            return <div className="page-editor-attributes-panel no-choose-component">正在编辑多个组件</div>
+        }
         const widgetTypeEditor = this.renderWidgetTypeEditor();
+
 
         return <div className="page-editor-attributes-panel">
 

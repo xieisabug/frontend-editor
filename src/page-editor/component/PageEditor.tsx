@@ -5,7 +5,6 @@ import {ADSORPTION_POWER} from "../../Constants";
 import ChangeSizeAreaComponent from "./ChangeSizeArea";
 import MovePreviewAreaComponent from "./MovePreviewArea";
 import {DataKeyGenerator, IdGenerator, WidgetFactory, ZIndexGenerator} from "../../Utils";
-import {deleteWidget} from "../page-editor.actions";
 
 export default class PageEditor extends React.Component<any, any> {
 
@@ -368,21 +367,39 @@ export default class PageEditor extends React.Component<any, any> {
 
             let top = this.endY - this.startY;
             let left = this.endX - this.startX;
+            let areaTop = 99999999, areaLeft = 99999999, areaHeight = -1, areaWidth = -1;
+            this.props.selectManyList.forEach((i: any) => { // 计算出框选组件的最上和最左坐标
+                if (i.y < areaTop) {
+                    areaTop = i.y;
+                }
+                if (i.x < areaLeft) {
+                    areaLeft = i.x;
+                }
+            });
 
+            this.props.selectManyList.forEach((i: any) => { // 计算出框选组件的宽度和高度
+                if ((i.y + i.height) - areaTop > areaHeight) {
+                    areaHeight = i.y + i.height - areaTop;
+                }
+                if ((i.x + i.width) - areaLeft > areaWidth) {
+                    areaWidth = i.x + i.width - areaLeft;
+                }
+            });
+            console.log(areaHeight, areaWidth);
             switch (this.resizeType) {
                 case "top":
-                    this.changeSizeAreaDom.style.top = this.props.chooseComponentData.y + top + "px";
-                    this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height - top + "px";
+                    this.changeSizeAreaDom.style.top = areaTop + top - 3 + "px";
+                    this.changeSizeAreaDom.style.height = areaHeight - top + 3 + "px";
                     break;
                 case "right":
-                    this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width + left + "px";
+                    this.changeSizeAreaDom.style.width = areaWidth + left + 3 + "px";
                     break;
                 case "bottom":
-                    this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height + top + "px";
+                    this.changeSizeAreaDom.style.height = areaHeight + top + 3 + "px";
                     break;
                 case "left":
-                    this.changeSizeAreaDom.style.left = this.props.chooseComponentData.x + left + "px";
-                    this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width - left + "px";
+                    this.changeSizeAreaDom.style.left = areaLeft + left - 3 + "px";
+                    this.changeSizeAreaDom.style.width = areaWidth - left + 3 + "px";
                     break;
                 default:
                     break;
@@ -520,9 +537,10 @@ export default class PageEditor extends React.Component<any, any> {
             this.vAssistLine.style.display = "none";
             this.hAssistLine.style.display = "none";
 
-            if (this.props.selectManyList.length > 0) {
-                this.props.selectManyList.forEach((i: any) => {
-                    if (i.disableMove) return;
+            // 处理数据的更新
+            if (this.props.selectManyList.length > 0) { // 如果是在多选的情况下
+                this.props.selectManyList.forEach((i: any) => { // 循环处理每个选中的组件
+                    if (i.disableMove) return; // 如果其中某个组件是不能移动的组件，那么直接跳过
 
                     let changeData = {
                         x: i.x + left,
@@ -568,40 +586,138 @@ export default class PageEditor extends React.Component<any, any> {
         }
 
         if (this.isResizeComponent) {
-            if (this.chooseComponentData.disableChangeSize) return; // 如果组件配置不可修改大小，则直接返回
+            // 处理数据的更新
+            if (this.props.selectManyList.length > 0) { // 如果是在多选的情况下
+                let top = this.endY - this.startY; // 向上的最终偏移量
+                let left = this.endX - this.startX; // 向左的最终偏移量
+                let areaTop = 99999999, areaLeft = 99999999, areaHeight = -1, areaWidth = -1; // 框选的所有组件的各个属性
+                this.props.selectManyList.forEach((i: any) => { // 计算出框选组件的最上和最左坐标
+                    if (i.y < areaTop) {
+                        areaTop = i.y;
+                    }
+                    if (i.x < areaLeft) {
+                        areaLeft = i.x;
+                    }
+                });
 
-            let top = this.endY - this.startY;
-            let left = this.endX - this.startX;
+                this.props.selectManyList.forEach((i: any) => { // 计算出框选组件的宽度和高度
+                    if ((i.y + i.height) - areaTop > areaHeight) {
+                        areaHeight = i.y + i.height - areaTop;
+                    }
+                    if ((i.x + i.width) - areaLeft > areaWidth) {
+                        areaWidth = i.x + i.width - areaLeft;
+                    }
+                });
 
-            let changeData:any = {};
-            switch (this.resizeType) {
-                case "top":
-                    changeData.y = this.props.chooseComponentData.y + top;
-                    changeData.height = this.props.chooseComponentData.height - top;
-                    break;
-                case "right":
-                    changeData.width = this.props.chooseComponentData.width + left;
-                    break;
-                case "bottom":
-                    changeData.height = this.props.chooseComponentData.height + top;
-                    break;
-                case "left":
-                    changeData.x = this.props.chooseComponentData.x + left;
-                    changeData.width = this.props.chooseComponentData.width - left;
-                    break;
-                default:
-                    break;
+                let heightRatio = top / areaHeight, widthRatio = left / areaWidth; // 按比例增加相对应的属性
+
+                this.props.selectManyList.forEach((i: any) => { // 循环处理每个选中的组件
+                    if (i.disableChangeSize) return;// 如果其中某个组件是不可修改大小，那么直接跳过
+
+                    let subHeight = Math.floor(i.height * heightRatio), subWidth = Math.floor(i.width * widthRatio);
+
+                    let changeData:any = {};
+                    switch (this.resizeType) {
+                        case "top":
+                            if (Math.abs(i.y - areaTop) <= 10) {
+                                changeData.y = i.y + top;
+                                changeData.height = i.height - subHeight;
+                            } else if (Math.abs(i.y + i.height - areaTop - areaHeight) <= 10) {
+                                changeData.y = i.y + subHeight;
+                                changeData.height = i.height - subHeight;
+                            } else {
+                                changeData.y = i.y + top;
+                                changeData.height = i.height - subHeight;
+                            }
+                            break;
+                        case "right":
+                            if (Math.abs(i.x - areaLeft) <= 10) {
+                                changeData.width = i.width + subWidth;
+                            } else if (Math.abs(i.x + i.width - areaLeft - areaWidth) <= 10) {
+                                changeData.x = i.x + left - subWidth;
+                                changeData.width = i.width + subWidth;
+                            } else {
+                                changeData.x = i.x + subWidth / 2;
+                                changeData.width = i.width + subWidth;
+                            }
+                            break;
+                        case "bottom":
+                            if (Math.abs(i.y - areaTop) <= 10) {
+                                changeData.height = i.height + subHeight;
+                            } else if (Math.abs(i.y + i.height - areaTop - areaHeight) <= 10) {
+                                changeData.y = i.y + top - subHeight;
+                                changeData.height = i.height + subHeight;
+                            } else {
+                                changeData.y = i.y + subHeight / 2;
+                                changeData.height = i.height + subHeight;
+                            }
+                            break;
+                        case "left":
+                            if (Math.abs(i.x - areaLeft) <= 10) {
+                                changeData.x = i.x + left;
+                                changeData.width = i.width - subWidth;
+                            } else if (Math.abs(i.x + i.width - areaLeft - areaWidth) <= 10) {
+                                changeData.x = i.x + subWidth;
+                                changeData.width = i.width - subWidth;
+                            } else {
+                                changeData.x = i.x + subWidth / 2;
+                                changeData.width = i.width - subWidth;
+                            }
+                            changeData.x = i.x + left;
+                            changeData.width = i.width - left;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    Object.assign(i, changeData);
+                    this.props.editWidget(this.props.widgetList.findIndex((w: any) => w.id === i.id), changeData, true);
+                });
+                this.props.refreshSelectManyList();
+                this.movePreviewDom.style.display = "none";
+                this.movePreviewDom.style.transform = null;
+
+
+                this.isResizeComponent = false;
+                this.resizeType = "";
+                this.isMouseDown = false;
+            } else if (this.props.chooseComponentData) {
+                if (this.chooseComponentData.disableChangeSize) return; // 如果组件配置不可修改大小，则直接返回
+
+                let top = this.endY - this.startY;
+                let left = this.endX - this.startX;
+
+                let changeData:any = {};
+                switch (this.resizeType) {
+                    case "top":
+                        changeData.y = this.props.chooseComponentData.y + top;
+                        changeData.height = this.props.chooseComponentData.height - top;
+                        break;
+                    case "right":
+                        changeData.width = this.props.chooseComponentData.width + left;
+                        break;
+                    case "bottom":
+                        changeData.height = this.props.chooseComponentData.height + top;
+                        break;
+                    case "left":
+                        changeData.x = this.props.chooseComponentData.x + left;
+                        changeData.width = this.props.chooseComponentData.width - left;
+                        break;
+                    default:
+                        break;
+                }
+
+                Object.assign(this.chooseComponentData, changeData);
+                this.movePreviewDom.style.display = "none";
+                this.movePreviewDom.style.transform = null;
+
+                this.props.editWidget(this.chooseComponentIndex, changeData, true);
+
+                this.isResizeComponent = false;
+                this.resizeType = "";
+                this.isMouseDown = false;
             }
 
-            Object.assign(this.chooseComponentData, changeData);
-            this.movePreviewDom.style.display = "none";
-            this.movePreviewDom.style.transform = null;
-
-            this.props.editWidget(this.chooseComponentIndex, changeData, true);
-
-            this.isResizeComponent = false;
-            this.resizeType = "";
-            this.isMouseDown = false;
             return;
         }
 
