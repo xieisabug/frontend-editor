@@ -363,48 +363,76 @@ export default class PageEditor extends React.Component<any, any> {
 
         // 修改大小
         if (this.isResizeComponent) {
-            if (this.props.selectManyList.length !== 0 && this.props.chooseComponentData && this.props.chooseComponentData.disableChangeSize) return; // 如果组件配置不可修改大小，则直接返回
+            if (this.props.selectManyList.length === 0 && this.props.chooseComponentData && this.props.chooseComponentData.disableChangeSize) return; // 如果组件配置不可修改大小，则直接返回
 
-            let top = this.endY - this.startY;
-            let left = this.endX - this.startX;
-            let areaTop = 99999999, areaLeft = 99999999, areaHeight = -1, areaWidth = -1;
-            this.props.selectManyList.forEach((i: any) => { // 计算出框选组件的最上和最左坐标
-                if (i.y < areaTop) {
-                    areaTop = i.y;
-                }
-                if (i.x < areaLeft) {
-                    areaLeft = i.x;
-                }
-            });
+            if (this.props.selectManyList.length === 0 && this.props.chooseComponentData) {
+                let top = this.endY - this.startY;
+                let left = this.endX - this.startX;
 
-            this.props.selectManyList.forEach((i: any) => { // 计算出框选组件的宽度和高度
-                if ((i.y + i.height) - areaTop > areaHeight) {
-                    areaHeight = i.y + i.height - areaTop;
+                switch (this.resizeType) {
+                    case "top":
+                        this.changeSizeAreaDom.style.top = this.props.chooseComponentData.y + top + "px";
+                        this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height - top + "px";
+                        break;
+                    case "right":
+                        this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width + left + "px";
+                        break;
+                    case "bottom":
+                        this.changeSizeAreaDom.style.height = this.props.chooseComponentData.height + top + "px";
+                        break;
+                    case "left":
+                        this.changeSizeAreaDom.style.left = this.props.chooseComponentData.x + left + "px";
+                        this.changeSizeAreaDom.style.width = this.props.chooseComponentData.width - left + "px";
+                        break;
+                    default:
+                        break;
                 }
-                if ((i.x + i.width) - areaLeft > areaWidth) {
-                    areaWidth = i.x + i.width - areaLeft;
+                this.changeSizeAreaDom.style.border = "1px solid cornflowerblue";
+
+                return;
+            } else if (this.props.selectManyList.length !== 0) {
+                let top = this.endY - this.startY;
+                let left = this.endX - this.startX;
+                let areaTop = 99999999, areaLeft = 99999999, areaHeight = -1, areaWidth = -1;
+                this.props.selectManyList.forEach((i: any) => { // 计算出框选组件的最上和最左坐标
+                    if (i.y < areaTop) {
+                        areaTop = i.y;
+                    }
+                    if (i.x < areaLeft) {
+                        areaLeft = i.x;
+                    }
+                });
+
+                this.props.selectManyList.forEach((i: any) => { // 计算出框选组件的宽度和高度
+                    if ((i.y + i.height) - areaTop > areaHeight) {
+                        areaHeight = i.y + i.height - areaTop;
+                    }
+                    if ((i.x + i.width) - areaLeft > areaWidth) {
+                        areaWidth = i.x + i.width - areaLeft;
+                    }
+                });
+                console.log(areaHeight, areaWidth);
+                switch (this.resizeType) {
+                    case "top":
+                        this.changeSizeAreaDom.style.top = areaTop + top - 3 + "px";
+                        this.changeSizeAreaDom.style.height = areaHeight - top + 3 + "px";
+                        break;
+                    case "right":
+                        this.changeSizeAreaDom.style.width = areaWidth + left + 3 + "px";
+                        break;
+                    case "bottom":
+                        this.changeSizeAreaDom.style.height = areaHeight + top + 3 + "px";
+                        break;
+                    case "left":
+                        this.changeSizeAreaDom.style.left = areaLeft + left - 3 + "px";
+                        this.changeSizeAreaDom.style.width = areaWidth - left + 3 + "px";
+                        break;
+                    default:
+                        break;
                 }
-            });
-            console.log(areaHeight, areaWidth);
-            switch (this.resizeType) {
-                case "top":
-                    this.changeSizeAreaDom.style.top = areaTop + top - 3 + "px";
-                    this.changeSizeAreaDom.style.height = areaHeight - top + 3 + "px";
-                    break;
-                case "right":
-                    this.changeSizeAreaDom.style.width = areaWidth + left + 3 + "px";
-                    break;
-                case "bottom":
-                    this.changeSizeAreaDom.style.height = areaHeight + top + 3 + "px";
-                    break;
-                case "left":
-                    this.changeSizeAreaDom.style.left = areaLeft + left - 3 + "px";
-                    this.changeSizeAreaDom.style.width = areaWidth - left + 3 + "px";
-                    break;
-                default:
-                    break;
+                this.changeSizeAreaDom.style.border = "1px solid cornflowerblue";
+
             }
-            this.changeSizeAreaDom.style.border = "1px solid cornflowerblue";
 
             return;
         }
