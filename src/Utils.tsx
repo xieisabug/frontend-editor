@@ -124,4 +124,20 @@ export class WidgetFactory {
     static editPanel(data: any, methodCollection: any) {
         return this.widgetMap[data.type].getEditPanel(data, methodCollection);
     }
+
+    static theme(data: any, changeFunction: Function) {
+        let themeList = this.widgetMap[data.type].getThemeList!();
+        if (themeList) {
+            return themeList.map(t => {
+                let newData = Object.assign({}, data, t);
+                return <div style={{position: "relative", margin: "20px 0", height: newData.height + "px"}} onClick={() => changeFunction(newData)}>
+                    {this.widgetMap[data.type].render({
+                        data: newData
+                    })}
+                </div>;
+            })
+        } else {
+            return null;
+        }
+    }
 }

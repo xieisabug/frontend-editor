@@ -133,6 +133,14 @@ export default class PageAttributesPanel extends React.Component<any, any> {
         }, true)
     }
 
+    handleWidgetThemeClick = (data: any) => {
+        let newData = Object.assign({}, data);
+        delete newData.x;
+        delete newData.y;
+        delete newData.text;
+        this.props.editWidget(this.props.chooseComponentIndex, newData, true)
+    };
+
     handleNumberInputChange(field: string, event: any) {
         if (/^\d*\.?\d*$/.test(event.target.value)) {
             this.handleInputChange(field, +event.target.value);
@@ -216,7 +224,10 @@ export default class PageAttributesPanel extends React.Component<any, any> {
         } else {
             return WidgetFactory.editPanel(this.props.chooseComponentData, this.methodCollection);
         }
+    }
 
+    renderWidgetTheme() {
+        return WidgetFactory.theme(this.props.chooseComponentData, this.handleWidgetThemeClick);
     }
 
     render() {
@@ -226,7 +237,7 @@ export default class PageAttributesPanel extends React.Component<any, any> {
             return <div className="page-editor-attributes-panel no-choose-component">正在编辑多个组件</div>
         }
         const widgetTypeEditor = this.renderWidgetTypeEditor();
-
+        const widgetWidgetTheme = this.renderWidgetTheme();
 
         return <div className="page-editor-attributes-panel">
 
@@ -295,6 +306,12 @@ export default class PageAttributesPanel extends React.Component<any, any> {
             <Form {...this.formItemLayout}>
                 {widgetTypeEditor}
             </Form>
+
+            <div className="page-editor-attributes-panel-from-group-title" style={{display: widgetWidgetTheme ? "block": "none"}}>组件预制样式</div>
+            <div style={{display: widgetWidgetTheme ? "block": "none", height: "200px", width: "300px", marginLeft: "20px", overflow: "auto"}}>
+                {widgetWidgetTheme}
+            </div>
+
 
             <div className="page-editor-attributes-panel-from-group-title">组件操作</div>
             <Row>

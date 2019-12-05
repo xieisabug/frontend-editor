@@ -5,6 +5,8 @@ export interface WidgetBase {
     render(props: any): any;
     handleInitData(data: any): void;
     getEditPanel(data: any, methodCollection: any): any;
+
+    getThemeList?(): Array<any>;
 }
 
 export type WidgetProperty = {

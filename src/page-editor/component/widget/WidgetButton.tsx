@@ -15,6 +15,9 @@ export class WidgetButtonClass implements WidgetBase{
             <Form.Item label="文字大小">
                 <Input value={data.textSize} onChange={methodCollection.handleChangeTextSize}/>
             </Form.Item>,
+            <Form.Item label="文字大小">
+                <Input value={data.borderRadius} onChange={methodCollection.handleChangeBorderRadius}/>
+            </Form.Item>,
             <Form.Item label="文字横对齐">
                 <Radio.Group size="small" value={data.textAlign}
                              onChange={methodCollection.handleChangeTextAlign}>
@@ -80,6 +83,7 @@ export class WidgetButtonClass implements WidgetBase{
         data.postUrl = "";
         data.code = "";
         data.backgroundTransparent = false;
+        data.borderRadius = 3;
     }
 
     render(props: any): any {
@@ -87,9 +91,71 @@ export class WidgetButtonClass implements WidgetBase{
             fontSize: props.data.textSize + "px",
             color: props.data.textColor,
             justifyContent: props.data.textAlign,
-            alignItems: props.data.alignItems
+            alignItems: props.data.alignItems,
+            borderRadius: props.data.borderRadius + "px"
         });
         return <div className={`widget-item widget-button widget-item-${props.data.id}`} style={style}>{props.data.text}</div>
     }
 
+    getThemeList(): Array<any> {
+        return [
+            {
+                x: 0,
+                y: 0,
+                width: 80,
+                height: 30,
+                borderWidth: 0,
+                borderRadius: 3,
+                textSize: "14",
+                textAlign: "center",
+                alignItems: "center",
+                textColor: "#fff",
+                background: "#000",
+                backgroundTransparent: false,
+            },
+            {
+                x: 0,
+                y: 0,
+                width: 100,
+                height: 50,
+                borderWidth: 0,
+                borderRadius: 3,
+                textSize: "18",
+                textAlign: "center",
+                alignItems: "center",
+                textColor: "#fff",
+                background: "#000",
+                backgroundTransparent: false,
+            },
+            {
+                x: 0,
+                y: 0,
+                width: 80,
+                height: 30,
+                borderWidth: 3,
+                borderRadius: 3,
+                borderColor: "#f00",
+                textSize: "14",
+                textAlign: "center",
+                alignItems: "center",
+                textColor: "#000",
+                background: "#fff",
+                backgroundTransparent: false,
+            },
+            {
+                x: 0,
+                y: 0,
+                width: 80,
+                height: 80,
+                borderWidth: 1,
+                borderRadius: 40,
+                textSize: "14",
+                textAlign: "center",
+                alignItems: "center",
+                textColor: "#000",
+                background: "#fff",
+                backgroundTransparent: false,
+            }
+        ];
+    }
 }
