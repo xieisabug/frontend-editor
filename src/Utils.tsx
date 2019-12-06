@@ -18,7 +18,7 @@ export function copyToClipboard(text: string) {
         // IE specific code path to prevent textarea being shown while dialog is visible.
         return (window as any).clipboardData.setData("Text", text);
     } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
-        var textarea = document.createElement("textarea");
+        let textarea = document.createElement("textarea");
         textarea.textContent = text;
         textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
         document.body.appendChild(textarea);
@@ -126,16 +126,20 @@ export class WidgetFactory {
     }
 
     static theme(data: any, changeFunction: Function) {
-        let themeList = this.widgetMap[data.type].getThemeList!();
-        if (themeList) {
-            return themeList.map(t => {
-                let newData = Object.assign({}, data, t);
-                return <div style={{position: "relative", margin: "20px 0", height: newData.height + "px"}} onClick={() => changeFunction(newData)}>
-                    {this.widgetMap[data.type].render({
-                        data: newData
-                    })}
-                </div>;
-            })
+        if (this.widgetMap[data.type].getThemeList) {
+            let themeList = this.widgetMap[data.type].getThemeList!();
+            if (themeList) {
+                return themeList.map(t => {
+                    let newData = Object.assign({}, data, t);
+                    return <div style={{position: "relative", margin: "20px 0", height: newData.height + "px"}} onClick={() => changeFunction(newData)}>
+                        {this.widgetMap[data.type].render({
+                            data: newData
+                        })}
+                    </div>;
+                })
+            } else {
+                return null;
+            }
         } else {
             return null;
         }

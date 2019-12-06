@@ -148,6 +148,7 @@ export class WidgetButtonClass implements WidgetBase{
                 width: 80,
                 height: 80,
                 borderWidth: 1,
+                borderColor: "#000",
                 borderRadius: 40,
                 textSize: "14",
                 textAlign: "center",
@@ -155,7 +156,21 @@ export class WidgetButtonClass implements WidgetBase{
                 textColor: "#000",
                 background: "#fff",
                 backgroundTransparent: false,
-            }
+            },
+            {
+                x: 0,
+                y: 0,
+                width: 80,
+                height: 30,
+                borderWidth: 0,
+                borderRadius: 3,
+                textSize: "14",
+                textAlign: "center",
+                alignItems: "center",
+                textColor: "#000",
+                background: "#fff",
+                backgroundTransparent: false,
+            },
         ];
     }
 }

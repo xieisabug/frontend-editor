@@ -238,6 +238,19 @@ class PageEditorIndex extends React.Component<any, any> {
                 chooseComponentIndex: -1,
                 chooseComponentData: null,
             })
+        } else if (this.state.selectManyList.length) {
+            const {pages, currentPageIndex} = this.props;
+            let indexList: Array<number> = [];
+            this.state.selectManyList.forEach((i: any) => {
+                let chooseComponentIndex = pages[currentPageIndex].data.findIndex((w: any) => w.id === i.id);
+                indexList.push(chooseComponentIndex);
+            });
+            indexList.sort((a, b) => b - a);
+            indexList.forEach((i: any) => this.props.deleteWidget(i));
+
+            this.setState({
+                selectManyList: []
+            })
         }
     };
 
